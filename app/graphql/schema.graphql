@@ -1,0 +1,64 @@
+type Faction {
+  id: ID!
+  models: [Model!]!
+  name: String!
+}
+
+type Model {
+  faction: Faction!
+  id: ID!
+  name: String!
+  userModels: [UserModel!]!
+}
+
+type Mutation {
+  """
+  An example field added by the generator
+  """
+  testField: String!
+}
+
+type Query {
+  factions: [Faction!]!
+  user(id: ID!): User
+  users: [User!]!
+}
+
+type User {
+  id: ID!
+  userImageAssociations: [UserImageAssociation!]!
+  userImages: [UserImage!]!
+  userModels: [UserModel!]!
+  username: String!
+}
+
+type UserImage {
+  id: ID!
+  url: String!
+  user: User!
+  userImageAssociations: [UserImageAssociation!]!
+}
+
+type UserImageAssociation {
+  id: ID!
+  user: User!
+  userImage: UserImage!
+  userModel: UserModel!
+}
+
+type UserModel {
+  id: ID!
+  model: Model!
+  name: String
+  quantity: Int!
+  status: UserModelStatus!
+  user: User!
+  userImageAssociations: [UserImageAssociation!]!
+}
+
+enum UserModelStatus {
+  ASSEMBLED
+  FINISHED
+  IN_PROGRESS
+  UNASSEMBLED
+}
