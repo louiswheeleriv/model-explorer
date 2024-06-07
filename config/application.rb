@@ -30,5 +30,9 @@ module ModelExplorer
     config.api_only = true
 
     config.x.encryption_key = ENV.fetch('ENCRYPTION_KEY')
+
+    config.session_store :cookie_store, key: '_interslice_session'
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use config.session_store, config.session_options
   end
 end

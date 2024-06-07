@@ -3,6 +3,7 @@
 # Table name: users
 #
 #  id                    :bigint           not null, primary key
+#  email                 :string           default("foo@test.com"), not null
 #  encrypted_password    :string           not null
 #  encrypted_password_iv :string           not null
 #  username              :string           not null
