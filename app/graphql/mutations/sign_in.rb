@@ -9,7 +9,7 @@ module Mutations
 
     def resolve(username:, password:)
       user = User.find_by(username: username)
-      raise "Login credentials invalid" unless user && user.password == password
+      raise GraphQL::ExecutionError.new("Login credentials invalid") unless user && user.password == password
 
       context[:session][:user_id] = user.id
 

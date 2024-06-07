@@ -16,11 +16,11 @@ module Types
       ::User.find_by(id: id)
     end
 
-    field :me, Types::User, null: false
+    field :my_user, Types::User, null: true
 
-    def me
+    def my_user
       user_id = context[:session][:user_id]
-      raise 'Not logged in' unless user_id
+      return unless user_id
 
       ::User.find_by(id: user_id)
     end

@@ -30,6 +30,7 @@ module ModelExplorer
     config.api_only = true
 
     config.x.encryption_key = ENV.fetch('ENCRYPTION_KEY')
+    config.x.client_domain = ENV.fetch('CLIENT_DOMAIN')
 
     config.session_store :cookie_store, key: '_interslice_session'
     config.middleware.use ActionDispatch::Cookies

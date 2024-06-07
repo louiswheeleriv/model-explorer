@@ -10,7 +10,7 @@ module Mutations
 
     def resolve(username:, email:, password:)
       user = User.find_by(username: username)
-      raise "A user already exists with that username." if user
+      raise GraphQL::ExecutionError.new('A user already exists with that username.') if user
 
       user = User.create(username: username, email: email, password: password)
       context[:session][:user_id] = user.id
