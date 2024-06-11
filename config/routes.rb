@@ -14,6 +14,9 @@ Rails.application.routes.draw do
 
   root 'home#index'
   get 'sign_in' => 'auth#show_sign_in'
+  post 'sign_in' => 'auth#sign_in'
   get 'sign_up' => 'auth#show_sign_up'
+  post 'sign_up' => 'auth#sign_up'
   get 'sign_out' => 'auth#show_sign_out'
+  get 'my_user' => 'auth#my_user'
 end

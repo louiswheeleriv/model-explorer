@@ -1,15 +1,27 @@
 import React, { useState } from "react";
+import { apiCall } from "../utils/helpers";
 
 const SignInForm = ({}: {}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  function handleChangeUsername(e: { target: { value: string }}) { setUsername(e.target.value) }
-  function handleChangePassword(e: { target: { value: string }}) { setPassword(e.target.value) }
+  type InputTarget = { target: { value: string }};
+  function handleChangeUsername(e: InputTarget) { setUsername(e.target.value) }
+  function handleChangePassword(e: InputTarget) { setPassword(e.target.value) }
 
   function signIn() {
-    console.log('Signing in as ' + username + ':' + password);
+    apiCall({
+      endpoint: '/sign_in',
+      method: 'POST',
+      body: { username, password }
+    })
+      .then((response) => response.json())
+      .then((body) => {
+        if (body.status >= 300) throw new Error(body.error)
+        window.location.assign('/')
+      })
+      .catch((err) => setError(err.message));
   }
 
   return (
