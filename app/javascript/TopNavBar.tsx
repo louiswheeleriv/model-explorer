@@ -10,10 +10,10 @@ const TopNavBar = ({ current_user }: { current_user: User; }) => {
     greeting = (
       <>
         <li className="nav-item">
-          <a className="nav-link" href="#">{current_user.username}</a>
+          <a className="nav-link">{current_user.username}</a>
         </li>
         <li className="nav-item">
-          <a className="nav-link" onClick={signOut}>Sign Out</a>
+          <a className="nav-link" href='/sign_out'>Sign Out</a>
         </li>
       </>
     );
@@ -21,7 +21,7 @@ const TopNavBar = ({ current_user }: { current_user: User; }) => {
     greeting = (
       <>
         <li className="nav-item">
-          <a className="nav-link" onClick={signIn}>Sign In</a>
+          <a className="nav-link" href='/sign_in'>Sign In</a>
         </li>
       </>
     );
