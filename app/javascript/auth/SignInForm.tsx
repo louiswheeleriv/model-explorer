@@ -26,10 +26,10 @@ const SignInForm = ({}: {}) => {
 
   return (
     <>
-      <div>
+      <div className='container'>
         <div className="error-message">{error}</div>
-        <input id='username' name='username' value={username} onChange={handleChangeUsername} required />
-        <input id='password' name='password' type='password' value={password} onChange={handleChangePassword} required />
+        <input id='username' className='my-input' name='username' value={username} onChange={handleChangeUsername} required />
+        <input id='password' className='my-input' name='password' type='password' value={password} onChange={handleChangePassword} required />
         <button onClick={signIn}>Sign In</button>
       </div>
     </>

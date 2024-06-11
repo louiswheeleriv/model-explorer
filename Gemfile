@@ -50,6 +50,7 @@ gem 'graphql'
 
 gem "jsbundling-rails", "~> 1.3"
 gem "view_component", "~> 3.12"
+gem 'cssbundling-rails'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
