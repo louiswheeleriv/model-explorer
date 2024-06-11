@@ -1,7 +1,9 @@
+@import './constants.bootstrap.scss';
+
 nav.navbar {
-  background-color: #363660;
+  background-color: $primary-dark-blue;
 
   a.nav-link {
-    color: #f9f9f9;
+    color: $primary-white;
   }
 }

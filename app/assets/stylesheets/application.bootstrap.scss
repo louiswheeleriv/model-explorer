@@ -1,9 +1,15 @@
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
 
+@import './constants.bootstrap.scss';
 @import './TopNavBar.bootstrap.scss';
+@import './SignInForm.bootstrap.scss';
 
-input {
-  color: #ff0000;
-  background-color: #aaffaa;
+button.btn-primary {
+  background-color: $primary-dark-blue;
+  border-color: $secondary-gray
+}
+
+button.btn-primary:hover {
+
 }
