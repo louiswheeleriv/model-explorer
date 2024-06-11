@@ -34,11 +34,11 @@ const SignInForm = ({}: {}) => {
         <h2 className='text-center mt-5'>Sign In</h2>
         <div className='mb-3'>
           <label htmlFor="username">Username:</label>
-          <input id='username' className='my-input form-control' type='text' name='username' value={username} onChange={handleChangeUsername} required />
+          <input id='username' className='my-input form-control' type='text' value={username} onChange={handleChangeUsername} required />
         </div>
         <div className='mb-3'>
           <label htmlFor="password">Password:</label>
-          <input id='password' className='my-input form-control' type='password' name='password' value={password} onChange={handleChangePassword} required />
+          <input id='password' className='my-input form-control' type='password' value={password} onChange={handleChangePassword} required />
         </div>
 
         <div className="error-message text-center text-danger mb-3">{error}</div>
@@ -49,7 +49,7 @@ const SignInForm = ({}: {}) => {
             <button onClick={signIn} className='btn btn-primary px-5 py-2'>Sign In</button>
           </div>
           <div className='col-sm-4 d-flex justify-content-end'>
-            <button onClick={signUp} className='btn'>Sign Up</button>
+            <button onClick={signUp} className='btn btn-light'>Sign Up</button>
           </div>
         </div>
       </div>
