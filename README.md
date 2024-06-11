@@ -1,24 +1,16 @@
-# README
+# model-explorer
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Rails/React app for uploading and browsing collections of painted miniatures.
 
-Things you may want to cover:
+## SSL Certificate Generation & Renewal
 
-* Ruby version
+SSL certs generally last 3 months before expiration.
 
-* System dependencies
+A new SSL cert can be generated like so:
 
-* Configuration
+```
+brew install certbot
+sudo certbot certonly --manual
+```
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Follow the CLI instructions and ensure the generated key is hosted at the indicated URL before proceeding (i.e. before hitting ENTER).
