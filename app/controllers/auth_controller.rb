@@ -29,7 +29,7 @@ class AuthController < ApplicationController
     password = params[:password]
 
     user = User.find_by(username: username)
-    return render status: 400, json: { status: 400, error: 'A user already exists with that username' }.to_json if User
+    return render status: 400, json: { status: 400, error: 'A user already exists with that username' }.to_json if user
 
     user = User.create(username: username, email: email, password: password)
     session[:current_user_id] = user.id
