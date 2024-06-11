@@ -48,6 +48,9 @@ gem 'rack-cors'
 gem 'attr_encrypted'
 gem 'graphql'
 
+gem "jsbundling-rails", "~> 1.3"
+gem "view_component", "~> 3.12"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
