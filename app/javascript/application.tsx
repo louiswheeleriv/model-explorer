@@ -4,6 +4,8 @@ import FactionsTable from "./FactionsTable";
 import SignInForm from "./auth/SignInForm";
 import SignUpForm from "./auth/SignUpForm";
 
+import 'flowbite';
+
 mount({
   TopNavBar,
   FactionsTable,
