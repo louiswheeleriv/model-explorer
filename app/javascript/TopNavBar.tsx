@@ -20,6 +20,11 @@ const TopNavBar = ({ current_user }: { current_user: User; }) => {
       <a href='/sign_in' className='block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent'>Sign In</a>
     </>
   );
+  let signUpButton = (
+    <>
+      <a href='/sign_up' className='block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent'>Sign Up</a>
+    </>
+  );
 
   let menuButtons;
   if (current_user) {
@@ -33,6 +38,7 @@ const TopNavBar = ({ current_user }: { current_user: User; }) => {
     menuButtons = (
       <>
         <li>{signInButton}</li>
+        <li>{signUpButton}</li>
       </>
     );
   }
