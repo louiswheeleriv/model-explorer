@@ -1,27 +1,23 @@
 import React from "react";
 import { User } from "./types/models";
 
-function signOut() { window.location.assign('/sign_out') }
-function signIn() { window.location.assign('/sign_in') }
-
 const TopNavBar = ({ current_user }: { current_user: User; }) => {
-  let greeting;
+
+  let signInButton;
+  let signOutButton;
   if (current_user) {
-    greeting = (
+    signOutButton = (
       <>
-        <li className="nav-item">
-          <a className="nav-link">{current_user.username}</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href='/sign_out'>Sign Out</a>
+        <li>
+          <a href='/sign_out' className='block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent'>Sign Out</a>
         </li>
       </>
     );
   } else {
-    greeting = (
+    signInButton = (
       <>
-        <li className="nav-item">
-          <a className="nav-link" href='/sign_in'>Sign In</a>
+        <li>
+          <a href='/sign_in' className='block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent'>Sign In</a>
         </li>
       </>
     );
@@ -29,29 +25,39 @@ const TopNavBar = ({ current_user }: { current_user: User; }) => {
 
   return (
     <>
-      <nav className="navbar navbar-expand-sm">
-        <div className="container-fluid">
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item">
-              <a className="nav-link" href="/">Model Explorer</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Link 2</a>
-            </li>
-            <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Dropdown</a>
-              <ul className="dropdown-menu">
-                <li><a className="dropdown-item" href="#">Link</a></li>
-                <li><a className="dropdown-item" href="#">Another link</a></li>
-                <li><a className="dropdown-item" href="#">A third link</a></li>
-              </ul>
-            </li>
-          </ul>
-          <ul className="navbar-nav ml-auto"> 
-              {greeting}
-          </ul>
+      <nav className="bg-gray-900 border-gray-200">
+        <div className="flex flex-wrap items-center justify-between mx-auto p-4">
+          <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
+              <img src="https://flowbite.com/docs/images/logo.svg" className="h-8" alt="Logo" />
+              <span className="self-center text-2xl font-semibold whitespace-nowrap">Model Explorer</span>
+          </a>
+          <button data-collapse-toggle="navbar-default" type="button" className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
+              <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15"/>
+              </svg>
+          </button>
+          <div className="hidden w-full md:block md:w-auto" id="navbar-default">
+            <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+              <li>
+                <a href="#" className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500" aria-current="page">Home</a>
+              </li>
+              <li>
+                <a href="#" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">About</a>
+              </li>
+              <li>
+                <a href="#" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Services</a>
+              </li>
+              <li>
+                <a href="#" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Pricing</a>
+              </li>
+              <li>
+                <a href="#" className="block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">Contact</a>
+              </li>
+              {signInButton}
+              {signOutButton}
+            </ul>
+          </div>
         </div>
-
       </nav>
     </>
   );
