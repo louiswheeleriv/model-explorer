@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { apiCall } from "../utils/helpers";
 
 const SignInForm = ({}: {}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [signInButtonDisabled, setSignInButtonDisabled] = useState(true);
 
   type InputTarget = { target: { value: string }};
   function handleChangeUsername(e: InputTarget) { setUsername(e.target.value) }
   function handleChangePassword(e: InputTarget) { setPassword(e.target.value) }
+
+  useEffect(() => {
+    setSignInButtonDisabled(username === '' || password === '');
+  }, [username, password]);
 
   function signIn() {
     apiCall({
@@ -44,7 +49,7 @@ const SignInForm = ({}: {}) => {
         <div className='flex'>
           <div className='flex-1'></div>
           <div className='flex-1 flex justify-center'>
-            <button onClick={signIn} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded'>Sign In</button>
+            <button onClick={signIn} disabled={signInButtonDisabled} className='disabled:cursor-not-allowed disabled:opacity-50 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded'>Sign In</button>
           </div>
           <div className='flex-1 flex justify-end'>
             <button onClick={signUp} className='bg-transparent text-white font-semibold py-2 px-4 rounded'>Sign Up</button>
