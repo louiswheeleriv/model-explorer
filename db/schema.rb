@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_14_204755) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_14_211905) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -32,7 +32,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_14_204755) do
     t.integer "faction_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "game_system_id", null: false
     t.index ["faction_id"], name: "index_models_on_faction_id"
   end
 

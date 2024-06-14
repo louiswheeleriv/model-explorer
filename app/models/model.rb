@@ -2,12 +2,11 @@
 #
 # Table name: models
 #
-#  id             :bigint           not null, primary key
-#  name           :string           not null
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  faction_id     :integer          not null
-#  game_system_id :bigint           not null
+#  id         :bigint           not null, primary key
+#  name       :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  faction_id :integer          not null
 #
 # Indexes
 #
