@@ -18,8 +18,8 @@ const MyCollections = ({ user_models, models, factions, game_systems }: { user_m
           }
           numByLabel={
             {
-              'collections': factions.length,
-              'models': user_models.length
+              'Factions': factions.length,
+              'Models': user_models.reduce((acc, um) => (acc + um.quantity), 0)
             }
           }
         />

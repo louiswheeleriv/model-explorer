@@ -4,6 +4,7 @@ import FactionsTable from "./FactionsTable";
 import SignInForm from "./auth/SignInForm";
 import SignUpForm from "./auth/SignUpForm";
 import MyCollections from "./MyCollections";
+import StatusColorBar from "./StatusColorBar";
 import SummaryProgressBar from "./SummaryProgressBar";
 import SummaryProgressBarCard from "./SummaryProgressBarCard";
 
@@ -15,6 +16,7 @@ mount({
   SignInForm,
   SignUpForm,
   MyCollections,
+  StatusColorBar,
   SummaryProgressBar,
   SummaryProgressBarCard,
 });
