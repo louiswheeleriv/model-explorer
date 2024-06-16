@@ -8,5 +8,5 @@
 #  updated_at :datetime         not null
 #
 class GameSystem < ApplicationRecord
-
+  has_many :factions
 end

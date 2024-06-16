@@ -9,5 +9,6 @@
 #  game_system_id :bigint           not null
 #
 class Faction < ApplicationRecord
+  belongs_to :game_system
   has_many :models
 end
