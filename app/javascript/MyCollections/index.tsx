@@ -21,11 +21,6 @@ const MyCollections = ({ user_models, models, factions, game_systems }: { user_m
     'Models': user_models.reduce((acc, um) => (acc + um.quantity), 0)
   }
 
-  // const numByStatusByFactionByGameSystem = {};
-  // user_models.forEach((userModel) => {
-    
-  // });
-
   let factionIdByModelId: Record<number, number> = {};
   models.forEach((model) => {
     factionIdByModelId[model.id] = model.faction_id;
@@ -59,10 +54,13 @@ const MyCollections = ({ user_models, models, factions, game_systems }: { user_m
         />
 
         {gameSystemSections.map((gameSystemSection) => (
-          <GameSystemSection
-            gameSystem={gameSystemSection.gameSystem}
-            factionSections={gameSystemSection.factionSections}
-            className='mt-5'/>
+          <Fragment key={gameSystemSection.gameSystem.id}>
+            <GameSystemSection
+              gameSystem={gameSystemSection.gameSystem}
+              factionSections={gameSystemSection.factionSections}
+              startExpanded={true}
+              className='mt-5'/>
+          </Fragment>
         ))}
       </div>
     </>

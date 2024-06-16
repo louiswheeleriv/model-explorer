@@ -3,8 +3,8 @@ import StatusColorBar from "./StatusColorBar";
 import SummaryProgressBarCard from "./SummaryProgressBarCard";
 
 const iconByLabel: Record<string, string> = {
-  'Factions': 'F',
-  'Models': 'M'
+  'Factions': 'flag',
+  'Models': 'chess-knight'
 };
 
 const SummaryProgressBar = ({ numByStatus, numByLabel }: { numByStatus: Record<string, number>; numByLabel: Record<string, number>; }) => {

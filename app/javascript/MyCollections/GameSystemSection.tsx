@@ -26,26 +26,26 @@ const GameSystemSection = ({ gameSystem, factionSections, startExpanded = true, 
   const componentId = 'game-system-section-' + gameSystem.id;
 
   return (
-    <Fragment key={gameSystem.id}>
-      <div className={className} id={componentId}>
-        <div className='mb-5 text-xl' onClick={() => setIsExpanded(!isExpanded)}>
-          <span className='mr-3'>
-            <FontAwesomeIcon icon={byPrefixAndName.fas['chevron-down']} className='collapse-icon transition-transform duration-300' />
-          </span>
-          {gameSystem.name}
-        </div>
-        <div className='faction-sections-container overflow-hidden'>
-          <div className='faction-sections transition-margin-top duration-1000 delay-0'>
-            {factionSections.map((factionSection) => (
+    <div className={className} id={componentId}>
+      <div className='mb-5 text-xl' onClick={() => setIsExpanded(!isExpanded)}>
+        <span className='mr-3'>
+          <FontAwesomeIcon icon={byPrefixAndName.fas['chevron-down']} className='collapse-icon transition-transform duration-300' />
+        </span>
+        {gameSystem.name}
+      </div>
+      <div className='faction-sections-container overflow-hidden'>
+        <div className='faction-sections transition-margin-top duration-1000 delay-0'>
+          {factionSections.map((factionSection) => (
+            <Fragment key={factionSection.faction.id}>
               <FactionProgressBar
                 faction={factionSection.faction}
                 numByStatus={factionSection.factionNumByStatus}
                 className='mb-5'/>
-            ))}
-          </div>
+            </Fragment>
+          ))}
         </div>
       </div>
-    </Fragment>
+    </div>
   );
 };
 
