@@ -1,6 +1,6 @@
-class MyCollections < ReactComponent
+class MyCollection < ReactComponent
   def initialize(raw_props = {})
-    super('MyCollections', raw_props: raw_props)
+    super('MyCollection', raw_props: raw_props)
   end
 
   def props

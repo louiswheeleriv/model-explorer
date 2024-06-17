@@ -12,10 +12,14 @@ Rails.application.routes.draw do
   get '/.well-known/acme-challenge/:id' => 'ssl#certificate'
 
   root 'home#index'
+  get 'welcome' => 'home#welcome'
+
   get 'sign_in' => 'auth#show_sign_in'
   post 'sign_in' => 'auth#sign_in'
   get 'sign_up' => 'auth#show_sign_up'
   post 'sign_up' => 'auth#sign_up'
   get 'sign_out' => 'auth#show_sign_out'
   get 'my_user' => 'auth#my_user'
+
+  get 'my_collection' => 'my_collection#index'
 end

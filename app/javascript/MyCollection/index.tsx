@@ -3,7 +3,7 @@ import { GameSystem, Faction, Model, UserModel } from "../types/models";
 import SummaryProgressBar from "../SummaryProgressBar";
 import GameSystemSection from "./GameSystemSection";
 
-const MyCollections = ({ user_models, models, factions, game_systems }: { user_models: UserModel[]; models: Model[]; factions: Faction[]; game_systems: GameSystem[]; }) => {
+const MyCollection = ({ user_models, models, factions, game_systems }: { user_models: UserModel[]; models: Model[]; factions: Faction[]; game_systems: GameSystem[]; }) => {
   function countByStatus(userModels: UserModel[]): Record<string, number> {
     return userModels.reduce((acc: Record<string, number>, um) => {
       let status = um.status;
@@ -67,4 +67,4 @@ const MyCollections = ({ user_models, models, factions, game_systems }: { user_m
   );
 };
 
-export default MyCollections;
+export default MyCollection;
