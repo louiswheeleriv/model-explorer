@@ -22,4 +22,5 @@ Rails.application.routes.draw do
   get 'my_user' => 'auth#my_user'
 
   get 'my_collection' => 'my_collection#index'
+  get 'my_collection/:faction_name' => 'my_collection#show_faction'
 end

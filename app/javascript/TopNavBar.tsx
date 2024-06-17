@@ -5,6 +5,11 @@ import $ from 'jquery';
 
 const TopNavBar = ({ current_user }: { current_user: User; }) => {
 
+  let myCollectionButton = (
+    <>
+      <a href="/my_collection" className="block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">My Collection</a>
+    </>
+  );
   let profileButton = (
     <>
       <a href="#" className="block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">Profile</a>
@@ -30,6 +35,7 @@ const TopNavBar = ({ current_user }: { current_user: User; }) => {
   if (current_user) {
     menuButtons = (
       <>
+        <li>{myCollectionButton}</li>
         <li>{profileButton}</li>
         <li>{signOutButton}</li>
       </>

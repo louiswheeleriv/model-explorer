@@ -2,18 +2,9 @@ import React, { Fragment } from "react";
 import { GameSystem, Faction, Model, UserModel } from "../types/models";
 import SummaryProgressBar from "../common/SummaryProgressBar";
 import GameSystemSection from "./GameSystemSection";
+import { countByStatus } from "../utils/helpers";
 
 const MyCollection = ({ user_models, models, factions, game_systems }: { user_models: UserModel[]; models: Model[]; factions: Faction[]; game_systems: GameSystem[]; }) => {
-  function countByStatus(userModels: UserModel[]): Record<string, number> {
-    return userModels.reduce((acc: Record<string, number>, um) => {
-      let status = um.status;
-      let qty = um.quantity;
-      if (!acc[status]) acc[status] = 0;
-      acc[status] += qty;
-      return acc;
-    }, {});
-  }
-
   const numByStatus = countByStatus(user_models);
 
   const valueByLabel = {
@@ -49,6 +40,8 @@ const MyCollection = ({ user_models, models, factions, game_systems }: { user_mo
   return (
     <>
       <div className='px-6 py-8 max-w-[600px] mx-auto'>
+        <h2 className='text-2xl text-center mb-5'>My Collection</h2>
+
         <SummaryProgressBar
           numByStatus={numByStatus}
           valueByLabel={valueByLabel}

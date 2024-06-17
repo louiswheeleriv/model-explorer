@@ -15,10 +15,4 @@ class MyCollection < ReactComponent
       game_systems: game_systems,
     )
   end
-
-  private
-
-  def current_user_id
-    session[:current_user_id]
-  end
 end

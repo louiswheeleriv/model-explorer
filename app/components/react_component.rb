@@ -23,4 +23,8 @@ class ReactComponent < ViewComponent::Base
   def props
     raw_props
   end
+
+  def current_user_id
+    session[:current_user_id]
+  end
 end

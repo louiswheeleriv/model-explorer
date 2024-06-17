@@ -17,3 +17,18 @@ function csrfToken(): string {
   return '';
 }
 
+// e.g. ['a', 'b', 'a', 'c'].filter(onlyUnique)
+//   => ['a', 'b', 'c']
+export function onlyUnique(value: any, index: number, array: any[]) {
+  return array.indexOf(value) === index;
+}
+
+export function countByStatus(items: { status: string; quantity: number; }[]): Record<string, number> {
+  return items.reduce((acc: Record<string, number>, item) => {
+    let status = item.status;
+    let qty = item.quantity;
+    if (!acc[status]) acc[status] = 0;
+    acc[status] += qty;
+    return acc;
+  }, {});
+}
