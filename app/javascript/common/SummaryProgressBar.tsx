@@ -4,14 +4,15 @@ import SummaryProgressBarCard from "./SummaryProgressBarCard";
 
 const iconByLabel: Record<string, string> = {
   'Factions': 'flag',
-  'Models': 'chess-knight'
+  'Models': 'chess-knight',
+  'Complete': 'check'
 };
 
-const SummaryProgressBar = ({ numByStatus, numByLabel }: { numByStatus: Record<string, number>; numByLabel: Record<string, number>; }) => {
-  let cards = Object.entries(numByLabel).map(([label, num]) => {
+const SummaryProgressBar = ({ numByStatus, valueByLabel }: { numByStatus: Record<string, number>; valueByLabel: Record<string, string | number>; }) => {
+  let cards = Object.entries(valueByLabel).map(([label, value]) => {
     return (
       <Fragment key={label}>
-        <SummaryProgressBarCard icon={iconByLabel[label] || 'X'} number={num} label={label} />
+        <SummaryProgressBarCard icon={iconByLabel[label]} value={value} label={label} />
       </Fragment>
     )
   });

@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { GameSystem, Faction, Model, UserModel } from "../types/models";
-import SummaryProgressBar from "../SummaryProgressBar";
+import SummaryProgressBar from "../common/SummaryProgressBar";
 import GameSystemSection from "./GameSystemSection";
 
 const MyCollection = ({ user_models, models, factions, game_systems }: { user_models: UserModel[]; models: Model[]; factions: Faction[]; game_systems: GameSystem[]; }) => {
@@ -16,9 +16,10 @@ const MyCollection = ({ user_models, models, factions, game_systems }: { user_mo
 
   const numByStatus = countByStatus(user_models);
 
-  const numByLabel = {
+  const valueByLabel = {
     'Factions': factions.length,
-    'Models': user_models.reduce((acc, um) => (acc + um.quantity), 0)
+    'Models': user_models.reduce((acc, um) => (acc + um.quantity), 0),
+    'Complete': Math.round((numByStatus['finished'] / Object.values(numByStatus).reduce((acc, num) => acc + num) * 100)) + '%'
   }
 
   let factionIdByModelId: Record<number, number> = {};
@@ -50,7 +51,7 @@ const MyCollection = ({ user_models, models, factions, game_systems }: { user_mo
       <div className='px-6 py-8 max-w-[600px] mx-auto'>
         <SummaryProgressBar
           numByStatus={numByStatus}
-          numByLabel={numByLabel}
+          valueByLabel={valueByLabel}
         />
 
         {gameSystemSections.map((gameSystemSection) => (

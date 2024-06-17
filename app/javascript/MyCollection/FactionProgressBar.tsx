@@ -1,6 +1,6 @@
 import React from "react";
 import { Faction } from "../types/models";
-import StatusColorBar from "../StatusColorBar";
+import StatusColorBar from "../common/StatusColorBar";
 
 const FactionProgressBar = ({ faction, numByStatus, className }: {
   faction: Faction;
