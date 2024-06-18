@@ -29,3 +29,9 @@ export type User = {
   username: string;
   email: string;
 }
+
+export type UserFaction = {
+  id: number;
+  user_id: number;
+  faction_id: number;
+}

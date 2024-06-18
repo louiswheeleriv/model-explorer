@@ -14,6 +14,7 @@ function roundToNearest(num: number, multiple: number) {
 }
 
 const StatusColorBar = ({ numByStatus, rounding, size }: { numByStatus: Record<string, number>; rounding: string; size: string; }) => {
+  if (Object.keys(numByStatus).length === 0) numByStatus = { 'unassembled': 1 };
   const totalNumModels = Object.values(numByStatus).reduce(((acc, num) => acc + num), 0);
   const statusesWithModels = statusOrder.filter((status) => numByStatus[status]);
   let statusSections = statusesWithModels.map((status, i) => {

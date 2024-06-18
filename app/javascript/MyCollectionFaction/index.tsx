@@ -12,11 +12,12 @@ const MyCollectionFaction = ({ faction, faction_model_by_id, user_models_by_mode
   user_models_by_model_id: Record<number, UserModel[]>;
 }) => {
   const userModels = Object.values(user_models_by_model_id).flat()
-  const numByStatus = countByStatus(userModels);
+  let numByStatus = countByStatus(userModels);
+  if (userModels.length === 0) numByStatus = { 'unassembled': 1, 'finished': 0 };
 
   const valueByLabel = {
     'Models': userModels.reduce((acc, um) => (acc + um.quantity), 0),
-    'Complete': Math.round((numByStatus['finished'] / Object.values(numByStatus).reduce((acc, num) => acc + num) * 100)) + '%'
+    'Complete': Math.round((numByStatus['finished'] / Object.values(numByStatus).reduce((acc, num) => acc + num, 0) * 100)) + '%'
   }
   
   return (

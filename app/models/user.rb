@@ -15,6 +15,7 @@
 #  index_users_on_username  (username) UNIQUE
 #
 class User < ApplicationRecord
+  has_many :user_factions
   has_many :user_models
   has_many :user_images
   has_many :user_image_associations

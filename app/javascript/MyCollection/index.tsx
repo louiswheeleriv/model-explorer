@@ -1,14 +1,29 @@
 import React, { Fragment } from "react";
-import { GameSystem, Faction, Model, UserModel } from "../types/models";
+import { UserFaction, GameSystem, Faction, Model, UserModel } from "../types/models";
+import { countByStatus } from "../utils/helpers";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
+import $ from 'jquery';
+
 import SummaryProgressBar from "../common/SummaryProgressBar";
 import GameSystemSection from "./GameSystemSection";
-import { countByStatus } from "../utils/helpers";
+import AddFactionModal, { openAddFactionModal } from "./AddFactionModal";
 
-const MyCollection = ({ user_models, models, factions, game_systems }: { user_models: UserModel[]; models: Model[]; factions: Faction[]; game_systems: GameSystem[]; }) => {
+const MyCollection = ({ user_factions, user_models, models, all_factions, all_game_systems, user_game_systems }: {
+  user_factions: UserFaction[];
+  user_models: UserModel[];
+  models: Model[];
+  all_factions: Faction[];
+  factions: Faction[];
+  all_game_systems: GameSystem[];
+  user_game_systems: GameSystem[];
+}) => {
   const numByStatus = countByStatus(user_models);
+  let factionById: Record<number, Faction> = {};
+  all_factions.forEach((faction) => factionById[faction.id] = faction)
 
   const valueByLabel = {
-    'Factions': factions.length,
+    'Factions': user_factions.length,
     'Models': user_models.reduce((acc, um) => (acc + um.quantity), 0),
     'Complete': Math.round((numByStatus['finished'] / Object.values(numByStatus).reduce((acc, num) => acc + num) * 100)) + '%'
   }
@@ -18,9 +33,10 @@ const MyCollection = ({ user_models, models, factions, game_systems }: { user_mo
     factionIdByModelId[model.id] = model.faction_id;
   });
 
-  const gameSystemSections = game_systems.map((gameSystem) => {
+  const gameSystemSections = user_game_systems.map((gameSystem) => {
     const factionSections =
-      factions
+      user_factions
+        .map((userFaction) => factionById[userFaction.faction_id])
         .filter((faction) => faction.game_system_id === gameSystem.id)
         .map((faction) => {
           const factionUserModels = user_models.filter((um) => {
@@ -46,6 +62,16 @@ const MyCollection = ({ user_models, models, factions, game_systems }: { user_mo
           numByStatus={numByStatus}
           valueByLabel={valueByLabel}
         />
+
+        <div className='flex mt-5'>
+          <div className='flex-1 text-end'>
+            <button onClick={openAddFactionModal} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 mr-1 rounded'>
+              <FontAwesomeIcon icon={byPrefixAndName.fas['flag']} className='mr-2' />
+              New Faction
+            </button>
+          </div>
+        </div>
+        <AddFactionModal userFactions={user_factions} allFactions={all_factions} allGameSystems={all_game_systems} className='' />
 
         {gameSystemSections.map((gameSystemSection) => (
           <Fragment key={gameSystemSection.gameSystem.id}>
