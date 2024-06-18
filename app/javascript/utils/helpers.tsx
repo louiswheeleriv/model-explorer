@@ -1,3 +1,5 @@
+import { UserModelStatus } from "../types/models";
+
 export function apiCall({ endpoint, method, body}: {endpoint: string, method: string, body?: object}) {
   return fetch(endpoint, {
     method: String(method),
@@ -23,7 +25,7 @@ export function onlyUnique(value: any, index: number, array: any[]) {
   return array.indexOf(value) === index;
 }
 
-export function countByStatus(items: { status: string; quantity: number; }[]): Record<string, number> {
+export function countByStatus(items: { status: UserModelStatus; quantity: number; }[]): Record<string, number> {
   return items.reduce((acc: Record<string, number>, item) => {
     let status = item.status;
     let qty = item.quantity;

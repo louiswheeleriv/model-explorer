@@ -24,7 +24,9 @@ Rails.application.routes.draw do
   get 'my_collection' => 'my_collection#index'
   get 'my_collection/:faction_name' => 'my_collection#show_faction'
   post 'my_collection/factions' => 'my_collection#add_faction'
+  post 'my_collection/factions/:faction_id/user_models' => 'my_collection#add_user_model'
 
   post 'game_systems' => 'game_systems#create'
   post 'factions' => 'factions#create'
+  post 'factions/:faction_id/models' => 'factions#create_model'
 end

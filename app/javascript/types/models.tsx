@@ -1,3 +1,12 @@
+export type UserModelStatus = 'unassembled' | 'assembled' | 'in_progress' | 'finished';
+
+export type QuantityByStatus = {
+  unassembled: number;
+  assembled: number;
+  in_progress: number;
+  finished: number;
+}
+
 export type GameSystem = {
   id: number;
   name: string;
@@ -21,7 +30,7 @@ export type UserModel = {
   model_id: number;
   name: string;
   quantity: number;
-  status: string;
+  status: UserModelStatus;
 };
 
 export type User = {

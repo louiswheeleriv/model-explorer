@@ -9,6 +9,8 @@ type InputProps = {
   value?: string | number | readonly string[] | undefined;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   disabled?: boolean;
+  min?: string | number | undefined;
+  max?: string | number | undefined;
 };
 
 const Input = (props: PropsWithChildren<InputProps>) => {
@@ -27,7 +29,9 @@ const Input = (props: PropsWithChildren<InputProps>) => {
         defaultValue={props.defaultValue}
         value={props.value}
         onChange={props.onChange}
-        disabled={props.disabled}>
+        disabled={props.disabled}
+        min={props.min}
+        max={props.max}>
           {props.children}
       </input>
     </>

@@ -8,8 +8,13 @@ const iconByLabel: Record<string, string> = {
   'Complete': 'check'
 };
 
-const SummaryProgressBar = ({ numByStatus, valueByLabel }: { numByStatus: Record<string, number>; valueByLabel: Record<string, string | number>; }) => {
-  let cards = Object.entries(valueByLabel).map(([label, value]) => {
+type Props = {
+  numByStatus: Record<string, number>;
+  valueByLabel: Record<string, string | number>;
+};
+
+const SummaryProgressBar = (props: Props) => {
+  let cards = Object.entries(props.valueByLabel).map(([label, value]) => {
     return (
       <Fragment key={label}>
         <SummaryProgressBarCard icon={iconByLabel[label]} value={value} label={label} />
@@ -20,7 +25,7 @@ const SummaryProgressBar = ({ numByStatus, valueByLabel }: { numByStatus: Record
   return (
     <>
       <div className='flex items-center'>
-        <StatusColorBar numByStatus={numByStatus} size='large' rounding='all' />
+        <StatusColorBar numByStatus={props.numByStatus} size='large' rounding='all' />
         <div className='flex absolute'>
           {cards}
         </div>
