@@ -6,6 +6,7 @@ type InputProps = {
   type?: HTMLInputTypeAttribute;
   placeholder?: string;
   defaultValue?: string | number | readonly string[] | undefined;
+  value?: string | number | readonly string[] | undefined;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   disabled?: boolean;
 };
@@ -24,6 +25,7 @@ const Input = (props: PropsWithChildren<InputProps>) => {
         }
         placeholder={props.placeholder}
         defaultValue={props.defaultValue}
+        value={props.value}
         onChange={props.onChange}
         disabled={props.disabled}>
           {props.children}

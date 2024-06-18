@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { Faction, Model, UserModel } from "../types/models";
 import SummaryProgressBar from "../common/SummaryProgressBar";
 import UserModelProgressBar from "./UserModelProgressBar";
+import Button from "../common/Button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import { countByStatus } from "../utils/helpers";
@@ -46,10 +47,10 @@ const MyCollectionFaction = ({ faction, faction_model_by_id, user_models_by_mode
             Models
           </div>
           <div className='flex-1 text-end'>
-            <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 mr-1 rounded'>
+            <Button>
               <FontAwesomeIcon icon={byPrefixAndName.fas['plus']} className='mr-2' />
               New Model(s)
-            </button>
+            </Button>
           </div>
         </div>
         
