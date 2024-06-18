@@ -27,7 +27,7 @@ const GameSystemSection = ({ gameSystem, factionSections, startExpanded = true, 
 
   return (
     <div className={className} id={componentId}>
-      <div className='mb-5 text-xl' onClick={() => setIsExpanded(!isExpanded)}>
+      <div className='mb-5 text-xl w-fit cursor-pointer' onClick={() => setIsExpanded(!isExpanded)}>
         <span className='mr-3'>
           <FontAwesomeIcon icon={byPrefixAndName.fas['chevron-down']} className='collapse-icon transition-transform duration-300' />
         </span>

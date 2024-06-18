@@ -1386,6 +1386,15 @@ input:checked + .toggle-bg {
   width: 100%;
 }
 
+.w-fit {
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.max-w-\[170px\] {
+  max-width: 170px;
+}
+
 .max-w-\[600px\] {
   max-width: 600px;
 }
@@ -1602,6 +1611,10 @@ input:checked + .toggle-bg {
 
 .border-0 {
   border-width: 0px;
+}
+
+.border-b {
+  border-bottom-width: 1px;
 }
 
 .border-blue-600 {
@@ -2080,6 +2093,11 @@ input:checked + .toggle-bg {
 
 .disabled\:cursor-not-allowed:disabled {
   cursor: not-allowed;
+}
+
+.disabled\:text-\[\#aaaaaa\]:disabled {
+  --tw-text-opacity: 1;
+  color: rgb(170 170 170 / var(--tw-text-opacity));
 }
 
 .disabled\:opacity-50:disabled {

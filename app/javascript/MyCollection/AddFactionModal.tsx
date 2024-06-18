@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { GameSystem, Faction, UserFaction } from "../types/models";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
+import Button from "../common/Button";
+import Input from "../common/Input";
+import Select from "../common/Select";
 import $ from 'jquery';
 import { apiCall } from "../utils/helpers";
 
@@ -77,7 +80,6 @@ const AddFactionModal = ({ userFactions, allFactions, allGameSystems, className 
       .then((response) => response.json())
       .then((body) => {
         if (body.status >= 300) throw new Error(body.error)
-        // location.reload();
         window.location.assign('/my_collection/' + body.faction.name);
       })
       .catch((err) => setError(err.message));
@@ -121,66 +123,70 @@ const AddFactionModal = ({ userFactions, allFactions, allGameSystems, className 
   return (
     <div id="add-faction-modal" tabIndex={-1} className="opacity-0 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 -z-50 justify-center flex items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full transition-all duration-250">
       <div className="relative m-auto p-4 w-full max-w-md max-h-full">
-        <div className="relative p-4 rounded-lg shadow bg-gray-700">
-          <div className="flex items-center justify-between rounded-t border-gray-600">
-            <h3 className="text-lg font-semibold">
-              Add Faction to My Collection
-            </h3>
-            <button type="button" onClick={hideAddFactionModal} className="bg-transparent rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center hover:bg-gray-600 hover:text-white">
-              <FontAwesomeIcon icon={byPrefixAndName.fas['xmark']} />
-            </button>
+        <div className="relative rounded-lg shadow bg-gray-700">
+          
+          <div className='p-4 border-b border-gray-600 modal-header'>
+            <div className="flex items-center justify-between rounded-t">
+              <h3 className="text-lg font-semibold">
+                Add Faction to My Collection
+              </h3>
+              <button type="button" onClick={hideAddFactionModal} className="bg-transparent rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center hover:bg-gray-600 hover:text-white">
+                <FontAwesomeIcon icon={byPrefixAndName.fas['xmark']} />
+              </button>
+            </div>
           </div>
-          <div className='mb-4'>
-            <label htmlFor="game-system-selection" className="block mb-2 text-sm font-medium">Game System</label>
-            <select
-              id='game-system-selection'
-              value={selectedGameSystemId}
-              onChange={e => setSelectedGameSystemId(e.target.value)}
-              className="border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500">
-                <option value='none'>Select Game System</option>
-                {allGameSystems?.map((gameSystem) => (
-                  <option value={gameSystem.id}>{gameSystem.name}</option>
-                ))}
-                <option value='add_new_game_system'>Add New Game System</option>
-            </select>
-            {selectedGameSystemId === 'add_new_game_system' && (
-              <input
-                type="text"
-                id="game-system-new-name"
-                className="border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500"
-                placeholder="Name of New Game System" />
-            )}
-          </div>
-          <div className='mb-4'>
-            <label htmlFor="faction-selection" className="block mb-2 text-sm font-medium">Faction</label>
-            <select
-              id='faction-selection'
-              value={selectedFactionId}
-              onChange={e => setSelectedFactionId(e.target.value)}
-              className="border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500">
-                {factionDropdownOptions.map((opt) => (
-                  <option value={opt.value}>{opt.label}</option>
-                ))}
-            </select>
-            {(selectedFactionId === 'add_new_faction' || selectedGameSystemId === 'add_new_game_system') && (
-              <input
-                type="text"
-                id="new-faction-name"
-                className="border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500"
-                placeholder="Name of New Faction" />
-            )}
-          </div>
-          <div className='flex'>
-            <button
-              type="button"
-              onClick={addFaction}
-              disabled={addFactionButtonDisabled}
-              className="flex-1 mx-auto text-white inline-flex items-center focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
-                <FontAwesomeIcon icon={byPrefixAndName.fas['plus']} />
+
+          <div className='p-4 modal-content'>
+            <div className='mb-4'>
+              <label htmlFor="game-system-selection" className="block mb-2 text-sm font-medium">Game System</label>
+              <Select
+                id='game-system-selection'
+                value={selectedGameSystemId}
+                onChange={e => setSelectedGameSystemId(e.target.value)}>
+                  <option value='none'>Select Game System</option>
+                  {allGameSystems?.map((gameSystem) => (
+                    <option key={'game-system-selection-'+gameSystem.id} value={gameSystem.id}>{gameSystem.name}</option>
+                  ))}
+                  <option value='add_new_game_system'>Add New Game System</option>
+              </Select>
+              {selectedGameSystemId === 'add_new_game_system' && (
+                <Input
+                  placeholder='Name of New Game System'
+                  defaultValue={newGameSystemName}
+                  onChange={e => setNewGameSystemName(e.target.value)}
+                  className='mt-5' />
+              )}
+            </div>
+
+            <div className='mb-4'>
+              <label htmlFor="faction-selection" className="block mb-2 text-sm font-medium">Faction</label>
+              <Select
+                id='faction-selection'
+                value={selectedFactionId}
+                onChange={e => setSelectedFactionId(e.target.value)}>
+                  {factionDropdownOptions.map((opt) => (
+                    <option key={'faction-selection-'+opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
+              </Select>
+              {(selectedFactionId === 'add_new_faction' || selectedGameSystemId === 'add_new_game_system') && (
+                <Input
+                  placeholder="Name of New Faction"
+                  defaultValue={newFactionName}
+                  onChange={e => setNewFactionName(e.target.value)}
+                  className='mt-5' />
+              )}
+            </div>
+
+            <div className='flex items-center'>
+              <Button onClick={addFaction} disabled={addFactionButtonDisabled} className='max-w-[170px] mx-auto'>
+                <FontAwesomeIcon icon={byPrefixAndName.fas['flag']} className='mr-2' />
                 Add Faction
-            </button>
+              </Button>
+            </div>
+
+            <div className='text-center text-red'>{error}</div>
+
           </div>
-          <div className='text-center text-red'>{error}</div>
         </div>
       </div>
     </div>

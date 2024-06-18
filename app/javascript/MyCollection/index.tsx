@@ -4,6 +4,7 @@ import { countByStatus } from "../utils/helpers";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import $ from 'jquery';
+import Button from "../common/Button";
 
 import SummaryProgressBar from "../common/SummaryProgressBar";
 import GameSystemSection from "./GameSystemSection";
@@ -65,10 +66,10 @@ const MyCollection = ({ user_factions, user_models, models, all_factions, all_ga
 
         <div className='flex mt-5'>
           <div className='flex-1 text-end'>
-            <button onClick={openAddFactionModal} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 mr-1 rounded'>
+            <Button onClick={openAddFactionModal}>
               <FontAwesomeIcon icon={byPrefixAndName.fas['flag']} className='mr-2' />
               New Faction
-            </button>
+            </Button>
           </div>
         </div>
         <AddFactionModal userFactions={user_factions} allFactions={all_factions} allGameSystems={all_game_systems} className='' />
