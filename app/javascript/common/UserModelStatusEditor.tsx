@@ -23,7 +23,8 @@ function calculateValueByLabel(quantityByStatus: QuantityByStatus) {
 
 type Props = {
   quantityByStatus: QuantityByStatus;
-  onChange: Dispatch<SetStateAction<QuantityByStatus>>
+  onChange: Dispatch<SetStateAction<QuantityByStatus>>;
+  className?: string;
 }
 
 const UserModelStatusEditor = (props: Props) => {
@@ -51,7 +52,7 @@ const UserModelStatusEditor = (props: Props) => {
 
   return (
     <>
-      <div className='items-center w-full'>
+      <div className={'items-center w-full' + (props.className ? ' '+props.className : '')}>
         <div>
           <SummaryProgressBar numByStatus={quantityByStatus} valueByLabel={valueByLabel} />
         </div>
@@ -61,28 +62,28 @@ const UserModelStatusEditor = (props: Props) => {
             <FontAwesomeIcon icon={byPrefixAndName.fas['box']} className='mr-2' />
             Unassembled
           </div>
-          <NumberButtonsInput defaultValue={qtyUnassembled} onChange={setQtyUnassembled} />
+          <NumberButtonsInput defaultValue={qtyUnassembled} onChange={setQtyUnassembled} className='flex-1' />
         </div>
         <div className='flex mt-5 items-center'>
           <div className='flex-1 text-center'>
-            <FontAwesomeIcon icon={byPrefixAndName.fas['scalpel']} className='mr-2' />
+            <FontAwesomeIcon icon={byPrefixAndName.fas['screwdriver-wrench']} className='mr-2' />
             Assembled
           </div>
-          <NumberButtonsInput defaultValue={qtyAssembled} onChange={setQtyAssembled} />
+          <NumberButtonsInput defaultValue={qtyAssembled} onChange={setQtyAssembled} className='flex-1' />
         </div>
         <div className='flex mt-5 items-center'>
           <div className='flex-1 text-center'>
             <FontAwesomeIcon icon={byPrefixAndName.fas['paintbrush-fine']} className='mr-2' />
             In Progress
           </div>
-          <NumberButtonsInput defaultValue={qtyInProgress} onChange={setQtyInProgress} />
+          <NumberButtonsInput defaultValue={qtyInProgress} onChange={setQtyInProgress} className='flex-1' />
         </div>
         <div className='flex mt-5 items-center'>
           <div className='flex-1 text-center'>
             <FontAwesomeIcon icon={byPrefixAndName.fas['circle-check']} className='mr-2' />
             Finished
           </div>
-          <NumberButtonsInput defaultValue={qtyFinished} onChange={setQtyFinished} />
+          <NumberButtonsInput defaultValue={qtyFinished} onChange={setQtyFinished} className='flex-1' />
         </div>
       </div>
     </>

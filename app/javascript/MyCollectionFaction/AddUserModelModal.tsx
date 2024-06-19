@@ -92,10 +92,12 @@ const AddUserModelModal = (props: Props) => {
   }
 
   useEffect(() => {
-    setAddUserModelButtonDisabled(!(
+    const wasDisabled = addUserModelButtonDisabled;
+    const isDisabled = !(
       (selectedModelId === 'add_new' && newModelName) ||
       (selectedModelId !== 'none' && selectedModelId !== 'add_new')
-    ))
+    );
+    if (isDisabled !== wasDisabled) setAddUserModelButtonDisabled(isDisabled);
   }, [selectedModelId, newModelName])
 
   return (
@@ -134,8 +136,11 @@ const AddUserModelModal = (props: Props) => {
               )}
             </div>
 
-            <div className='mb-4'>
-              <UserModelStatusEditor quantityByStatus={userModelQuantityByStatus} onChange={setUserModelQuantityByStatus} />
+            <div className='overflow-hidden mb-4'>
+              <UserModelStatusEditor
+                quantityByStatus={userModelQuantityByStatus}
+                onChange={setUserModelQuantityByStatus}
+                className='model-status-editor' />
             </div>
 
             <div className='flex items-center'>

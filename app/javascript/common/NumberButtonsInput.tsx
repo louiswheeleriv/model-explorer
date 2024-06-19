@@ -26,8 +26,9 @@ const NumberButtonsInput = (props: Props) => {
     <>
       <div id={props.id} className={(props.className || '') + ' flex'}>
         <Button
-          className='rounded-l bg-red-500'
+          className='rounded-l'
           rounded={false}
+          colorSet='red'
           onClick={() => setNum(num - 1)}>
             <FontAwesomeIcon icon={byPrefixAndName.fas['minus']} />
         </Button>
@@ -41,8 +42,9 @@ const NumberButtonsInput = (props: Props) => {
           className='flex-1 remove-arrow rounded-none text-xl max-w-[70px] text-center' />
 
         <Button
-          className='rounded-r bg-green-400'
+          className='rounded-r'
           rounded={false}
+          colorSet='green'
           onClick={() => setNum(num + 1)}>
             <FontAwesomeIcon icon={byPrefixAndName.fas['plus']} />
         </Button>
