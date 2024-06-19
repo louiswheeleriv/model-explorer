@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from "react";
-import { Model, QuantityByStatus, UserModel, UserModelStatus } from "../types/models";
+import { Model, QuantityByStatus, UserModel } from "../types/models";
 import StatusColorBar from "../common/StatusColorBar";
 import $ from 'jquery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -39,6 +39,9 @@ const UserModelProgressBar = (props: Props) => {
     $('#'+componentId+' .collapse-icon').css({ 'transform': 'rotate('+angle+'deg)' });
     if (!isExpanded) setDraftQuantityByStatus(initialDraftQuantityByStatus);
   }, [isExpanded]);
+
+  useEffect(() => {
+  }, [draftQuantityByStatus])
 
   async function saveUserModel() {
     apiCall({

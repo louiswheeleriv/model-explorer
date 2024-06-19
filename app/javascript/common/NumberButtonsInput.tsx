@@ -1,25 +1,29 @@
-import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "./Button";
 import Input from "./Input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { byPrefixAndName } from "@awesome.me/kit-902717d512/icons";
 
 type Props = {
+  stateNumber: number;
+  onChange: (x: number) => void;
   id?: string;
   className?: string;
-  defaultValue?: number;
-  onChange?: Dispatch<SetStateAction<number>>;
   disabled?: boolean;
   min?: number;
   max?: number;
 };
 
 const NumberButtonsInput = (props: Props) => {
-  const [num, setNum] = useState(props.defaultValue || 0);
+  const [stateNumber, setStateNumber] = useState(props.stateNumber);
 
   useEffect(() => {
-    if (props.onChange) props.onChange(num);
-  }, [num]);
+    if (props.stateNumber !== stateNumber) setStateNumber(props.stateNumber);
+  }, [props.stateNumber]);
+
+  useEffect(() => {
+    props.onChange(stateNumber);
+  }, [stateNumber]);
 
   return (
     <>
@@ -28,7 +32,7 @@ const NumberButtonsInput = (props: Props) => {
           className='rounded-l'
           rounded={false}
           colorSet='red'
-          onClick={() => setNum(num - 1)}>
+          onClick={() => setStateNumber(stateNumber - 1)}>
             <FontAwesomeIcon icon={byPrefixAndName.fas['minus']} />
         </Button>
 
@@ -36,15 +40,15 @@ const NumberButtonsInput = (props: Props) => {
           type='number'
           min={props.min}
           max={props.max}
-          value={num}
-          onChange={e => setNum(Number(e.target.value)) }
+          value={stateNumber}
+          onChange={e => setStateNumber(Number(e.target.value)) }
           className='flex-1 remove-arrow rounded-none text-xl max-w-[70px] text-center' />
 
         <Button
           className='rounded-r'
           rounded={false}
           colorSet='green'
-          onClick={() => setNum(num + 1)}>
+          onClick={() => setStateNumber(stateNumber + 1)}>
             <FontAwesomeIcon icon={byPrefixAndName.fas['plus']} />
         </Button>
       </div>
