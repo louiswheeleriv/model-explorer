@@ -17,7 +17,7 @@ type Props = {
 const MyCollectionFaction = (props: Props) => {
   const userModels = Object.values(props.user_models_by_model_id).flat()
   let numByStatus = countByStatus(userModels);
-  if (userModels.length === 0) numByStatus = { 'unassembled': 1, 'finished': 0 };
+  if (userModels.length === 0) numByStatus = { unassembled: 1, assembled: 0, in_progress: 0, finished: 0 };
 
   const valueByLabel = {
     'Models': userModels.reduce((acc, um) => (acc + um.quantity), 0),

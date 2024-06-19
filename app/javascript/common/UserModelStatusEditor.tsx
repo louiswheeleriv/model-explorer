@@ -50,6 +50,14 @@ const UserModelStatusEditor = (props: Props) => {
     props.onChange(quantityByStatus);
   }, [quantityByStatus]);
 
+  useEffect(() => {
+    const different = JSON.stringify(props.quantityByStatus) != JSON.stringify(quantityByStatus);
+    if (different) {
+      console.log('Parent quantityByStatus changed, persisting to child');
+      setQuantityByStatus(props.quantityByStatus);
+    }
+  }, [props.quantityByStatus])
+
   return (
     <>
       <div className={'items-center w-full' + (props.className ? ' '+props.className : '')}>

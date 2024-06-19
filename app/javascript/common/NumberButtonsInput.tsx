@@ -18,7 +18,6 @@ const NumberButtonsInput = (props: Props) => {
   const [num, setNum] = useState(props.defaultValue || 0);
 
   useEffect(() => {
-    console.log('NumberButtonsInput num changed to '+num);
     if (props.onChange) props.onChange(num);
   }, [num]);
 

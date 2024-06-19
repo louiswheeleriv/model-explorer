@@ -1,36 +1,91 @@
 import React, { useState, useEffect} from "react";
-import { Model, UserModel } from "../types/models";
+import { Model, QuantityByStatus, UserModel, UserModelStatus } from "../types/models";
 import StatusColorBar from "../common/StatusColorBar";
 import $ from 'jquery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
-import { countByStatus } from "../utils/helpers";
+import { apiCall, countByStatus } from "../utils/helpers";
+import UserModelStatusEditor from "../common/UserModelStatusEditor";
+import Button from "../common/Button";
 
-const UserModelProgressBar = ({ model, userModels, startExpanded = true, className }: {
+type Props = {
   model: Model;
   userModels: UserModel[];
   startExpanded?: boolean;
   className?: string;
-}) => {
-  const numByStatus = countByStatus(userModels);
+}
 
-  const [isExpanded, setIsExpanded] = useState(startExpanded);
+const UserModelProgressBar = (props: Props) => {
+  const numByStatus = countByStatus(props.userModels);
+  const initialDraftQuantityByStatus = {
+    unassembled: numByStatus.unassembled,
+    assembled: numByStatus.assembled,
+    in_progress: numByStatus.in_progress,
+    finished: numByStatus.finished
+  };
+
+  const [isExpanded, setIsExpanded] = useState(props.startExpanded != undefined ? props.startExpanded : false);
+  const [draftQuantityByStatus, setDraftQuantityByStatus] = useState<QuantityByStatus>(initialDraftQuantityByStatus);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    // const marginTop = isExpanded ? '0' : '-100%';
-    // const angle = isExpanded ? 0 : -90;
-    // $('#'+componentId+' .faction-sections').css({ 'margin-top': marginTop });
-    // $('#'+componentId+' .collapse-icon').css({ 'transform': 'rotate('+angle+'deg)' })
+    const marginTop = isExpanded ? '0' : '-100%';
+    const opacity = isExpanded ? '100%' : 0;
+    const angle = isExpanded ? 0 : -90;
+    $('#'+componentId+' .model-status-editor').css({
+      'margin-top': marginTop,
+      'opacity': opacity
+    });
+    $('#'+componentId+' .collapse-icon').css({ 'transform': 'rotate('+angle+'deg)' });
+    if (!isExpanded) setDraftQuantityByStatus(initialDraftQuantityByStatus);
   }, [isExpanded]);
 
-  const componentId = 'model-' + model.id;
+  async function saveUserModel() {
+    apiCall({
+      endpoint: '/my_collection/factions/'+props.model.faction_id+'/models/'+props.model.id,
+      method: 'PUT',
+      body: {
+        quantity_by_status: {
+          unassembled: draftQuantityByStatus.unassembled,
+          assembled: draftQuantityByStatus.assembled,
+          in_progress: draftQuantityByStatus.in_progress,
+          finished: draftQuantityByStatus.finished
+        }
+      }
+    })
+      .then((response) => response.json())
+      .then((body) => {
+        if (body.status >= 300) throw new Error(body.error)
+        location.reload();
+      })
+      .catch((err) => setError(err.message));
+  }
+
+  const componentId = 'model-' + props.model.id;
 
   return (
-    <div className={className} id={componentId}>
+    <div className={props.className} id={componentId}>
       <div className='p-4 bg-[#607499] rounded-t-md flex cursor-pointer items-center' onClick={() => setIsExpanded(!isExpanded)}>
-        <FontAwesomeIcon icon={byPrefixAndName.fas['chevron-right']}  className='collapse-icon transition-transform duration-300 mr-3' />
-        {model.name}
+        <FontAwesomeIcon icon={byPrefixAndName.fas['chevron-down']}  className='collapse-icon transition-transform duration-300 mr-3' />
+        {props.model.name}
       </div>
+
+      <div className='overflow-hidden'>
+        <div className='model-status-editor bg-[#333a46] m-top-[-100%] p-5 opacity-0 transition-all duration-500'>
+          <UserModelStatusEditor 
+            quantityByStatus={draftQuantityByStatus}
+            onChange={setDraftQuantityByStatus} />
+
+          <div className='flex items-center mt-5'>
+            <Button onClick={saveUserModel} className='max-w-[170px] mx-auto'>
+              <FontAwesomeIcon icon={byPrefixAndName.fas['paintbrush-fine']} className='mr-2' />
+              Save Model(s)
+            </Button>
+            <div className='text-red text-center'>{error}</div>
+          </div>
+        </div>
+      </div>
+
       <StatusColorBar numByStatus={numByStatus} rounding='bottom' size='small' />
     </div>
   );
