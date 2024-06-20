@@ -2,14 +2,16 @@
 #
 # Table name: user_models
 #
-#  id         :bigint           not null, primary key
-#  name       :string
-#  quantity   :integer          not null
-#  status     :integer          default("unassembled"), not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  model_id   :integer          not null
-#  user_id    :integer          not null
+#  id              :bigint           not null, primary key
+#  name            :string
+#  qty_assembled   :integer          default(0), not null
+#  qty_finished    :integer          default(0), not null
+#  qty_in_progress :integer          default(0), not null
+#  qty_unassembled :integer          default(0), not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  model_id        :integer          not null
+#  user_id         :integer          not null
 #
 # Indexes
 #
@@ -21,5 +23,12 @@ class UserModel < ApplicationRecord
   belongs_to :model
   has_many :user_image_associations
 
-  enum :status, [:unassembled, :assembled, :in_progress, :finished]
+  def quantity_by_status
+    {
+      unassembled: qty_unassembled,
+      assembled: qty_assembled,
+      in_progress: qty_in_progress,
+      finished: qty_finished
+    }
+  end
 end

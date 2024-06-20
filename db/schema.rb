@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_18_001704) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_20_103826) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -67,10 +67,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_18_001704) do
     t.integer "user_id", null: false
     t.integer "model_id", null: false
     t.string "name"
-    t.integer "quantity", null: false
-    t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "qty_unassembled", default: 0, null: false
+    t.integer "qty_assembled", default: 0, null: false
+    t.integer "qty_in_progress", default: 0, null: false
+    t.integer "qty_finished", default: 0, null: false
     t.index ["model_id"], name: "index_user_models_on_model_id"
     t.index ["user_id"], name: "index_user_models_on_user_id"
   end

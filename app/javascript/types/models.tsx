@@ -29,8 +29,10 @@ export type UserModel = {
   user_id: number;
   model_id: number;
   name: string;
-  quantity: number;
-  status: UserModelStatus;
+  qty_unassembled: number;
+  qty_assembled: number;
+  qty_in_progress: number;
+  qty_finished: number;
 };
 
 export type User = {

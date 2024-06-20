@@ -11,16 +11,17 @@ import AddUserModelModal, { openAddUserModelModal } from "./AddUserModelModal";
 type Props = {
   faction: Faction;
   faction_model_by_id: Record<number, Model>;
-  user_models_by_model_id: Record<number, UserModel[]>;
+  user_models: UserModel[];
 }
 
 const MyCollectionFaction = (props: Props) => {
-  const userModels = Object.values(props.user_models_by_model_id).flat()
-  let numByStatus = countByStatus(userModels);
-  if (userModels.length === 0) numByStatus = { unassembled: 1, assembled: 0, in_progress: 0, finished: 0 };
+  let numByStatus = countByStatus(props.user_models);
+  if (props.user_models.length === 0) numByStatus = { unassembled: 1, assembled: 0, in_progress: 0, finished: 0 };
 
   const valueByLabel = {
-    'Models': userModels.reduce((acc, um) => (acc + um.quantity), 0),
+    'Models': props.user_models.reduce((acc, um) => (
+      acc + um.qty_unassembled + um.qty_assembled + um.qty_in_progress + um.qty_finished
+    ), 0),
     'Complete': Math.round((numByStatus['finished'] / Object.values(numByStatus).reduce((acc, num) => acc + num, 0) * 100)) + '%'
   }
   
@@ -60,13 +61,13 @@ const MyCollectionFaction = (props: Props) => {
         <AddUserModelModal
           faction={props.faction}
           factionModels={Object.values(props.faction_model_by_id)}
-          userModels={userModels} />
+          userModels={props.user_models} />
 
-        {Object.keys(props.user_models_by_model_id).map((modelId: string) => (
-          <Fragment key={modelId}>
+        {props.user_models.map((userModel: UserModel) => (
+          <Fragment key={userModel.id}>
             <UserModelProgressBar
-              model={props.faction_model_by_id[Number(modelId)]}
-              userModels={props.user_models_by_model_id[Number(modelId)]}
+              model={props.faction_model_by_id[userModel.model_id]}
+              userModel={userModel}
               className={'mb-5'} />
           </Fragment>
         ))}

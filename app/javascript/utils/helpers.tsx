@@ -1,4 +1,4 @@
-import { QuantityByStatus, UserModelStatus } from "../types/models";
+import { QuantityByStatus, UserModel, UserModelStatus } from "../types/models";
 
 export function apiCall({ endpoint, method, body}: {endpoint: string, method: string, body?: object}) {
   return fetch(endpoint, {
@@ -25,17 +25,18 @@ export function onlyUnique(value: any, index: number, array: any[]) {
   return array.indexOf(value) === index;
 }
 
-export function countByStatus(items: { status: UserModelStatus; quantity: number; }[]): QuantityByStatus {
+export function countByStatus(userModels: UserModel[]): QuantityByStatus {
   let result = {
     unassembled: 0,
     assembled: 0,
     in_progress: 0,
     finished: 0
   };
-  items.forEach((item) => {
-    let status = item.status;
-    let qty = item.quantity;
-    result[status] += qty;
+  userModels.forEach((um) => {
+    result.unassembled += um.qty_unassembled;
+    result.assembled += um.qty_assembled;
+    result.in_progress += um.qty_in_progress;
+    result.finished += um.qty_finished;
   });
   return result;
 }

@@ -134,15 +134,10 @@ type UserModel {
   id: ID!
   model: Model!
   name: String
-  quantity: Int!
-  status: UserModelStatus!
+  qtyAssembled: Int!
+  qtyFinished: Int!
+  qtyInProgress: Int!
+  qtyUnassembled: Int!
   user: User!
   userImageAssociations: [UserImageAssociation!]!
-}
-
-enum UserModelStatus {
-  ASSEMBLED
-  FINISHED
-  IN_PROGRESS
-  UNASSEMBLED
 }

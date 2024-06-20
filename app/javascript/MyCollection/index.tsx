@@ -25,7 +25,9 @@ const MyCollection = ({ user_factions, user_models, models, all_factions, all_ga
 
   const valueByLabel = {
     'Factions': user_factions.length,
-    'Models': user_models.reduce((acc, um) => (acc + um.quantity), 0),
+    'Models': user_models.reduce((acc, um) => (
+      acc + um.qty_unassembled + um.qty_assembled + um.qty_in_progress + um.qty_finished
+    ), 0),
     'Complete': Math.round((numByStatus['finished'] / Object.values(numByStatus).reduce((acc, num) => acc + num) * 100)) + '%'
   }
 

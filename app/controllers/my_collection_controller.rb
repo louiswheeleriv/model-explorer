@@ -35,17 +35,16 @@ class MyCollectionController < ApplicationController
     model = ::Model.find_by(id: model_id)
     raise "Model #{model_id} not found" unless model
 
-    user_models = ::UserModel.insert_all(
-      ::UserModel.statuses.keys.map do |status|
-        {
-          user_id: current_user_id,
-          model_id: model_id,
-          status: status,
-          quantity: quantity_by_status[status] || 0
-        }
-      end
+    user_model = ::UserModel.create(
+      user_id: current_user_id,
+      model_id: model_id,
+      qty_unassembled: quantity_by_status['unassembled'],
+      qty_assembled: quantity_by_status['assembled'],
+      qty_in_progress: quantity_by_status['in_progress'],
+      qty_finished: quantity_by_status['finished']
     )
-    render status: 200, json: { status: 200, user_models: user_models }
+
+    render status: 200, json: { status: 200, user_model: user_model }
   end
 
   def edit_model
@@ -58,23 +57,20 @@ class MyCollectionController < ApplicationController
     model = ::Model.find_by(id: model_id)
     raise "Model #{model_id} not found" unless model
 
-    # TODO: Save models
-    # user_models = ::UserModel.where(
-    #   user_id: current_user_id,
-    #   model_id: model_id
-    # )
+    user_model = ::UserModel.find_by(
+      user_id: current_user_id,
+      model_id: model_id
+    )
+    raise "UserModel for Model #{model_id} not found" unless user_model
 
-    # user_models = ::UserModel.insert_all(
-    #   ::UserModel.statuses.keys.map do |status|
-    #     {
-    #       user_id: current_user_id,
-    #       model_id: model_id,
-    #       status: status,
-    #       quantity: quantity_by_status[status] || 0
-    #     }
-    #   end
-    # )
-    render status: 200, json: { status: 200 }
+    user_model.update(
+      qty_unassembled: quantity_by_status['unassembled'],
+      qty_assembled: quantity_by_status['assembled'],
+      qty_in_progress: quantity_by_status['in_progress'],
+      qty_finished: quantity_by_status['finished']
+    )
+
+    render status: 200, json: { status: 200, user_model: user_model }
   end
 
 end

@@ -10,13 +10,13 @@ import Button from "../common/Button";
 
 type Props = {
   model: Model;
-  userModels: UserModel[];
+  userModel: UserModel;
   startExpanded?: boolean;
   className?: string;
 }
 
 const UserModelProgressBar = (props: Props) => {
-  const numByStatus = countByStatus(props.userModels);
+  const numByStatus = countByStatus([props.userModel]);
   const initialDraftQuantityByStatus = {
     unassembled: numByStatus.unassembled,
     assembled: numByStatus.assembled,
