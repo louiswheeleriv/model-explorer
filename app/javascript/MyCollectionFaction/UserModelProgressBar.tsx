@@ -31,7 +31,7 @@ const UserModelProgressBar = (props: Props) => {
   useEffect(() => {
     const marginTop = isExpanded ? '0' : '-100%';
     const opacity = isExpanded ? '100%' : 0;
-    const angle = isExpanded ? 0 : -90;
+    const angle = isExpanded ? 90 : 0;
     $('#'+componentId+' .model-status-editor').css({
       'margin-top': marginTop,
       'opacity': opacity
@@ -69,12 +69,12 @@ const UserModelProgressBar = (props: Props) => {
   return (
     <div className={props.className} id={componentId}>
       <div className='p-4 bg-[#607499] rounded-t-md flex cursor-pointer items-center' onClick={() => setIsExpanded(!isExpanded)}>
-        <FontAwesomeIcon icon={byPrefixAndName.fas['chevron-down']}  className='collapse-icon transition-transform duration-300 mr-3' />
+        <FontAwesomeIcon icon={byPrefixAndName.fas['chevron-right']}  className='collapse-icon transition-transform duration-300 mr-3' />
         {props.model.name}
       </div>
 
       <div className='overflow-hidden'>
-        <div className='model-status-editor bg-[#333a46] m-top-[-100%] p-5 opacity-0 transition-all duration-500'>
+        <div className='model-status-editor bg-[#333a46] mt-[-100%] p-5 opacity-0 transition-all duration-500'>
           <UserModelStatusEditor 
             quantityByStatus={draftQuantityByStatus}
             onChange={setDraftQuantityByStatus} />
