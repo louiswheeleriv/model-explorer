@@ -93,10 +93,7 @@ const AddFactionModal = ({ userFactions, allFactions, allGameSystems, className 
   }
 
   useEffect(() => {
-    let factionOptions = [];
-    if (selectedGameSystemId !== 'add_new_game_system') {
-      factionOptions.push({ value: 'none', label: 'Select Faction' })
-    }
+    let factionOptions: { value: number | string; label: string }[] = [{ value: 'none', label: 'Select Faction' }];
     allFactions.filter((faction) => (
       faction.game_system_id.toString() === selectedGameSystemId.toString() &&
       !userFactionFactionIds.includes(faction.id)
