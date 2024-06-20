@@ -31,4 +31,6 @@ class UserModel < ApplicationRecord
       finished: qty_finished
     }
   end
+
+  enum :status, [:unassembled, :assembled, :in_progress, :finished]
 end
