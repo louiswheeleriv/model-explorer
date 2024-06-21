@@ -1,5 +1,7 @@
 class FactionsController < ApplicationController
   def create
+    require_logged_in!
+
     game_system_id = params[:game_system_id]
     name = params[:name]
     gs = ::GameSystem.find_by(id: game_system_id)
@@ -13,6 +15,8 @@ class FactionsController < ApplicationController
   end
 
   def create_model
+    require_logged_in!
+    
     faction_id = params[:faction_id]
     model_name = params[:name]
     faction = ::Faction.find_by(id: faction_id)

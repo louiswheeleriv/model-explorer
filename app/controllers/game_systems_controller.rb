@@ -1,5 +1,7 @@
 class GameSystemsController < ApplicationController
   def create
+    require_logged_in!
+    
     name = params[:name]
     gs = ::GameSystem.find_by(name: name)
     raise "GameSystem with name #{name} already exists" if gs

@@ -1,17 +1,17 @@
 class MyCollectionController < ApplicationController
   def index
-    redirect_to '/sign_in' unless current_user_id
+    require_logged_in!
   end
 
   def show_faction
-    if current_user_id
-      @faction = Faction.find_by(name: params[:faction_name])
-    else
-      redirect_to '/sign_in'
-    end
+    require_logged_in!
+    
+    @faction = Faction.find_by(name: params[:faction_name])
   end
 
   def add_faction
+    require_logged_in!
+    
     faction_id = params[:faction_id]
     faction = ::Faction.find_by(id: faction_id)
     raise 'Faction not found' unless faction
@@ -24,7 +24,7 @@ class MyCollectionController < ApplicationController
   end
 
   def add_user_model
-    # REQUIRE LOGGED IN
+    require_logged_in!
 
     faction_id = params[:faction_id]
     model_id = params[:model_id]
@@ -48,6 +48,8 @@ class MyCollectionController < ApplicationController
   end
 
   def edit_model
+    require_logged_in!
+    
     faction_id = params[:faction_id]
     model_id = params[:model_id]
     quantity_by_status = params[:quantity_by_status]
