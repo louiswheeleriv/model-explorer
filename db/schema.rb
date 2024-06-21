@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_20_103826) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_21_111730) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -19,12 +19,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_20_103826) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "game_system_id", null: false
+    t.index ["game_system_id", "name"], name: "index_factions_on_game_system_id_and_name", unique: true
   end
 
   create_table "game_systems", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_game_systems_on_name", unique: true
   end
 
   create_table "models", force: :cascade do |t|
@@ -32,6 +34,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_20_103826) do
     t.integer "faction_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["faction_id", "name"], name: "index_models_on_faction_id_and_name", unique: true
     t.index ["faction_id"], name: "index_models_on_faction_id"
   end
 
@@ -74,6 +77,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_20_103826) do
     t.integer "qty_in_progress", default: 0, null: false
     t.integer "qty_finished", default: 0, null: false
     t.index ["model_id"], name: "index_user_models_on_model_id"
+    t.index ["user_id", "model_id", "name"], name: "index_user_models_on_user_id_and_model_id_and_name", unique: true
     t.index ["user_id"], name: "index_user_models_on_user_id"
   end
 

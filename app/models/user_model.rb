@@ -15,8 +15,9 @@
 #
 # Indexes
 #
-#  index_user_models_on_model_id  (model_id)
-#  index_user_models_on_user_id   (user_id)
+#  index_user_models_on_model_id                       (model_id)
+#  index_user_models_on_user_id                        (user_id)
+#  index_user_models_on_user_id_and_model_id_and_name  (user_id,model_id,name) UNIQUE
 #
 class UserModel < ApplicationRecord
   belongs_to :user

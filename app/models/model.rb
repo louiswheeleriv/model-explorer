@@ -10,7 +10,8 @@
 #
 # Indexes
 #
-#  index_models_on_faction_id  (faction_id)
+#  index_models_on_faction_id           (faction_id)
+#  index_models_on_faction_id_and_name  (faction_id,name) UNIQUE
 #
 class Model < ApplicationRecord
   belongs_to :faction
