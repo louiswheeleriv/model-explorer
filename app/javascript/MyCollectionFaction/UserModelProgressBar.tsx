@@ -29,7 +29,7 @@ const UserModelProgressBar = (props: Props) => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const marginTop = isExpanded ? '0' : '-100%';
+    const marginTop = isExpanded ? '0' : '-100vh';
     const opacity = isExpanded ? '100%' : 0;
     const angle = isExpanded ? 90 : 0;
     $('#'+componentId+' .model-status-editor').css({
@@ -74,7 +74,7 @@ const UserModelProgressBar = (props: Props) => {
       </div>
 
       <div className='overflow-hidden'>
-        <div className='model-status-editor bg-[#333a46] mt-[-100%] p-5 opacity-0 transition-all duration-500'>
+        <div className='model-status-editor bg-[#333a46] mt-[-100vh] p-5 opacity-0 transition-all duration-500'>
           <UserModelStatusEditor 
             quantityByStatus={draftQuantityByStatus}
             onChange={setDraftQuantityByStatus} />

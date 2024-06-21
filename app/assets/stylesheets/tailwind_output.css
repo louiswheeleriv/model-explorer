@@ -1210,6 +1210,10 @@ input:checked + .toggle-bg {
   margin-top: -100%;
 }
 
+.mt-\[-100vh\] {
+  margin-top: -100vh;
+}
+
 .block {
   display: block;
 }
