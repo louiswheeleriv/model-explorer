@@ -44,24 +44,27 @@ const UserModelProgressBar = (props: Props) => {
   }, [draftQuantityByStatus])
 
   async function saveUserModel() {
-    apiCall({
-      endpoint: '/my_collection/factions/'+props.model.faction_id+'/models/'+props.model.id,
-      method: 'PUT',
-      body: {
-        quantity_by_status: {
-          unassembled: draftQuantityByStatus.unassembled,
-          assembled: draftQuantityByStatus.assembled,
-          in_progress: draftQuantityByStatus.in_progress,
-          finished: draftQuantityByStatus.finished
+    try {
+      apiCall({
+        endpoint: '/my_collection/factions/'+props.model.faction_id+'/models/'+props.model.id,
+        method: 'PUT',
+        body: {
+          quantity_by_status: {
+            unassembled: draftQuantityByStatus.unassembled,
+            assembled: draftQuantityByStatus.assembled,
+            in_progress: draftQuantityByStatus.in_progress,
+            finished: draftQuantityByStatus.finished
+          }
         }
-      }
-    })
-      .then((response) => response.json())
-      .then((body) => {
-        if (body.status >= 300) throw new Error(body.error)
-        location.reload();
       })
-      .catch((err) => setError(err.message));
+        .then((response) => response.json())
+        .then((body) => {
+          if (body.status >= 300) throw new Error(body.error)
+          location.reload();
+        });
+    } catch(err) {
+      if (err instanceof Error) setError(err.message);
+    }
   }
 
   const componentId = 'user-model-' + props.userModel.id;
@@ -88,7 +91,7 @@ const UserModelProgressBar = (props: Props) => {
               <FontAwesomeIcon icon={byPrefixAndName.fas['paintbrush-fine']} className='mr-2' />
               Save Model(s)
             </Button>
-            <div className='text-red text-center'>{error}</div>
+            <div className='text-red-500 text-center'>{error}</div>
           </div>
         </div>
       </div>

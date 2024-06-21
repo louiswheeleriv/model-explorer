@@ -31,10 +31,10 @@ class MyCollectionController < ApplicationController
     user_model_name = params[:name]
     quantity_by_status = params[:quantity_by_status]
     faction = ::Faction.find_by(id: faction_id)
-    raise "Faction #{faction_id} not found" unless faction
+    return render status: 400, json: { status: 400, error: "Faction #{faction_id} not found." } unless faction
 
     model = ::Model.find_by(id: model_id)
-    raise "Model #{model_id} not found" unless model
+    return render status: 400, json: { status: 400, error: "Model #{model_id} not found." } unless model
 
     user_model = ::UserModel.create(
       user_id: current_user_id,
@@ -56,16 +56,16 @@ class MyCollectionController < ApplicationController
     model_id = params[:model_id]
     quantity_by_status = params[:quantity_by_status]
     faction = ::Faction.find_by(id: faction_id)
-    raise "Faction #{faction_id} not found" unless faction
+    return render status: 400, json: { status: 400, error: "Faction #{faction_id} not found." } unless faction
 
     model = ::Model.find_by(id: model_id)
-    raise "Model #{model_id} not found" unless model
+    return render status: 400, json: { status: 400, error: "Model #{model_id} not found." } unless model
 
     user_model = ::UserModel.find_by(
       user_id: current_user_id,
       model_id: model_id
     )
-    raise "UserModel for Model #{model_id} not found" unless user_model
+    return render status: 400, json: { status: 400, error: "UserModel for Model #{model_id} not found." } unless user_model
 
     user_model.update(
       qty_unassembled: quantity_by_status['unassembled'],

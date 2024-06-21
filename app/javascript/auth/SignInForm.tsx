@@ -46,7 +46,7 @@ const SignInForm = ({}: {}) => {
           <Input type='password' placeholder='Password' value={password} onChange={handleChangePassword} />
         </div>
 
-        <div className="error-message text-center text-red mb-3">{error}</div>
+        <div className="error-message text-center text-red-500 mb-3">{error}</div>
 
         <div className='flex'>
           <div className='flex-1'></div>

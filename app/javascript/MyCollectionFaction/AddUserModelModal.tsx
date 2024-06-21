@@ -61,33 +61,35 @@ const AddUserModelModal = (props: Props) => {
         if (body.status >= 300) throw new Error(body.error)
         return body.model.id;
       })
-      .catch((err) => setError(err.message));
   }
 
   async function addUserModel() {
-    let modelId = selectedModelId;
-    if (modelId === 'add_new') modelId = await createModel();
-
-    apiCall({
-      endpoint: '/my_collection/factions/'+props.faction.id+'/user_models',
-      method: 'POST',
-      body: {
-        model_id: modelId,
-        name: userModelName,
-        quantity_by_status: {
-          unassembled: userModelQuantityByStatus.unassembled,
-          assembled: userModelQuantityByStatus.assembled,
-          in_progress: userModelQuantityByStatus.in_progress,
-          finished: userModelQuantityByStatus.finished
+    try {
+      let modelId = selectedModelId;
+      if (modelId === 'add_new') modelId = await createModel();
+  
+      apiCall({
+        endpoint: '/my_collection/factions/'+props.faction.id+'/user_models',
+        method: 'POST',
+        body: {
+          model_id: modelId,
+          name: userModelName,
+          quantity_by_status: {
+            unassembled: userModelQuantityByStatus.unassembled,
+            assembled: userModelQuantityByStatus.assembled,
+            in_progress: userModelQuantityByStatus.in_progress,
+            finished: userModelQuantityByStatus.finished
+          }
         }
-      }
-    })
-      .then((response) => response.json())
-      .then((body) => {
-        if (body.status >= 300) throw new Error(body.error)
-        window.location.assign('/my_collection/' + props.faction.name);
       })
-      .catch((err) => setError(err.message));
+        .then((response) => response.json())
+        .then((body) => {
+          if (body.status >= 300) throw new Error(body.error)
+          window.location.assign('/my_collection/' + props.faction.name);
+        })
+    } catch(err) {
+      if (err instanceof Error) setError(err.message);
+    }
   }
 
   function hideAddUserModelModal() {
@@ -123,7 +125,7 @@ const AddUserModelModal = (props: Props) => {
           </div>
 
           <div className='p-4 modal-content'>
-            <div className='mb-4'>
+            <div className='mb-5'>
               <label htmlFor="model-selection" className="block mb-2 text-sm font-medium">Model</label>
               <Select
                 id='model-selection'
@@ -147,21 +149,21 @@ const AddUserModelModal = (props: Props) => {
                   className='mt-5' />
             </div>
 
-            <div className='overflow-hidden mb-4'>
+            <div className='overflow-hidden mb-5'>
               <UserModelStatusEditor
                 quantityByStatus={userModelQuantityByStatus}
                 onChange={setUserModelQuantityByStatus}
                 className='model-status-editor' />
             </div>
 
-            <div className='flex items-center'>
+            <div className='flex items-center mb-5'>
               <Button onClick={addUserModel} disabled={addUserModelButtonDisabled} className='max-w-[170px] mx-auto'>
                 <FontAwesomeIcon icon={byPrefixAndName.fas['plus']} className='mr-2' />
                 Add Model(s)
               </Button>
             </div>
 
-            <div className='text-center text-red'>{error}</div>
+            <div className='text-center text-red-500'>{error}</div>
 
           </div>
         </div>

@@ -45,7 +45,6 @@ const AddFactionModal = ({ userFactions, allFactions, allGameSystems, className 
         if (body.status >= 300) throw new Error(body.error)
         return body.game_system.id;
       })
-      .catch((err) => setError(err.message));
   }
 
   async function createFaction(gameSystemId: number): Promise<number> {
@@ -59,30 +58,32 @@ const AddFactionModal = ({ userFactions, allFactions, allGameSystems, className 
         if (body.status >= 300) throw new Error(body.error)
         return body.faction.id;
       })
-      .catch((err) => setError(err.message));
   }
 
   async function addFaction() {
-    let gameSystemId = selectedGameSystemId;
-    let factionId = selectedFactionId;
-    if (selectedGameSystemId === 'add_new_game_system') {
-      gameSystemId = await createGameSystem();
-    }
-    if (selectedFactionId === 'add_new_faction') {
-      factionId = await createFaction(Number(gameSystemId));
-    }
+    try {
+      let gameSystemId = selectedGameSystemId;
+      let factionId = selectedFactionId;
+      if (selectedGameSystemId === 'add_new_game_system') {
+        gameSystemId = await createGameSystem();
+      }
+      if (selectedFactionId === 'add_new_faction') {
+        factionId = await createFaction(Number(gameSystemId));
+      }
 
-    apiCall({
-      endpoint: '/my_collection/factions',
-      method: 'POST',
-      body: { faction_id: factionId }
-    })
-      .then((response) => response.json())
-      .then((body) => {
-        if (body.status >= 300) throw new Error(body.error)
-        window.location.assign('/my_collection/' + body.faction.name);
+      apiCall({
+        endpoint: '/my_collection/factions',
+        method: 'POST',
+        body: { faction_id: factionId }
       })
-      .catch((err) => setError(err.message));
+        .then((response) => response.json())
+        .then((body) => {
+          if (body.status >= 300) throw new Error(body.error)
+          window.location.assign('/my_collection/' + body.faction.name);
+        })
+    } catch(err) {
+      if (err instanceof Error) setError(err.message);
+    }
   }
 
   function hideAddFactionModal() {
@@ -174,14 +175,14 @@ const AddFactionModal = ({ userFactions, allFactions, allGameSystems, className 
               )}
             </div>
 
-            <div className='flex items-center'>
+            <div className='flex items-center mb-5'>
               <Button onClick={addFaction} disabled={addFactionButtonDisabled} className='max-w-[170px] mx-auto'>
                 <FontAwesomeIcon icon={byPrefixAndName.fas['flag']} className='mr-2' />
                 Add Faction
               </Button>
             </div>
 
-            <div className='text-center text-red'>{error}</div>
+            <div className='text-center text-red-500'>{error}</div>
 
           </div>
         </div>
