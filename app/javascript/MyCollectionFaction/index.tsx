@@ -63,15 +63,22 @@ const MyCollectionFaction = (props: Props) => {
           factionModels={Object.values(props.faction_model_by_id)}
           userModels={props.user_models} />
 
-        {props.user_models.map((userModel: UserModel) => (
-          <Fragment key={userModel.id}>
-            <UserModelProgressBar
-              model={props.faction_model_by_id[userModel.model_id]}
-              userModel={userModel}
-              className={'mb-5'} />
-          </Fragment>
-        ))}
-
+        {props.user_models
+          .sort((a, b) => {
+            const aName = a.name || props.faction_model_by_id[a.model_id].name;
+            const bName = b.name || props.faction_model_by_id[b.model_id].name;
+            if (aName < bName) return -1;
+            if (aName > bName) return 1;
+            return 0;
+          })
+          .map((userModel: UserModel) => (
+            <Fragment key={userModel.id}>
+              <UserModelProgressBar
+                model={props.faction_model_by_id[userModel.model_id]}
+                userModel={userModel}
+                className={'mb-5'} />
+            </Fragment>
+          ))}
       </div>
     </>
   );

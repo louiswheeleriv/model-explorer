@@ -41,6 +41,11 @@ const MyCollection = ({ user_factions, user_models, models, all_factions, all_ga
       user_factions
         .map((userFaction) => factionById[userFaction.faction_id])
         .filter((faction) => faction.game_system_id === gameSystem.id)
+        .sort((a, b) => {
+          if (a.name < b.name) return -1;
+          if (a.name > b.name) return 1;
+          return 0;
+        })
         .map((faction) => {
           const factionUserModels = user_models.filter((um) => {
             return factionIdByModelId[um.model_id] === faction.id;

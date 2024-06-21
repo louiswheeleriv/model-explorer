@@ -64,13 +64,17 @@ const UserModelProgressBar = (props: Props) => {
       .catch((err) => setError(err.message));
   }
 
-  const componentId = 'model-' + props.model.id;
+  const componentId = 'user-model-' + props.userModel.id;
 
   return (
     <div className={props.className} id={componentId}>
       <div className='p-4 bg-[#607499] rounded-t-md flex cursor-pointer items-center' onClick={() => setIsExpanded(!isExpanded)}>
         <FontAwesomeIcon icon={byPrefixAndName.fas['chevron-right']}  className='collapse-icon transition-transform duration-300 mr-3' />
-        {props.model.name}
+        {
+          props.userModel.name ?
+          (props.userModel.name+' ('+props.model.name+')') :
+          props.model.name
+        }
       </div>
 
       <div className='overflow-hidden'>

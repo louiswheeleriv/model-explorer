@@ -1190,10 +1190,6 @@ input:checked + .toggle-bg {
   margin-inline-start: auto;
 }
 
-.mt-0 {
-  margin-top: 0px;
-}
-
 .mt-2 {
   margin-top: 0.5rem;
 }
@@ -1204,10 +1200,6 @@ input:checked + .toggle-bg {
 
 .mt-5 {
   margin-top: 1.25rem;
-}
-
-.mt-\[-100\%\] {
-  margin-top: -100%;
 }
 
 .mt-\[-100vh\] {

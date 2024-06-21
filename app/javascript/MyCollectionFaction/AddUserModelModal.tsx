@@ -25,6 +25,7 @@ type Props = {
 const AddUserModelModal = (props: Props) => {
   const [selectedModelId, setSelectedModelId] = useState<string | number>('none');
   const [newModelName, setNewModelName] = useState('');
+  const [userModelName, setUserModelName] = useState('');
 
   const [userModelQuantityByStatus, setUserModelQuantityByStatus] = useState<QuantityByStatus>({
     unassembled: 0,
@@ -39,7 +40,11 @@ const AddUserModelModal = (props: Props) => {
   const userModelModelIds = props.userModels.map((um) => um.model_id);
   let modelOptions: { value: string | number; label: string; }[] = [{ value: 'none', label: 'Select Model' }];
   props.factionModels
-    .filter((model) => (!userModelModelIds.includes(model.id)))
+    .sort((modelA, modelB) => {
+      if (modelA.name < modelB.name) return -1;
+      if (modelA.name > modelB.name) return 1;
+      return 0;
+    })
     .forEach((model) => {
       modelOptions.push({ value: model.id, label: model.name })
     })
@@ -68,6 +73,7 @@ const AddUserModelModal = (props: Props) => {
       method: 'POST',
       body: {
         model_id: modelId,
+        name: userModelName,
         quantity_by_status: {
           unassembled: userModelQuantityByStatus.unassembled,
           assembled: userModelQuantityByStatus.assembled,
@@ -129,11 +135,16 @@ const AddUserModelModal = (props: Props) => {
               </Select>
               {selectedModelId === 'add_new' && (
                 <Input
-                  placeholder='Name of New Model'
+                  placeholder='General Model Name (e.g. Intercessors)'
                   defaultValue={newModelName}
                   onChange={e => setNewModelName(e.target.value)}
                   className='mt-5' />
               )}
+              <Input
+                  placeholder='(Optional) My Model Name (e.g. Intercessors with Chainswords)'
+                  defaultValue={userModelName}
+                  onChange={e => setUserModelName(e.target.value)}
+                  className='mt-5' />
             </div>
 
             <div className='overflow-hidden mb-4'>
