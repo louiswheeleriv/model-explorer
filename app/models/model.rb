@@ -15,5 +15,5 @@
 #
 class Model < ApplicationRecord
   belongs_to :faction
-  has_many :user_models
+  has_many :user_models, dependent: :destroy
 end

@@ -15,10 +15,10 @@
 #  index_users_on_username  (username) UNIQUE
 #
 class User < ApplicationRecord
-  has_many :user_factions
-  has_many :user_models
-  has_many :user_images
-  has_many :user_image_associations
+  has_many :user_factions, dependent: :destroy
+  has_many :user_models, dependent: :destroy
+  has_many :user_images, dependent: :destroy
+  has_many :user_image_associations, dependent: :destroy
 
   attr_encrypted :password, key: Rails.configuration.x.encryption_key
 end

@@ -22,7 +22,7 @@
 class UserModel < ApplicationRecord
   belongs_to :user
   belongs_to :model
-  has_many :user_image_associations
+  has_many :user_image_associations, dependent: :destroy
 
   def quantity_by_status
     {

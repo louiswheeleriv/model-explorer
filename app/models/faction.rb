@@ -14,6 +14,6 @@
 #
 class Faction < ApplicationRecord
   belongs_to :game_system
-  has_many :models
-  has_many :user_factions
+  has_many :models, dependent: :destroy
+  has_many :user_factions, dependent: :destroy
 end

@@ -14,5 +14,5 @@
 #
 class UserImage < ApplicationRecord
   belongs_to :user
-  has_many :user_image_associations
+  has_many :user_image_associations, dependent: :destroy
 end
