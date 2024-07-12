@@ -27,6 +27,9 @@ Rails.application.routes.draw do
   post 'my_collection/factions/:faction_id/user_models' => 'my_collection#add_user_model'
   put 'my_collection/factions/:faction_id/models/:model_id' => 'my_collection#edit_model'
 
+  get 'user_assets/upload' => 'user_assets#uploadable_url'
+  post 'user_assets/upload' => 'user_assets#create'
+
   post 'game_systems' => 'game_systems#create'
   post 'factions' => 'factions#create'
   post 'factions/:faction_id/models' => 'factions#create_model'

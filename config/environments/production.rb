@@ -3,6 +3,11 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  config.x.aws = Hashie::Mash.new
+  config.x.aws.region = ENV.fetch('AWS_REGION', 'us-east-2')
+  config.x.aws.access_key_id = ENV.fetch('AWS_ACCESS_KEY_ID')
+  config.x.aws.secret_access_key = ENV.fetch('AWS_SECRET_ACCESS_KEY')
+
   # Code is not reloaded between requests.
   config.enable_reloading = false
 

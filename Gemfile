@@ -47,10 +47,13 @@ gem "bootsnap", require: false
 gem 'rack-cors'
 gem 'attr_encrypted'
 gem 'graphql'
+gem 'hashie'
 
 gem "jsbundling-rails", "~> 1.3"
 gem "view_component", "~> 3.12"
 gem 'cssbundling-rails'
+
+gem 'aws-sdk-s3'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

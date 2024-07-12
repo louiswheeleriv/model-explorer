@@ -32,6 +32,12 @@ module ModelExplorer
     config.x.encryption_key = ENV.fetch('ENCRYPTION_KEY')
     config.x.ssl_certificate = ENV.fetch('SSL_CERTIFICATE')
 
+    config.x.aws = Hashie::Mash.new
+    config.x.aws.region = ENV.fetch('AWS_REGION', 'us-east-2')
+    config.x.aws.access_key_id = ENV.fetch('AWS_ACCESS_KEY_ID', 'not-an-access-key')
+    config.x.aws.secret_access_key = ENV.fetch('AWS_SECRET_ACCESS_KEY', 'not-a-secret-access-key')
+    config.x.aws.s3_bucket_name = ENV.fetch('S3_BUCKET_NAME', 'not-an-s3-bucket')
+
     config.session_store :cookie_store, key: '_interslice_session'
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use config.session_store, config.session_options
