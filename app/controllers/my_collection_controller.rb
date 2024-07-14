@@ -77,4 +77,36 @@ class MyCollectionController < ApplicationController
     render status: 200, json: { status: 200, user_model: user_model }
   end
 
+  def set_user_model_groups
+    require_logged_in!
+
+    proposed_groups = params[:user_model_groups]
+    return render status: 400, json: { status: 400, error: "Param user_model_groups is required" } unless proposed_groups
+
+    user_faction = ::UserFaction.find_by(user_id: current_user_id, faction_id: params[:faction_id])
+    return render status: 400, json: { status: 400, error: "No UserFaction found for Faction #{params[:faction_id]}" } unless user_faction
+
+    ActiveRecord::Base.transaction do
+      user_faction
+        .user_model_groups
+        .where.not(id: proposed_groups.map { |pg| pg['id'] })
+        .destroy_all
+
+      proposed_groups.each do |proposed_group|
+        ::UserModelGroup.find_or_initialize_by(
+          id: proposed_group['id'],
+          user_id: current_user_id,
+          user_faction_id: user_faction.id,
+        ).tap do |group|
+          group.assign_attributes(
+            name: proposed_group['name'],
+            sort_index: proposed_group['sort_index']
+          )
+        end.save!
+      end
+    end
+
+    render status: 200, json: { status: 200, user_model_groups: user_faction.reload.user_model_groups.order(sort_index: :asc) }
+  end
+
 end

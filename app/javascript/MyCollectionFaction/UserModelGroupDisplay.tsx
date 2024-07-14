@@ -18,6 +18,12 @@ const UserModelGroupDisplay = (props: Props) => {
         {props.userModelGroup ? props.userModelGroup.name : 'Ungrouped'}
       </div>
       <div>
+        {props.userModels.length === 0 &&
+          <div className='text-xl text-center my-5'>
+            No Models
+          </div>
+        }
+
         {props.userModels
           .sort((a, b) => {
             const aName = a.name || props.factionModelById[a.model_id].name;
