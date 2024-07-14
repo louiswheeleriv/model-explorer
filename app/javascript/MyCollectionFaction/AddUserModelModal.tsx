@@ -64,32 +64,31 @@ const AddUserModelModal = (props: Props) => {
   }
 
   async function addUserModel() {
-    try {
-      let modelId = selectedModelId;
-      if (modelId === 'add_new') modelId = await createModel();
-  
-      apiCall({
-        endpoint: '/my_collection/factions/'+props.faction.id+'/user_models',
-        method: 'POST',
-        body: {
-          model_id: modelId,
-          name: userModelName,
-          quantity_by_status: {
-            unassembled: userModelQuantityByStatus.unassembled,
-            assembled: userModelQuantityByStatus.assembled,
-            in_progress: userModelQuantityByStatus.in_progress,
-            finished: userModelQuantityByStatus.finished
-          }
+    let modelId = selectedModelId;
+    if (modelId === 'add_new') modelId = await createModel();
+
+    apiCall({
+      endpoint: '/my_collection/factions/'+props.faction.id+'/user_models',
+      method: 'POST',
+      body: {
+        model_id: modelId,
+        name: userModelName,
+        quantity_by_status: {
+          unassembled: userModelQuantityByStatus.unassembled,
+          assembled: userModelQuantityByStatus.assembled,
+          in_progress: userModelQuantityByStatus.in_progress,
+          finished: userModelQuantityByStatus.finished
         }
-      })
-        .then((response) => response.json())
-        .then((body) => {
-          if (body.status >= 300) throw new Error(body.error)
+      }
+    })
+      .then((response) => response.json())
+      .then((body) => {
+        if (body.status >= 300) {
+          setError(body.error || body.exception);
+        } else {
           window.location.assign('/my_collection/' + props.faction.name);
-        })
-    } catch(err) {
-      if (err instanceof Error) setError(err.message);
-    }
+        }
+      });
   }
 
   function hideAddUserModelModal() {

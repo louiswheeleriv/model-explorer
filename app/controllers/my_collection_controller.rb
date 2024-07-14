@@ -33,11 +33,15 @@ class MyCollectionController < ApplicationController
     faction = ::Faction.find_by(id: faction_id)
     return render status: 400, json: { status: 400, error: "Faction #{faction_id} not found." } unless faction
 
+    user_faction = faction.user_factions.find_by(user_id: current_user_id)
+    return render status: 400, json: { status: 400, error: "No UserFaction found for Faction #{faction_id}"} unless user_faction
+
     model = ::Model.find_by(id: model_id)
     return render status: 400, json: { status: 400, error: "Model #{model_id} not found." } unless model
 
-    user_model = ::UserModel.create(
+    user_model = ::UserModel.create!(
       user_id: current_user_id,
+      user_faction_id: user_faction.id,
       model_id: model_id,
       name: user_model_name,
       qty_unassembled: quantity_by_status['unassembled'],
