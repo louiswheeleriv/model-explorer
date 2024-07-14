@@ -16,6 +16,7 @@
 #
 class User < ApplicationRecord
   has_many :user_factions, dependent: :destroy
+  has_many :user_model_groups, dependent: :destroy
   has_many :user_models, dependent: :destroy
   has_many :user_images, dependent: :destroy
   has_many :user_image_associations, dependent: :destroy

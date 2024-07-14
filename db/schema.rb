@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_21_111730) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_14_130010) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -66,6 +66,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_21_111730) do
     t.index ["user_id"], name: "index_user_images_on_user_id"
   end
 
+  create_table "user_model_groups", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "user_faction_id", null: false
+    t.string "name", null: false
+    t.integer "sort_index", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_faction_id", "name"], name: "index_user_model_groups_on_user_faction_id_and_name", unique: true
+  end
+
   create_table "user_models", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "model_id", null: false
@@ -76,9 +86,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_21_111730) do
     t.integer "qty_assembled", default: 0, null: false
     t.integer "qty_in_progress", default: 0, null: false
     t.integer "qty_finished", default: 0, null: false
+    t.bigint "user_model_group_id"
+    t.bigint "user_faction_id", null: false
     t.index ["model_id"], name: "index_user_models_on_model_id"
+    t.index ["user_faction_id"], name: "index_user_models_on_user_faction_id"
     t.index ["user_id", "model_id", "name"], name: "index_user_models_on_user_id_and_model_id_and_name", unique: true
     t.index ["user_id"], name: "index_user_models_on_user_id"
+    t.index ["user_model_group_id"], name: "index_user_models_on_user_model_group_id"
   end
 
   create_table "users", force: :cascade do |t|

@@ -16,4 +16,6 @@
 class UserFaction < ApplicationRecord
   belongs_to :user
   belongs_to :faction
+  has_many :user_model_groups, dependent: :destroy
+  has_many :user_models, dependent: :destroy
 end

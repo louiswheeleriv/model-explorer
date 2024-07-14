@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
-import { Faction, Model, UserModel } from "../types/models";
+import { Faction, Model, UserModel, UserModelGroup } from "../types/models";
 import SummaryProgressBar from "../common/SummaryProgressBar";
-import UserModelProgressBar from "./UserModelProgressBar";
+import UserModelGroupDisplay from "./UserModelGroupDisplay";
 import Button from "../common/Button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
@@ -12,6 +12,7 @@ type Props = {
   faction: Faction;
   faction_model_by_id: Record<number, Model>;
   user_models: UserModel[];
+  user_model_groups: UserModelGroup[];
 }
 
 const MyCollectionFaction = (props: Props) => {
@@ -24,6 +25,15 @@ const MyCollectionFaction = (props: Props) => {
     ), 0),
     'Complete': Math.round((numByStatus['finished'] / Object.values(numByStatus).reduce((acc, num) => acc + num, 0) * 100)) + '%'
   }
+
+  const userModelsByGroupId: Record<number, UserModel[]> = props.user_models.reduce((acc: Record<number, UserModel[]>, um) => {
+    const groupId = um.user_model_group_id;
+    if (!(groupId in acc)) acc[groupId] = [];
+    acc[groupId].push(um);
+    return acc;
+  }, {});
+
+  const userModelsUngrouped = props.user_models.filter((um) => !um.user_model_group_id);
   
   return (
     <>
@@ -46,10 +56,7 @@ const MyCollectionFaction = (props: Props) => {
           valueByLabel={valueByLabel}
         />
 
-        <div className='flex items-center'>
-          <div className='my-5 text-xl'>
-            Models
-          </div>
+        <div className='flex items-center my-5'>
           <div className='flex-1 text-end'>
             <Button onClick={openAddUserModelModal}>
               <FontAwesomeIcon icon={byPrefixAndName.fas['plus']} className='mr-2' />
@@ -63,22 +70,22 @@ const MyCollectionFaction = (props: Props) => {
           factionModels={Object.values(props.faction_model_by_id)}
           userModels={props.user_models} />
 
-        {props.user_models
-          .sort((a, b) => {
-            const aName = a.name || props.faction_model_by_id[a.model_id].name;
-            const bName = b.name || props.faction_model_by_id[b.model_id].name;
-            if (aName < bName) return -1;
-            if (aName > bName) return 1;
-            return 0;
-          })
-          .map((userModel: UserModel) => (
-            <Fragment key={userModel.id}>
-              <UserModelProgressBar
-                model={props.faction_model_by_id[userModel.model_id]}
-                userModel={userModel}
-                className={'mb-5'} />
+        {props.user_model_groups
+          .map((group: UserModelGroup) => (
+            <Fragment key={group.id}>
+              <UserModelGroupDisplay
+                userModelGroup={group}
+                userModels={userModelsByGroupId[group.id]}
+                factionModelById={props.faction_model_by_id} />
             </Fragment>
           ))}
+
+        {userModelsUngrouped.length > 0 &&
+          <UserModelGroupDisplay
+            userModelGroup={undefined}
+            userModels={userModelsUngrouped}
+            factionModelById={props.faction_model_by_id} />
+        }
       </div>
     </>
   );

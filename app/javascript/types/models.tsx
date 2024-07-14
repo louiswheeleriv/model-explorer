@@ -28,11 +28,21 @@ export type UserModel = {
   id: number;
   user_id: number;
   model_id: number;
+  user_faction_id: number;
+  user_model_group_id: number;
   name: string;
   qty_unassembled: number;
   qty_assembled: number;
   qty_in_progress: number;
   qty_finished: number;
+};
+
+export type UserModelGroup = {
+  id: number;
+  user_id: number;
+  user_faction_id: number;
+  name: string;
+  sort_index?: number;
 };
 
 export type User = {
