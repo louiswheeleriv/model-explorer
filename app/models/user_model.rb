@@ -29,6 +29,7 @@ class UserModel < ApplicationRecord
   belongs_to :user_faction
   belongs_to :user_model_group, optional: true
   has_many :user_image_associations, dependent: :destroy
+  has_many :user_images, through: :user_image_associations
 
   def quantity_by_status
     {

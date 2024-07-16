@@ -13,7 +13,8 @@ module MyCollection
         user_faction: user_faction,
         model: user_model.model,
         user_model: user_model,
-        user_model_groups: user_faction.user_model_groups.order(sort_index: :asc)
+        user_model_groups: user_faction.user_model_groups.order(sort_index: :asc),
+        user_images: user_model.user_images
       )
     end
   end

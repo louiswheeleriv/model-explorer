@@ -1206,6 +1206,10 @@ input:checked + .toggle-bg {
   margin-top: -100vh;
 }
 
+.mt-3 {
+  margin-top: 0.75rem;
+}
+
 .block {
   display: block;
 }
@@ -1648,6 +1652,10 @@ input:checked + .toggle-bg {
   border-bottom-width: 1px;
 }
 
+.border-r {
+  border-right-width: 1px;
+}
+
 .border-dashed {
   border-style: dashed;
 }
@@ -1804,6 +1812,10 @@ input:checked + .toggle-bg {
   padding: 1.25rem;
 }
 
+.p-3 {
+  padding: 0.75rem;
+}
+
 .px-2 {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -1862,6 +1874,10 @@ input:checked + .toggle-bg {
 
 .text-end {
   text-align: end;
+}
+
+.align-middle {
+  vertical-align: middle;
 }
 
 .text-2xl {

@@ -1,11 +1,13 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { Faction, Model, QuantityByStatus, UserFaction, UserModel, UserModelGroup } from "../types/models";
+import React, { useEffect, useState } from "react";
+import { useParams } from 'react-router-dom';
+import { Faction, Model, QuantityByStatus, UserFaction, UserImage, UserModel, UserModelGroup } from "../types/models";
 import SummaryProgressBar from "../common/SummaryProgressBar";
 import Button from "../common/Button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import { apiCall, countByStatus } from "../utils/helpers";
 import UserModelStatusEditor from "../common/UserModelStatusEditor";
+import UserModelGallery from "./UserModelGallery";
 
 type Props = {
   faction: Faction;
@@ -13,9 +15,12 @@ type Props = {
   model: Model;
   user_model: UserModel;
   user_model_groups: UserModelGroup[];
+  user_images: UserImage[];
 }
 
 const MyCollectionUserModel = (props: Props) => {
+  const urlParams = useParams();
+
   const numByStatus = countByStatus([props.user_model]);
   const initialDraftQuantityByStatus = {
     unassembled: numByStatus.unassembled,
@@ -25,65 +30,10 @@ const MyCollectionUserModel = (props: Props) => {
   };
   const [draftQuantityByStatus, setDraftQuantityByStatus] = useState<QuantityByStatus>(initialDraftQuantityByStatus);
   const [valueByLabel, setValueByLabel] = useState<Record<string, string | number>>({});
+  const [mode, setMode] = useState(urlParams.view || 'status');
   const [error, setError] = useState('');
-  // if (props.user_models.length === 0) numByStatus = { unassembled: 1, assembled: 0, in_progress: 0, finished: 0 };
 
   const userModelDisplayName = props.user_model.name ? props.user_model.name+' ('+props.model.name+')' : props.model.name;
-
-  // function switchToManageGroupsView() { setMode('groups') }
-  // function switchToModelsView() { location.reload() }
-
-  // async function uploadImage() {
-  //   try {
-  //     const presignedUrl = await getPresignedUrl();
-  //     const assetUrl = await uploadAssetToS3(presignedUrl);
-  //     await createImage(assetUrl);
-  //   } catch(err) {
-  //     if (err instanceof Error) setError(err.message);
-  //   }
-  // }
-
-  // async function getPresignedUrl(): Promise<string> {
-  //   return apiCall({
-  //     endpoint: '/user_assets/upload',
-  //     method: 'GET'
-  //   })
-  //     .then((response) => response.json())
-  //     .then((body) => {
-  //       if (body.status >= 300) throw new Error(body.error)
-  //       return body.presigned_url;
-  //     });
-  // }
-
-  // async function uploadAssetToS3(presignedUrl: string) {
-  //   const response = await fetch(presignedUrl, {
-  //     method: 'PUT',
-  //     headers: { 'Content-Type': 'multipart/form-data' },
-  //     body: selectedImage
-  //   });
-  //   return response.url.split('?')[0];
-  // }
-
-  // async function createImage(assetUrl: string) {
-  //   apiCall({
-  //     endpoint: '/user_assets/upload',
-  //     method: 'POST',
-  //     body: {
-  //       asset_url: assetUrl,
-  //       user_model_id: props.userModel.id
-  //     }
-  //   })
-  //     .then((response) => response.json())
-  //     .then((body) => {
-  //       if (body.status >= 300) throw new Error(body.error)
-  //       location.reload();
-  //     });
-  // }
-
-  // async function handleFileSelected(e: React.ChangeEvent<HTMLInputElement>) {
-  //   const selectedFiles = e.target.files as FileList;
-  //   setSelectedImage(selectedFiles?.[0])
-  // }
 
   async function saveUserModel() {
     try {
@@ -141,29 +91,51 @@ const MyCollectionUserModel = (props: Props) => {
         valueByLabel={valueByLabel}
       />
 
-      <UserModelStatusEditor 
-        quantityByStatus={draftQuantityByStatus}
-        onChange={setDraftQuantityByStatus} />
-
-      <div className='flex items-center mt-5'>
-        <Button onClick={saveUserModel} className='max-w-[170px] mx-auto'>
-          <FontAwesomeIcon icon={byPrefixAndName.fas['paintbrush-fine']} className='mr-2' />
-          Save Model(s)
-        </Button>
-        <div className='text-red-500 text-center'>{error}</div>
+      <div className='flex mt-3'>
+        <div onClick={() => setMode('status')}
+          className={'flex-1 cursor-pointer text-center p-3'+(mode === 'status' ? ' border-b text-lg font-semibold' : '')}>
+            <FontAwesomeIcon icon={byPrefixAndName.fas['paintbrush-fine']} className='mr-1' />
+            Status
+        </div>
+        <div onClick={() => setMode('gallery')}
+          className={'flex-1 cursor-pointer text-center p-3'+(mode === 'gallery' ? ' border-b text-lg font-semibold' : '')}>
+            <FontAwesomeIcon icon={byPrefixAndName.fas['camera']} className='mr-1' />
+            Gallery
+        </div>
+        <div onClick={() => setMode('description')}
+          className={'flex-1 cursor-pointer text-center p-3'+(mode === 'description' ? ' border-b text-lg font-semibold' : '')}>
+            <FontAwesomeIcon icon={byPrefixAndName.fas['book']} className='mr-1' />
+            Description
+        </div>
       </div>
 
+      {mode === 'status' &&
+        <>
+          <UserModelStatusEditor 
+            quantityByStatus={draftQuantityByStatus}
+            onChange={setDraftQuantityByStatus} />
 
-      {/* Example for file upload */}
-      {/* <div className='flex items-center mt-5'>
-        <label htmlFor="myfile">Select image:</label>
-        <input type="file" id="myfile" name="myfile" accept="image/*" onChange={handleFileSelected} />
+          <div className='flex items-center mt-5'>
+            <Button onClick={saveUserModel} className='max-w-[170px] mx-auto'>
+              <FontAwesomeIcon icon={byPrefixAndName.fas['paintbrush-fine']} className='mr-2' />
+              Save Model(s)
+            </Button>
+            <div className='text-red-500 text-center'>{error}</div>
+          </div>
+        </>
+      }
 
-        <Button onClick={uploadImage} className='max-w-[170px] mx-auto'>
-          <FontAwesomeIcon icon={byPrefixAndName.fas['paintbrush-fine']} className='mr-2' />
-          Upload
-        </Button>
-      </div> */}
+      {mode === 'gallery' &&
+        <UserModelGallery
+          userModel={props.user_model}
+          userImages={props.user_images} />
+      }
+
+      {mode === 'description' &&
+        <div className='mh-[400px] text-center align-middle'>
+          DESCRIPTION
+        </div>
+      }
     </div>
   );
 };

@@ -3,7 +3,6 @@ import { UserFaction, GameSystem, Faction, Model, UserModel } from "../types/mod
 import { countByStatus } from "../utils/helpers";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
-import $ from 'jquery';
 import Button from "../common/Button";
 
 import SummaryProgressBar from "../common/SummaryProgressBar";
