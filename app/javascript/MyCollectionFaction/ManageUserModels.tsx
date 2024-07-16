@@ -63,7 +63,8 @@ const ManageUserModels = (props: Props) => {
       <AddUserModelModal
         faction={props.faction}
         factionModels={Object.values(props.factionModelById)}
-        userModels={props.userModels} />
+        userModels={props.userModels}
+        userModelGroups={props.userModelGroups} />
     </div>
   );
 };

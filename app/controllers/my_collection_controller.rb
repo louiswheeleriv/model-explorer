@@ -33,7 +33,6 @@ class MyCollectionController < ApplicationController
 
     faction_id = params[:faction_id]
     model_id = params[:model_id]
-    user_model_name = params[:name]
     quantity_by_status = params[:quantity_by_status]
     faction = ::Faction.find_by(id: faction_id)
     return render status: 400, json: { status: 400, error: "Faction #{faction_id} not found." } unless faction
@@ -48,7 +47,8 @@ class MyCollectionController < ApplicationController
       user_id: current_user_id,
       user_faction_id: user_faction.id,
       model_id: model_id,
-      name: user_model_name,
+      name: params[:name],
+      user_model_group_id: params[:user_model_group_id],
       qty_unassembled: quantity_by_status['unassembled'],
       qty_assembled: quantity_by_status['assembled'],
       qty_in_progress: quantity_by_status['in_progress'],

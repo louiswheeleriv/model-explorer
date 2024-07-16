@@ -1,12 +1,9 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { Faction, Model, UserModel, UserModelGroup } from "../types/models";
 import SummaryProgressBar from "../common/SummaryProgressBar";
-import UserModelGroupDisplay from "./UserModelGroupDisplay";
-import Button from "../common/Button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import { countByStatus } from "../utils/helpers";
-import AddUserModelModal, { openAddUserModelModal } from "./AddUserModelModal";
 import ManageUserModels from "./ManageUserModels";
 import ManageUserModelGroups from "./ManageUserModelGroups";
 
@@ -34,43 +31,41 @@ const MyCollectionFaction = (props: Props) => {
   function switchToModelsView() { location.reload() }
 
   return (
-    <>
-      <div className='px-6 py-8 max-w-[600px] mx-auto'>
-        <div className='flex'>
-          <div className='flex-1'>
-            <a href='/my_collection'>
-              <FontAwesomeIcon icon={byPrefixAndName.fas['left']} className='mr-1' />
-              My Collection
-            </a>
-          </div>
-          <div className='flex-1'>
-            <h2 className='text-2xl text-center mb-5'>My {props.faction.name}</h2>
-          </div>
-          <div className='flex-1'></div>
+    <div className='px-6 py-8 max-w-[600px] mx-auto'>
+      <div className='flex'>
+        <div className='flex-1'>
+          <a href='/my_collection'>
+            <FontAwesomeIcon icon={byPrefixAndName.fas['left']} className='mr-1' />
+            My Collection
+          </a>
         </div>
-        
-        <SummaryProgressBar
-          numByStatus={numByStatus}
-          valueByLabel={valueByLabel}
-        />
-
-        {mode === 'models' &&
-          <ManageUserModels
-            faction={props.faction}
-            userModels={props.user_models}
-            userModelGroups={props.user_model_groups}
-            factionModelById={props.faction_model_by_id}
-            onManageGroupsButtonClick={switchToManageGroupsView} />
-        }
-        {mode === 'groups' &&
-          <ManageUserModelGroups
-            faction={props.faction}
-            userModelGroups={props.user_model_groups}
-            afterSave={switchToModelsView}
-          />
-        }
+        <div className='flex-1'>
+          <h2 className='text-2xl text-center mb-5'>{props.faction.name}</h2>
+        </div>
+        <div className='flex-1'></div>
       </div>
-    </>
+      
+      <SummaryProgressBar
+        numByStatus={numByStatus}
+        valueByLabel={valueByLabel}
+      />
+
+      {mode === 'models' &&
+        <ManageUserModels
+          faction={props.faction}
+          userModels={props.user_models}
+          userModelGroups={props.user_model_groups}
+          factionModelById={props.faction_model_by_id}
+          onManageGroupsButtonClick={switchToManageGroupsView} />
+      }
+      {mode === 'groups' &&
+        <ManageUserModelGroups
+          faction={props.faction}
+          userModelGroups={props.user_model_groups}
+          afterSave={switchToModelsView}
+        />
+      }
+    </div>
   );
 };
 

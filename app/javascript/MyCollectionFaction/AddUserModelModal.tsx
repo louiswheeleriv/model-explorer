@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Faction, Model, UserModel, QuantityByStatus } from "../types/models";
+import { Faction, Model, UserModel, QuantityByStatus, UserModelGroup } from "../types/models";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import Button from "../common/Button";
@@ -20,12 +20,14 @@ type Props = {
   faction: Faction;
   factionModels: Model[];
   userModels: UserModel[];
+  userModelGroups: UserModelGroup[];
 };
 
 const AddUserModelModal = (props: Props) => {
   const [selectedModelId, setSelectedModelId] = useState<string | number>('none');
   const [newModelName, setNewModelName] = useState('');
   const [userModelName, setUserModelName] = useState('');
+  const [userModelGroupId, setUserModelGroupId] = useState<number | string | undefined>(undefined);
 
   const [userModelQuantityByStatus, setUserModelQuantityByStatus] = useState<QuantityByStatus>({
     unassembled: 0,
@@ -37,7 +39,6 @@ const AddUserModelModal = (props: Props) => {
   const [addUserModelButtonDisabled, setAddUserModelButtonDisabled] = useState(true);
   const [error, setError] = useState('');
 
-  const userModelModelIds = props.userModels.map((um) => um.model_id);
   let modelOptions: { value: string | number; label: string; }[] = [{ value: 'none', label: 'Select Model' }];
   props.factionModels
     .sort((modelA, modelB) => {
@@ -73,6 +74,7 @@ const AddUserModelModal = (props: Props) => {
       body: {
         model_id: modelId,
         name: userModelName,
+        user_model_group_id: userModelGroupId,
         quantity_by_status: {
           unassembled: userModelQuantityByStatus.unassembled,
           assembled: userModelQuantityByStatus.assembled,
@@ -146,6 +148,16 @@ const AddUserModelModal = (props: Props) => {
                   defaultValue={userModelName}
                   onChange={e => setUserModelName(e.target.value)}
                   className='mt-5' />
+
+              <div className='mt-5 mb-2 text-sm font-medium'>Model Group</div>
+              <Select
+                defaultValue={undefined}
+                onChange={e => {setUserModelGroupId(e.target.value)}}>
+                  <option key={undefined} value={undefined}>None</option>
+                  {props.userModelGroups.map((group) => (
+                    <option key={group.id} value={group.id}>{group.name}</option>
+                  ))}
+              </Select>
             </div>
 
             <div className='overflow-hidden mb-5'>
