@@ -53,23 +53,17 @@ class MyCollectionController < ApplicationController
     render status: 200, json: { status: 200, user_model: user_model }
   end
 
-  def edit_model
+  def edit_user_model
     require_logged_in!
     
     faction_id = params[:faction_id]
-    model_id = params[:model_id]
+    user_model_id = params[:user_model_id]
     quantity_by_status = params[:quantity_by_status]
     faction = ::Faction.find_by(id: faction_id)
     return render status: 400, json: { status: 400, error: "Faction #{faction_id} not found." } unless faction
 
-    model = ::Model.find_by(id: model_id)
-    return render status: 400, json: { status: 400, error: "Model #{model_id} not found." } unless model
-
-    user_model = ::UserModel.find_by(
-      user_id: current_user_id,
-      model_id: model_id
-    )
-    return render status: 400, json: { status: 400, error: "UserModel for Model #{model_id} not found." } unless user_model
+    user_model = ::UserModel.find_by(id: user_model_id)
+    return render status: 400, json: { status: 400, error: "UserModel #{user_model_id} not found." } unless user_model
 
     user_model.update(
       qty_unassembled: quantity_by_status['unassembled'],
@@ -111,6 +105,10 @@ class MyCollectionController < ApplicationController
     end
 
     render status: 200, json: { status: 200, user_model_groups: user_faction.reload.user_model_groups.order(sort_index: :asc) }
+  end
+
+  def show_user_model
+    require_logged_in!
   end
 
 end

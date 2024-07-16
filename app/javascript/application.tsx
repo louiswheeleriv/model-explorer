@@ -12,6 +12,7 @@ import SummaryProgressBarCard from "./common/SummaryProgressBarCard";
 import GameSystemSection from "./MyCollection/GameSystemSection";
 import FactionProgressBar from "./MyCollection/FactionProgressBar";
 import MyCollectionFaction from "./MyCollectionFaction";
+import MyCollectionUserModel from "./MyCollectionUserModel";
 
 import 'flowbite';
 
@@ -27,4 +28,5 @@ mount({
   GameSystemSection,
   FactionProgressBar,
   MyCollectionFaction,
+  MyCollectionUserModel
 });

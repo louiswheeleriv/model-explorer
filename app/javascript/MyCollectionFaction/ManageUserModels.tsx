@@ -45,6 +45,7 @@ const ManageUserModels = (props: Props) => {
       {props.userModelGroups.map((group: UserModelGroup) => (
         <Fragment key={group.id}>
           <UserModelGroupDisplay
+            faction={props.faction}
             userModelGroup={group}
             userModels={userModelsByGroupId[group.id] || []}
             factionModelById={props.factionModelById} />
@@ -53,6 +54,7 @@ const ManageUserModels = (props: Props) => {
 
       {userModelsUngrouped.length > 0 &&
         <UserModelGroupDisplay
+          faction={props.faction}
           userModelGroup={undefined}
           userModels={userModelsUngrouped}
           factionModelById={props.factionModelById} />

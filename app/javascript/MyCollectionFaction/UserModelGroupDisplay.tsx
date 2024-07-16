@@ -1,11 +1,12 @@
 import React, { Fragment, useEffect, useState} from "react";
-import { Model, UserModel, UserModelGroup } from "../types/models";
+import { Faction, Model, UserModel, UserModelGroup } from "../types/models";
 import UserModelProgressBar from "./UserModelProgressBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { byPrefixAndName } from "@awesome.me/kit-902717d512/icons";
 import $ from 'jquery';
 
 type Props = {
+  faction: Faction;
   userModelGroup?: UserModelGroup;
   userModels: UserModel[];
   factionModelById: Record<number, Model>;
@@ -60,6 +61,7 @@ const UserModelGroupDisplay = (props: Props) => {
             .map((userModel: UserModel) => (
               <Fragment key={userModel.id}>
                 <UserModelProgressBar
+                  faction={props.faction}
                   model={props.factionModelById[userModel.model_id]}
                   userModel={userModel}
                   className={'mb-5'} />

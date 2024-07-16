@@ -43,54 +43,48 @@ const UserModelStatusEditor = (props: Props) => {
   }, [props.quantityByStatus])
 
   return (
-    <>
-      <div className={'items-center w-full' + (props.className ? ' '+props.className : '')}>
-        <div>
-          <SummaryProgressBar numByStatus={quantityByStatus} valueByLabel={valueByLabel} />
+    <div className={'items-center w-full' + (props.className ? ' '+props.className : '')}>
+      <div className='flex mt-5 items-center'>
+        <div className='flex-1 text-center'>
+          <FontAwesomeIcon icon={byPrefixAndName.fas['box']} className='mr-2' />
+          Unassembled
         </div>
-
-        <div className='flex mt-5 items-center'>
-          <div className='flex-1 text-center'>
-            <FontAwesomeIcon icon={byPrefixAndName.fas['box']} className='mr-2' />
-            Unassembled
-          </div>
-          <NumberButtonsInput
-            stateNumber={quantityByStatus.unassembled}
-            onChange={(x) => setQuantityByStatus({ ...quantityByStatus, unassembled: x })}
-            className='flex-1' />
-        </div>
-        <div className='flex mt-5 items-center'>
-          <div className='flex-1 text-center'>
-            <FontAwesomeIcon icon={byPrefixAndName.fas['screwdriver-wrench']} className='mr-2' />
-            Assembled
-          </div>
-          <NumberButtonsInput
-            stateNumber={quantityByStatus.assembled}
-            onChange={(x) => setQuantityByStatus({ ...quantityByStatus, assembled: x })}
-            className='flex-1' />
-        </div>
-        <div className='flex mt-5 items-center'>
-          <div className='flex-1 text-center'>
-            <FontAwesomeIcon icon={byPrefixAndName.fas['paintbrush-fine']} className='mr-2' />
-            In Progress
-          </div>
-          <NumberButtonsInput
-            stateNumber={quantityByStatus.in_progress}
-            onChange={(x) => setQuantityByStatus({ ...quantityByStatus, in_progress: x })}
-            className='flex-1' />
-        </div>
-        <div className='flex mt-5 items-center'>
-          <div className='flex-1 text-center'>
-            <FontAwesomeIcon icon={byPrefixAndName.fas['circle-check']} className='mr-2' />
-            Finished
-          </div>
-          <NumberButtonsInput
-            stateNumber={quantityByStatus.finished}
-            onChange={(x) => setQuantityByStatus({ ...quantityByStatus, finished: x })}
-            className='flex-1' />
-        </div>
+        <NumberButtonsInput
+          stateNumber={quantityByStatus.unassembled}
+          onChange={(x) => setQuantityByStatus({ ...quantityByStatus, unassembled: x })}
+          className='flex-1' />
       </div>
-    </>
+      <div className='flex mt-5 items-center'>
+        <div className='flex-1 text-center'>
+          <FontAwesomeIcon icon={byPrefixAndName.fas['screwdriver-wrench']} className='mr-2' />
+          Assembled
+        </div>
+        <NumberButtonsInput
+          stateNumber={quantityByStatus.assembled}
+          onChange={(x) => setQuantityByStatus({ ...quantityByStatus, assembled: x })}
+          className='flex-1' />
+      </div>
+      <div className='flex mt-5 items-center'>
+        <div className='flex-1 text-center'>
+          <FontAwesomeIcon icon={byPrefixAndName.fas['paintbrush-fine']} className='mr-2' />
+          In Progress
+        </div>
+        <NumberButtonsInput
+          stateNumber={quantityByStatus.in_progress}
+          onChange={(x) => setQuantityByStatus({ ...quantityByStatus, in_progress: x })}
+          className='flex-1' />
+      </div>
+      <div className='flex mt-5 items-center'>
+        <div className='flex-1 text-center'>
+          <FontAwesomeIcon icon={byPrefixAndName.fas['circle-check']} className='mr-2' />
+          Finished
+        </div>
+        <NumberButtonsInput
+          stateNumber={quantityByStatus.finished}
+          onChange={(x) => setQuantityByStatus({ ...quantityByStatus, finished: x })}
+          className='flex-1' />
+      </div>
+    </div>
   );
 };
 
