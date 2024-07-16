@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, MouseEventHandler } from "react";
 
-type ButtonProps = {
+type Props = {
   id?: string;
   className?: string;
   type?: "button" | "submit" | "reset" | undefined;
@@ -10,7 +10,7 @@ type ButtonProps = {
   colorSet?: 'none' | 'blue' | 'green' | 'red';
 };
 
-const Button = (props: PropsWithChildren<ButtonProps>) => {
+const Button = (props: PropsWithChildren<Props>) => {
   const rounded = props.rounded !== undefined ? props.rounded : true;
   const colorSet = props.colorSet || 'blue';
 

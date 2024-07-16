@@ -2,8 +2,11 @@ import React from "react";
 import { User } from "./types/models";
 import $ from 'jquery';
 
+type Props = {
+  current_user: User;
+};
 
-const TopNavBar = ({ current_user }: { current_user: User; }) => {
+const TopNavBar = (props: Props) => {
 
   let myCollectionButton = (
     <>
@@ -32,7 +35,7 @@ const TopNavBar = ({ current_user }: { current_user: User; }) => {
   );
 
   let menuButtons;
-  if (current_user) {
+  if (props.current_user) {
     menuButtons = (
       <>
         <li>{myCollectionButton}</li>

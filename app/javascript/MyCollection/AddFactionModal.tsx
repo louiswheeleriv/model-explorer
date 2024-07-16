@@ -15,12 +15,14 @@ export function openAddFactionModal() {
   });
 }
 
-const AddFactionModal = ({ userFactions, allFactions, allGameSystems, className }: {
+type Props = {
   userFactions: UserFaction[];
   allFactions: Faction[];
   allGameSystems: GameSystem[];
   className?: string;
-}) => {
+};
+
+const AddFactionModal = (props: Props) => {
   const [selectedGameSystemId, setSelectedGameSystemId] = useState<string | number>('none');
   const [newGameSystemName, setNewGameSystemName] = useState('');
   const [selectedFactionId, setSelectedFactionId] = useState<string | number>('none');
@@ -32,7 +34,7 @@ const AddFactionModal = ({ userFactions, allFactions, allGameSystems, className 
   const [addFactionButtonDisabled, setAddFactionButtonDisabled] = useState(true);
   const [error, setError] = useState('');
 
-  const userFactionFactionIds = userFactions.map((userFaction) => userFaction.faction_id);
+  const userFactionFactionIds = props.userFactions.map((userFaction) => userFaction.faction_id);
 
   async function createGameSystem(): Promise<number> {
     return apiCall({
@@ -95,7 +97,7 @@ const AddFactionModal = ({ userFactions, allFactions, allGameSystems, className 
 
   useEffect(() => {
     let factionOptions: { value: number | string; label: string }[] = [{ value: 'none', label: 'Select Faction' }];
-    allFactions.filter((faction) => (
+    props.allFactions.filter((faction) => (
       faction.game_system_id.toString() === selectedGameSystemId.toString() &&
       !userFactionFactionIds.includes(faction.id)
     )).forEach((faction) => {
@@ -142,7 +144,7 @@ const AddFactionModal = ({ userFactions, allFactions, allGameSystems, className 
                 value={selectedGameSystemId}
                 onChange={e => setSelectedGameSystemId(e.target.value)}>
                   <option value='none'>Select Game System</option>
-                  {allGameSystems?.map((gameSystem) => (
+                  {props.allGameSystems?.map((gameSystem) => (
                     <option key={'game-system-selection-'+gameSystem.id} value={gameSystem.id}>{gameSystem.name}</option>
                   ))}
                   <option value='add_new_game_system'>Add New Game System</option>

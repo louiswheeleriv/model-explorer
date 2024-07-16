@@ -5,7 +5,7 @@ import $ from 'jquery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 
-const GameSystemSection = ({ gameSystem, factionSections, startExpanded = true, className }: {
+type Props = {
   gameSystem: GameSystem;
   factionSections: {
     faction: Faction;
@@ -13,8 +13,10 @@ const GameSystemSection = ({ gameSystem, factionSections, startExpanded = true, 
   }[];
   startExpanded: boolean;
   className?: string;
-}) => {
-  const [isExpanded, setIsExpanded] = useState(startExpanded);
+};
+
+const GameSystemSection = (props: Props) => {
+  const [isExpanded, setIsExpanded] = useState(props.startExpanded);
 
   useEffect(() => {
     const marginTop = isExpanded ? '0' : '-100%';
@@ -23,19 +25,19 @@ const GameSystemSection = ({ gameSystem, factionSections, startExpanded = true, 
     $('#'+componentId+' .collapse-icon').css({ 'transform': 'rotate('+angle+'deg)' })
   }, [isExpanded]);
 
-  const componentId = 'game-system-section-' + gameSystem.id;
+  const componentId = 'game-system-section-' + props.gameSystem.id;
 
   return (
-    <div className={className} id={componentId}>
+    <div className={props.className} id={componentId}>
       <div className='mb-5 text-xl w-fit cursor-pointer' onClick={() => setIsExpanded(!isExpanded)}>
         <span className='mr-3'>
           <FontAwesomeIcon icon={byPrefixAndName.fas['chevron-down']} className='collapse-icon transition-transform duration-300' />
         </span>
-        {gameSystem.name}
+        {props.gameSystem.name}
       </div>
       <div className='faction-sections-container overflow-hidden'>
         <div className='faction-sections transition-margin-top duration-1000 delay-0'>
-          {factionSections.map((factionSection) => (
+          {props.factionSections.map((factionSection) => (
             <Fragment key={factionSection.faction.id}>
               <FactionProgressBar
                 faction={factionSection.faction}

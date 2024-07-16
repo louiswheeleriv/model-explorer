@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, HTMLInputTypeAttribute, ChangeEventHandler } from "react";
 
-type InputProps = {
+type Props = {
   id?: string;
   className?: string;
   type?: HTMLInputTypeAttribute;
@@ -13,7 +13,7 @@ type InputProps = {
   max?: string | number | undefined;
 };
 
-const Input = (props: PropsWithChildren<InputProps>) => {
+const Input = (props: PropsWithChildren<Props>) => {
   return (
     <>
       <input

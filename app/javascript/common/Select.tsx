@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, ChangeEventHandler } from "react";
 
-type SelectProps = {
+type Props = {
   id?: string;
   className?: string;
   value?: string | number | readonly string[] | undefined;
@@ -8,7 +8,7 @@ type SelectProps = {
   disabled?: boolean;
 };
 
-const Select = (props: PropsWithChildren<SelectProps>) => {
+const Select = (props: PropsWithChildren<Props>) => {
   return (
     <>
       <select

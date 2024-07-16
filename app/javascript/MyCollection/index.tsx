@@ -9,7 +9,7 @@ import SummaryProgressBar from "../common/SummaryProgressBar";
 import GameSystemSection from "./GameSystemSection";
 import AddFactionModal, { openAddFactionModal } from "./AddFactionModal";
 
-const MyCollection = ({ user_factions, user_models, models, all_factions, all_game_systems, user_game_systems }: {
+type Props = {
   user_factions: UserFaction[];
   user_models: UserModel[];
   models: Model[];
@@ -17,27 +17,29 @@ const MyCollection = ({ user_factions, user_models, models, all_factions, all_ga
   factions: Faction[];
   all_game_systems: GameSystem[];
   user_game_systems: GameSystem[];
-}) => {
-  const numByStatus = countByStatus(user_models);
+};
+
+const MyCollection = (props: Props) => {
+  const numByStatus = countByStatus(props.user_models);
   let factionById: Record<number, Faction> = {};
-  all_factions.forEach((faction) => factionById[faction.id] = faction)
+  props.all_factions.forEach((faction) => factionById[faction.id] = faction)
 
   const valueByLabel = {
-    'Factions': user_factions.length,
-    'Models': user_models.reduce((acc, um) => (
+    'Factions': props.user_factions.length,
+    'Models': props.user_models.reduce((acc, um) => (
       acc + um.qty_unassembled + um.qty_assembled + um.qty_in_progress + um.qty_finished
     ), 0),
     'Complete': Math.round((numByStatus['finished'] / Object.values(numByStatus).reduce((acc, num) => acc + num) * 100)) + '%'
   }
 
   let factionIdByModelId: Record<number, number> = {};
-  models.forEach((model) => {
+  props.models.forEach((model) => {
     factionIdByModelId[model.id] = model.faction_id;
   });
 
-  const gameSystemSections = user_game_systems.map((gameSystem) => {
+  const gameSystemSections = props.user_game_systems.map((gameSystem) => {
     const factionSections =
-      user_factions
+    props.user_factions
         .map((userFaction) => factionById[userFaction.faction_id])
         .filter((faction) => faction.game_system_id === gameSystem.id)
         .sort((a, b) => {
@@ -46,7 +48,7 @@ const MyCollection = ({ user_factions, user_models, models, all_factions, all_ga
           return 0;
         })
         .map((faction) => {
-          const factionUserModels = user_models.filter((um) => {
+          const factionUserModels = props.user_models.filter((um) => {
             return factionIdByModelId[um.model_id] === faction.id;
           });
           return {
@@ -78,7 +80,11 @@ const MyCollection = ({ user_factions, user_models, models, all_factions, all_ga
             </Button>
           </div>
         </div>
-        <AddFactionModal userFactions={user_factions} allFactions={all_factions} allGameSystems={all_game_systems} className='' />
+        <AddFactionModal
+          userFactions={props.user_factions}
+          allFactions={props.all_factions}
+          allGameSystems={props.all_game_systems}
+          className='' />
 
         {gameSystemSections.map((gameSystemSection) => (
           <Fragment key={gameSystemSection.gameSystem.id}>
