@@ -4,6 +4,7 @@ type Props = {
   id?: string;
   className?: string;
   value?: string | number | readonly string[] | undefined;
+  defaultValue?: string | number | readonly string[] | undefined;
   onChange?: ChangeEventHandler<HTMLSelectElement>;
   disabled?: boolean;
 };
@@ -21,6 +22,7 @@ const Select = (props: PropsWithChildren<Props>) => {
           'disabled:text-[#aaaaaa]'
         }
         value={props.value}
+        defaultValue={props.defaultValue}
         onChange={props.onChange}
         disabled={props.disabled}>
           {props.children}

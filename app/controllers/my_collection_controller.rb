@@ -1,4 +1,9 @@
+# frozen_string_literal: true
+
 class MyCollectionController < ApplicationController
+
+  NONE = '__NONE__'
+
   def index
     require_logged_in!
   end
@@ -59,18 +64,26 @@ class MyCollectionController < ApplicationController
     faction_id = params[:faction_id]
     user_model_id = params[:user_model_id]
     quantity_by_status = params[:quantity_by_status]
+
     faction = ::Faction.find_by(id: faction_id)
     return render status: 400, json: { status: 400, error: "Faction #{faction_id} not found." } unless faction
 
     user_model = ::UserModel.find_by(id: user_model_id)
     return render status: 400, json: { status: 400, error: "UserModel #{user_model_id} not found." } unless user_model
 
-    user_model.update(
-      qty_unassembled: quantity_by_status['unassembled'],
-      qty_assembled: quantity_by_status['assembled'],
-      qty_in_progress: quantity_by_status['in_progress'],
-      qty_finished: quantity_by_status['finished']
-    )
+    if quantity_by_status
+      user_model.assign_attributes(
+        qty_unassembled: quantity_by_status['unassembled'],
+        qty_assembled: quantity_by_status['assembled'],
+        qty_in_progress: quantity_by_status['in_progress'],
+        qty_finished: quantity_by_status['finished']
+      )
+    end
+
+    user_model.user_model_group_id = params[:user_model_group_id] if params.key?(:user_model_group_id)
+    user_model.name = params[:name] if params.key?(:name)
+
+    user_model.save!
 
     render status: 200, json: { status: 200, user_model: user_model }
   end

@@ -142,7 +142,7 @@ const AddUserModelModal = (props: Props) => {
                   className='mt-5' />
               )}
               <Input
-                  placeholder='(Optional) My Model Name (e.g. Intercessors with Chainswords)'
+                  placeholder='(Optional) Custom Name (e.g. Intercessors with Chainswords)'
                   defaultValue={userModelName}
                   onChange={e => setUserModelName(e.target.value)}
                   className='mt-5' />
