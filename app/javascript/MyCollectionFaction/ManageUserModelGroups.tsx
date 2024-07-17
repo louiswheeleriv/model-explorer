@@ -4,8 +4,8 @@ import Button from "../common/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { byPrefixAndName } from "@awesome.me/kit-902717d512/icons";
 import { apiCall } from "../utils/helpers";
-import AddUserModelGroupModal, { hideAddGroupModal, openAddGroupModal } from "./AddUserModelGroupModal";
-import EditUserModelGroupModal, { hideEditGroupModal, openEditGroupModal } from "./EditUserModelGroupModal";
+import AddUserModelGroupModal from "./AddUserModelGroupModal";
+import EditUserModelGroupModal from "./EditUserModelGroupModal";
 
 type Props = {
   faction: Faction;
@@ -23,6 +23,9 @@ const ManageUserModelGroups = (props: Props) => {
   const [proposedGroups, setProposedGroups] = useState<ProposedUserModelGroup[]>(props.userModelGroups);
   const [draftProposedGroup, setDraftProposedGroup] = useState<ProposedUserModelGroup>();
   const [draftOtherProposedGroups, setDraftOtherProposedGroups] = useState<ProposedUserModelGroup[]>(props.userModelGroups);
+
+  const [addGroupModalVisible, setAddGroupModalVisible] = useState<boolean>(false);
+  const [editGroupModalVisible, setEditGroupModalVisible] = useState<boolean>(false);
   
   function moveGroupUp(index: number) {
     if (index <= 0) throw 'Cannot move top group up!';
@@ -57,9 +60,19 @@ const ManageUserModelGroups = (props: Props) => {
     ].flat());
   }
 
+  function handleAddGroupClicked() {
+    setAddGroupModalVisible(true);
+  }
+
   function handleAddGroupSubmitted(group: ProposedUserModelGroup) {
-    hideAddGroupModal();
+    setAddGroupModalVisible(false);
     setProposedGroups([proposedGroups, group].flat());
+  }
+
+  function handleEditGroupClicked(group: ProposedUserModelGroup, index: number) {
+    setDraftProposedGroup(group);
+    setDraftOtherProposedGroups([proposedGroups.slice(0, index), proposedGroups.slice(index + 1)].flat());
+    setEditGroupModalVisible(true);
   }
 
   function handleEditGroupSubmitted(origGroup: ProposedUserModelGroup, draftGroup: ProposedUserModelGroup) {
@@ -72,23 +85,21 @@ const ManageUserModelGroups = (props: Props) => {
       draftGroup,
       proposedGroups.slice(editedIndex + 1)
     ].flat());
+    setEditGroupModalVisible(false);
     setDraftProposedGroup(undefined);
   }
 
   function handleEditGroupDeleted(groupToDelete: ProposedUserModelGroup) {
-    hideEditGroupModal();
+    setEditGroupModalVisible(false);
     const deletedIndex = proposedGroups.findIndex((group) => (
       (group.id && group.id === groupToDelete.id) ||
       group.name === groupToDelete.name
     ));
-    console.log('deleting index' + deletedIndex);
     removeGroup(deletedIndex);
   }
 
-  function handleProposedGroupClicked(group: ProposedUserModelGroup, index: number) {
-    setDraftProposedGroup(group);
-    setDraftOtherProposedGroups([proposedGroups.slice(0, index), proposedGroups.slice(index + 1)].flat());
-    openEditGroupModal();
+  function handleEditGroupClosed() {
+    setEditGroupModalVisible(false);
   }
 
   function saveProposedGroups() {
@@ -133,7 +144,7 @@ const ManageUserModelGroups = (props: Props) => {
           className='my-5 p-4 border-2 border-gray-200 rounded flex items-center'>
             <div
               className='flex-1 cursor-pointer'
-              onClick={() => handleProposedGroupClicked(group, index)}>
+              onClick={() => handleEditGroupClicked(group, index)}>
                 <span className='text-xl'>{group.name}</span>
                 <FontAwesomeIcon
                   icon={byPrefixAndName.fas['pencil']}
@@ -170,21 +181,25 @@ const ManageUserModelGroups = (props: Props) => {
       </div>
 
       <div className='my-5 p-5 border-dashed border-2 border-gray-200 rounded flex items-center cursor-pointer'>
-        <div className='flex-1 text-xl' onClick={openAddGroupModal}>
+        <div className='flex-1 text-xl' onClick={handleAddGroupClicked}>
           <FontAwesomeIcon icon={byPrefixAndName.fas['layer-plus']} className='mr-2' />
           Add Group
         </div>
       </div>
 
       <AddUserModelGroupModal
+        visible={addGroupModalVisible}
         proposedGroups={proposedGroups}
-        onSubmit={handleAddGroupSubmitted} />
+        onSubmit={handleAddGroupSubmitted}
+        onClose={() => {setAddGroupModalVisible(false)}} />
       
       <EditUserModelGroupModal
+        visible={editGroupModalVisible}
         group={draftProposedGroup}
         otherProposedGroups={draftOtherProposedGroups}
         onSubmit={handleEditGroupSubmitted}
-        onDelete={handleEditGroupDeleted} />
+        onDelete={handleEditGroupDeleted}
+        onClose={handleEditGroupClosed} />
     </div>
   );
 };

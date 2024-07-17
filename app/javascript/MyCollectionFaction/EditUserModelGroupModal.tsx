@@ -3,33 +3,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import Button from "../common/Button";
 import Input from "../common/Input";
-import $ from 'jquery';
 import { ProposedUserModelGroup } from "./ManageUserModelGroups";
 
-export function openEditGroupModal() {
-  $('#edit-group-modal').css({
-    'opacity': 1,
-    'z-index': 5
-  });
-}
-
-export function hideEditGroupModal() {
-  $('#edit-group-modal').css({
-    'opacity': 0,
-    'z-index': -5
-  });
-}
-
 type Props = {
+  visible: boolean;
   group?: ProposedUserModelGroup;
   otherProposedGroups: ProposedUserModelGroup[];
   onSubmit: (origGroup: ProposedUserModelGroup, draftGroup: ProposedUserModelGroup) => void;
   onDelete: (group: ProposedUserModelGroup) => void;
+  onClose: () => void;
   className?: string;
 }
 
 const EditUserModelGroupModal = (props: Props) => {
-  const [draftGroup, setDraftGroup] = useState(props.group);
+  const emptyGroup = { name: '' };
+
+  const [draftGroup, setDraftGroup] = useState(props.group || emptyGroup);
   const [error, setError] = useState('');
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
 
@@ -38,13 +27,16 @@ const EditUserModelGroupModal = (props: Props) => {
     if (!props.group) throw 'No old group provided.';
 
     props.onSubmit(props.group, draftGroup);
-    hideEditGroupModal();
   }
 
   function onDeleteButtonClick() {
     if (!props.group) throw 'No old group provided.';
 
     props.onDelete(props.group);
+  }
+
+  function onCloseButtonClicked() {
+    props.onClose();
   }
 
   useEffect(() => {
@@ -60,14 +52,17 @@ const EditUserModelGroupModal = (props: Props) => {
   }, [draftGroup?.name]);
 
   useEffect(() => {
-    setDraftGroup(props.group);
-    $('#edit-group-modal-name').val(props.group?.name || '');
+    setDraftGroup(props.group || emptyGroup);
   }, [props.group]);
 
   const componentId = 'edit-group-modal';
 
   return (
-    <div id={componentId} tabIndex={-1} className="opacity-0 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 -z-50 justify-center flex items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full transition-all duration-250">
+    <div
+      id={componentId}
+      tabIndex={-1}
+      className={'overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 justify-center flex items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full transition-all duration-250 '+(props.visible ? 'opacity-1 z-5' : 'opacity-0 -z-50')}>
+
       <div className="relative m-auto p-4 w-full max-w-md max-h-full">
         <div className="relative rounded-lg shadow bg-gray-700">
           
@@ -76,7 +71,7 @@ const EditUserModelGroupModal = (props: Props) => {
               <h3 className="text-lg font-semibold">
                 Edit Model Group
               </h3>
-              <button type="button" onClick={() => hideEditGroupModal()} className="bg-transparent rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center hover:bg-gray-600 hover:text-white">
+              <button type="button" onClick={onCloseButtonClicked} className="bg-transparent rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center hover:bg-gray-600 hover:text-white">
                 <FontAwesomeIcon icon={byPrefixAndName.fas['xmark']} />
               </button>
             </div>
@@ -84,10 +79,11 @@ const EditUserModelGroupModal = (props: Props) => {
 
           <div className='p-4 modal-content'>
             <div className='mb-4'>
-              <label htmlFor="edit-group-modal-name" className="block mb-2 text-sm font-medium">Group Name</label>
+              <div className="mb-2 text-sm font-medium">Group Name</div>
               <Input
                 id='edit-group-modal-name'
                 placeholder='e.g. Infantry'
+                value={draftGroup.name}
                 onChange={e => setDraftGroup({ ...draftGroup, name: e.target.value })}
                 className='mt-5' />
             </div>

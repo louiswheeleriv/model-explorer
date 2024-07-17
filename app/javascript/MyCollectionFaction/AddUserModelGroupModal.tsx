@@ -3,50 +3,49 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import Button from "../common/Button";
 import Input from "../common/Input";
-import $ from 'jquery';
 import { ProposedUserModelGroup } from "./ManageUserModelGroups";
 
-export function openAddGroupModal() {
-  $('#add-group-modal').css({
-    'opacity': 1,
-    'z-index': 5
-  });
-}
-
-export function hideAddGroupModal() {
-  $('#add-group-modal').css({
-    'opacity': 0,
-    'z-index': -5
-  });
-}
-
 type Props = {
+  visible: boolean;
   proposedGroups: ProposedUserModelGroup[];
   onSubmit: (group: ProposedUserModelGroup) => void;
+  onClose: () => void;
   className?: string;
 }
 
 const AddUserModelGroupModal = (props: Props) => {
-  const [proposedGroupName, setProposedGroupName] = useState('');
+  const emptyGroup = { name: '' };
+
+  const [proposedGroup, setProposedGroup] = useState(emptyGroup);
   const [error, setError] = useState('');
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
 
   function onSubmitButtonClick() {
-    props.onSubmit({ name: proposedGroupName });
+    props.onSubmit(proposedGroup);
+    setProposedGroup(emptyGroup);
+  }
+
+  function onCloseButtonClick() {
+    props.onClose();
+    setProposedGroup(emptyGroup);
   }
 
   useEffect(() => {
-    if (proposedGroupName && proposedGroupName.length > 0 && props.proposedGroups.some((group) => group.name === proposedGroupName)) {
-      setError('Group '+proposedGroupName+' already exists.');
+    if (proposedGroup.name.length > 0 && props.proposedGroups.some((group) => group.name === proposedGroup.name)) {
+      setError('Group '+proposedGroup.name+' already exists.');
       setSubmitButtonDisabled(true);
     } else {
       setError('');
       setSubmitButtonDisabled(false);
     }
-  }, [proposedGroupName]);
+  }, [proposedGroup]);
 
   return (
-    <div id="add-group-modal" tabIndex={-1} className="opacity-0 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 -z-50 justify-center flex items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full transition-all duration-250">
+    <div
+      id="add-group-modal"
+      tabIndex={-1}
+      className={'overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 justify-center flex items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full transition-all duration-250 '+(props.visible ? 'opacity-1 z-5' : 'opacity-0 -z-50')}>
+
       <div className="relative m-auto p-4 w-full max-w-md max-h-full">
         <div className="relative rounded-lg shadow bg-gray-700">
           
@@ -55,7 +54,7 @@ const AddUserModelGroupModal = (props: Props) => {
               <h3 className="text-lg font-semibold">
                 Add Model Group
               </h3>
-              <button type="button" onClick={hideAddGroupModal} className="bg-transparent rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center hover:bg-gray-600 hover:text-white">
+              <button type="button" onClick={onCloseButtonClick} className="bg-transparent rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center hover:bg-gray-600 hover:text-white">
                 <FontAwesomeIcon icon={byPrefixAndName.fas['xmark']} />
               </button>
             </div>
@@ -65,8 +64,8 @@ const AddUserModelGroupModal = (props: Props) => {
             <div className='mb-4'>
               <Input
                 placeholder='e.g. Infantry'
-                defaultValue={proposedGroupName}
-                onChange={e => setProposedGroupName(e.target.value)}
+                value={proposedGroup.name}
+                onChange={e => setProposedGroup({ ...proposedGroup, name: e.target.value })}
                 className='mt-5' />
             </div>
 
