@@ -74,8 +74,8 @@ const MyCollectionUserModel = (props: Props) => {
         }
 
         {mode === 'notes' &&
-          <div className='mh-[400px] text-center align-middle'>
-            NOTES
+          <div className='mh-[400px] text-center align-middle mt-5'>
+            Coming soon: Provide any interesting information or lore about your models
           </div>
         }
 

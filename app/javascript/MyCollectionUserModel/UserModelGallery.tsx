@@ -79,7 +79,7 @@ const UserModelGallery = (props: Props) => {
 
   return (
     <div id={componentId}>
-      <div className='flex items-center mt-5'>
+      {/* <div className='flex items-center mt-5'>
         <label htmlFor="myfile">Select image:</label>
         <input
           type="file"
@@ -101,6 +101,10 @@ const UserModelGallery = (props: Props) => {
         {props.userImages.map((img) => (
           <img key={img.id} src={img.url}></img>
         ))}
+      </div> */}
+
+      <div className='text-center mt-5'>
+        Coming soon: Upload and manage photos of your models for others to enjoy
       </div>
     </div>
   );
