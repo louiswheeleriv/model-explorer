@@ -21,6 +21,8 @@ Rails.application.routes.draw do
   get 'sign-out' => 'auth#show_sign_out'
   get 'my-user' => 'auth#my_user'
 
+  get 'my-profile' => 'my_profile#index'
+
   get 'my-collection' => 'my_collection#index'
   get 'my-collection/:faction_name' => 'my_collection#show_faction'
   post 'my-collection/factions' => 'my_collection#add_faction'

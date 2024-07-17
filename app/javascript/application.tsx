@@ -4,13 +4,9 @@ import Welcome from "./Welcome";
 import TopNavBar from './TopNavBar';
 import SignInForm from "./auth/SignInForm";
 import SignUpForm from "./auth/SignUpForm";
+import MyProfile from "./MyProfile";
 
 import MyCollection from "./MyCollection";
-import StatusColorBar from "./common/StatusColorBar";
-import SummaryProgressBar from "./common/SummaryProgressBar";
-import SummaryProgressBarCard from "./common/SummaryProgressBarCard";
-import GameSystemSection from "./MyCollection/GameSystemSection";
-import FactionProgressBar from "./MyCollection/FactionProgressBar";
 import MyCollectionFaction from "./MyCollectionFaction";
 import MyCollectionUserModel from "./MyCollectionUserModel";
 
@@ -21,12 +17,8 @@ mount({
   TopNavBar,
   SignInForm,
   SignUpForm,
+  MyProfile,
   MyCollection,
-  StatusColorBar,
-  SummaryProgressBar,
-  SummaryProgressBarCard,
-  GameSystemSection,
-  FactionProgressBar,
   MyCollectionFaction,
   MyCollectionUserModel
 });

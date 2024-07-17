@@ -42,3 +42,5 @@
 ssl_cert.txt
 ssl_cert_fullchain.pem
 ssl_cert_privkey.pem
+
+**/.DS_Store
