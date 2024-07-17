@@ -69,7 +69,7 @@ const AddUserModelModal = (props: Props) => {
     if (modelId === 'add_new') modelId = await createModel();
 
     apiCall({
-      endpoint: '/my_collection/factions/'+props.faction.id+'/user_models',
+      endpoint: '/my-collection/factions/'+props.faction.id+'/user-models',
       method: 'POST',
       body: {
         model_id: modelId,
@@ -88,7 +88,7 @@ const AddUserModelModal = (props: Props) => {
         if (body.status >= 300) {
           setError(body.error || body.exception);
         } else {
-          window.location.assign('/my_collection/' + props.faction.name);
+          window.location.assign('/my-collection/' + props.faction.name);
         }
       });
   }

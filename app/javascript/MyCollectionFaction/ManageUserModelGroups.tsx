@@ -93,7 +93,7 @@ const ManageUserModelGroups = (props: Props) => {
 
   function saveProposedGroups() {
     apiCall({
-      endpoint: '/my_collection/factions/'+props.faction.id+'/groups',
+      endpoint: '/my-collection/factions/'+props.faction.id+'/groups',
       method: 'POST',
       body: {
         user_model_groups: proposedGroups.map((group, index) => (

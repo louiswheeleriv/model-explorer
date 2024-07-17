@@ -34,7 +34,7 @@ const MyCollectionFaction = (props: Props) => {
     <div className='px-6 py-8 max-w-[600px] mx-auto'>
       <div className='flex'>
         <div className='flex-1'>
-          <a href='/my_collection'>
+          <a href='/my-collection'>
             <FontAwesomeIcon icon={byPrefixAndName.fas['left']} className='mr-1' />
             My Collection
           </a>

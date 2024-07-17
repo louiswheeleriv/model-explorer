@@ -6,6 +6,6 @@ class ApplicationController < ActionController::Base
   def require_logged_in!
     return if current_user_id
 
-    redirect_to('/sign_in')
+    redirect_to('/sign-in')
   end
 end

@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Faction, Model, QuantityByStatus, UserModel, UserModelGroup } from "../types/models";
+import { Faction, Model, QuantityByStatus, UserModel } from "../types/models";
 import Button from "../common/Button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import { apiCall, countByStatus } from "../utils/helpers";
-import Select from "../common/Select";
-import Input from "../common/Input";
 import SummaryProgressBar from "../common/SummaryProgressBar";
 import UserModelStatusEditor from "../common/UserModelStatusEditor";
 
@@ -30,7 +28,7 @@ const EditUserModelStatus = (props: Props) => {
   async function saveUserModel() {
     try {
       apiCall({
-        endpoint: '/my_collection/factions/'+props.model.faction_id+'/user_models/'+props.userModel.id,
+        endpoint: '/my-collection/factions/'+props.model.faction_id+'/user-models/'+props.userModel.id,
         method: 'PUT',
         body: {
           quantity_by_status: {

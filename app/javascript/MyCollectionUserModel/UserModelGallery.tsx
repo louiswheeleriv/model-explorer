@@ -36,7 +36,7 @@ const UserModelGallery = (props: Props) => {
 
   async function getPresignedUrl(): Promise<string> {
     return apiCall({
-      endpoint: '/user_assets/upload',
+      endpoint: '/user-assets/upload',
       method: 'GET'
     })
       .then((response) => response.json())
@@ -57,7 +57,7 @@ const UserModelGallery = (props: Props) => {
 
   async function createImage(assetUrl: string) {
     apiCall({
-      endpoint: '/user_assets/upload',
+      endpoint: '/user-assets/upload',
       method: 'POST',
       body: {
         asset_url: assetUrl,

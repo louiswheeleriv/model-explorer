@@ -19,7 +19,7 @@ const SignInForm = ({}: {}) => {
 
   function signIn() {
     apiCall({
-      endpoint: '/sign_in',
+      endpoint: '/sign-in',
       method: 'POST',
       body: { username, password }
     })
@@ -32,7 +32,7 @@ const SignInForm = ({}: {}) => {
   }
 
   function signUp() {
-    window.location.assign('/sign_up');
+    window.location.assign('/sign-up');
   }
 
   return (

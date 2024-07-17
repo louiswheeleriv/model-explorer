@@ -25,7 +25,7 @@ const MyCollectionUserModel = (props: Props) => {
     <div className='px-6 py-8 max-w-[600px] mx-auto'>
       <div className='flex'>
         <div className='flex-1'>
-          <a href={'/my_collection/'+props.faction.name}>
+          <a href={'/my-collection/'+props.faction.name}>
             <FontAwesomeIcon icon={byPrefixAndName.fas['left']} className='mr-1' />
             {props.faction.name}
           </a>

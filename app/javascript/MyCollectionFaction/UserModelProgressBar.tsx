@@ -20,7 +20,7 @@ const UserModelProgressBar = (props: Props) => {
 
   return (
     <div className={props.className} id={componentId}>
-      <a href={'/my_collection/'+props.faction.name+'/user_models/'+props.userModel.id}
+      <a href={'/my-collection/'+props.faction.name+'/user-models/'+props.userModel.id}
         className='p-4 bg-[#607499] rounded-t-md flex cursor-pointer items-center'>
           <div className='flex-1 items-start'>
             {userModelDisplayName}

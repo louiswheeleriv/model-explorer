@@ -12,7 +12,8 @@ type Props = {
 
 const FactionProgressBar = (props: Props) => {
   function redirectToFactionPage() {
-    window.location.assign('/my_collection/' + props.faction.name);
+    console.log('redirecting to '+'/my-collection/' + props.faction.name);
+    window.location.assign('/my-collection/' + props.faction.name);
   }
 
   return (

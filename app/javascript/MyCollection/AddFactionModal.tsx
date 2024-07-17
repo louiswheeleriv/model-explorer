@@ -38,7 +38,7 @@ const AddFactionModal = (props: Props) => {
 
   async function createGameSystem(): Promise<number> {
     return apiCall({
-      endpoint: '/game_systems',
+      endpoint: '/game-systems',
       method: 'POST',
       body: { name: newGameSystemName }
     })
@@ -74,14 +74,14 @@ const AddFactionModal = (props: Props) => {
       }
 
       apiCall({
-        endpoint: '/my_collection/factions',
+        endpoint: '/my-collection/factions',
         method: 'POST',
         body: { faction_id: factionId }
       })
         .then((response) => response.json())
         .then((body) => {
           if (body.status >= 300) throw new Error(body.error)
-          window.location.assign('/my_collection/' + body.faction.name);
+          window.location.assign('/my-collection/' + body.faction.name);
         })
     } catch(err) {
       if (err instanceof Error) setError(err.message);

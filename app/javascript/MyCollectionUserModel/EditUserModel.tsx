@@ -26,7 +26,7 @@ const EditUserModel = (props: Props) => {
   async function saveUserModel() {
     try {
       apiCall({
-        endpoint: '/my_collection/factions/'+props.model.faction_id+'/user_models/'+props.userModel.id,
+        endpoint: '/my-collection/factions/'+props.model.faction_id+'/user-models/'+props.userModel.id,
         method: 'PUT',
         body: {
           user_model_group_id: userModelGroupId === 'None' ? null : userModelGroupId,

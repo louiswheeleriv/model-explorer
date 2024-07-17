@@ -24,7 +24,7 @@ const SignUpForm = ({}: {}) => {
 
   function signUp() {
     apiCall({
-      endpoint: '/sign_up',
+      endpoint: '/sign-up',
       method: 'POST',
       body: { username, email, password }
     })
@@ -37,7 +37,7 @@ const SignUpForm = ({}: {}) => {
   }
 
   function signIn() {
-    window.location.assign('/sign_in');
+    window.location.assign('/sign-in');
   }
 
   return (

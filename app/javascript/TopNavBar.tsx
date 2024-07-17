@@ -10,7 +10,7 @@ const TopNavBar = (props: Props) => {
 
   let myCollectionButton = (
     <>
-      <a href="/my_collection" className="block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">My Collection</a>
+      <a href="/my-collection" className="block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">My Collection</a>
     </>
   );
   let profileButton = (
@@ -20,17 +20,17 @@ const TopNavBar = (props: Props) => {
   );
   let signOutButton = (
     <>
-      <a href='/sign_out' className='block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent'>Sign Out</a>
+      <a href='/sign-out' className='block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent'>Sign Out</a>
     </>
   );
   let signInButton = (
     <>
-      <a href='/sign_in' className='block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent'>Sign In</a>
+      <a href='/sign-in' className='block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent'>Sign In</a>
     </>
   );
   let signUpButton = (
     <>
-      <a href='/sign_up' className='block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent'>Sign Up</a>
+      <a href='/sign-up' className='block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent'>Sign Up</a>
     </>
   );
 
