@@ -40,7 +40,9 @@ const AddFactionModal = (props: Props) => {
     return apiCall({
       endpoint: '/game-systems',
       method: 'POST',
-      body: { name: newGameSystemName }
+      body: {
+        name: newGameSystemName.trim()
+      }
     })
       .then((response) => response.json())
       .then((body) => {
@@ -53,7 +55,10 @@ const AddFactionModal = (props: Props) => {
     return apiCall({
       endpoint: '/factions',
       method: 'POST',
-      body: { name: newFactionName, game_system_id: gameSystemId }
+      body: {
+        name: newFactionName.trim(),
+        game_system_id: gameSystemId
+      }
     })
       .then((response) => response.json())
       .then((body) => {
@@ -76,7 +81,9 @@ const AddFactionModal = (props: Props) => {
       apiCall({
         endpoint: '/my-collection/factions',
         method: 'POST',
-        body: { faction_id: factionId }
+        body: {
+          faction_id: factionId
+        }
       })
         .then((response) => response.json())
         .then((body) => {
@@ -110,11 +117,11 @@ const AddFactionModal = (props: Props) => {
   useEffect(() => {
     setAddFactionButtonDisabled(!(
       (
-        (selectedGameSystemId === 'add_new_game_system' && newGameSystemName) ||
+        (selectedGameSystemId === 'add_new_game_system' && newGameSystemName.trim()) ||
         (selectedGameSystemId !== 'none' && selectedGameSystemId !== 'add_new_game_system')
       ) &&
       (
-        (selectedFactionId === 'add_new_faction' && newFactionName) ||
+        (selectedFactionId === 'add_new_faction' && newFactionName.trim()) ||
         (selectedFactionId !== 'none' && selectedFactionId !== 'add_new_faction')
       )
     ))

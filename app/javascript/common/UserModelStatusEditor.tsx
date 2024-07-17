@@ -1,23 +1,8 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
-import SummaryProgressBar from "./SummaryProgressBar";
 import { QuantityByStatus } from "../types/models";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import NumberButtonsInput from "./NumberButtonsInput";
-
-function percentComplete(quantityByStatus: QuantityByStatus): number {
-  const numFinished = quantityByStatus['finished']
-  const numTotal = Object.values(quantityByStatus).reduce((acc, num) => acc + num, 0)
-  if (numTotal < 1) return 0;
-  return Math.round((numFinished / numTotal) * 100);
-}
-
-function calculateValueByLabel(quantityByStatus: QuantityByStatus) {
-  return {
-    'Models': Object.values(quantityByStatus).reduce((acc, num) => (acc + num), 0),
-    'Complete': percentComplete(quantityByStatus) + '%'
-  };
-}
 
 type Props = {
   quantityByStatus: QuantityByStatus;
@@ -27,10 +12,8 @@ type Props = {
 
 const UserModelStatusEditor = (props: Props) => {
   const [quantityByStatus, setQuantityByStatus] = useState<QuantityByStatus>(props.quantityByStatus);
-  const [valueByLabel, setValueByLabel] = useState(calculateValueByLabel(quantityByStatus));
 
   useEffect(() => {
-    setValueByLabel(calculateValueByLabel(quantityByStatus));
     props.onChange(quantityByStatus);
   }, [quantityByStatus]);
 
@@ -51,6 +34,7 @@ const UserModelStatusEditor = (props: Props) => {
         </div>
         <NumberButtonsInput
           stateNumber={quantityByStatus.unassembled}
+          min={0}
           onChange={(x) => setQuantityByStatus({ ...quantityByStatus, unassembled: x })}
           className='flex-1' />
       </div>
@@ -61,6 +45,7 @@ const UserModelStatusEditor = (props: Props) => {
         </div>
         <NumberButtonsInput
           stateNumber={quantityByStatus.assembled}
+          min={0}
           onChange={(x) => setQuantityByStatus({ ...quantityByStatus, assembled: x })}
           className='flex-1' />
       </div>
@@ -71,6 +56,7 @@ const UserModelStatusEditor = (props: Props) => {
         </div>
         <NumberButtonsInput
           stateNumber={quantityByStatus.in_progress}
+          min={0}
           onChange={(x) => setQuantityByStatus({ ...quantityByStatus, in_progress: x })}
           className='flex-1' />
       </div>
@@ -81,6 +67,7 @@ const UserModelStatusEditor = (props: Props) => {
         </div>
         <NumberButtonsInput
           stateNumber={quantityByStatus.finished}
+          min={0}
           onChange={(x) => setQuantityByStatus({ ...quantityByStatus, finished: x })}
           className='flex-1' />
       </div>

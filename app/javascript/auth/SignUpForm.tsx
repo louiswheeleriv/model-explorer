@@ -17,8 +17,16 @@ const SignUpForm = ({}: {}) => {
   function handleChangePassword(e: InputTarget) { setPassword(e.target.value); }
   function handleChangeConfirmedPassword(e: InputTarget) { setConfirmedPassword(e.target.value); }
 
+  function acceptableUsername(username: string) {
+    return /^[a-zA-Z0-9]+$/.test(username);
+  }
+
+  function acceptableEmail(email: string) {
+    return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+  }
+
   useEffect(() => {
-    setSignUpButtonDisabled(!(username !== '' && email !== '' && confirmedPassword !== '' && confirmedPassword === password));
+    setSignUpButtonDisabled(!(acceptableUsername(username) && acceptableEmail(email) && confirmedPassword !== '' && confirmedPassword === password));
     setError(confirmedPassword !== '' && confirmedPassword !== password ? 'Passwords don\'t match' : '');
   }, [username, email, password, confirmedPassword]);
 
@@ -45,7 +53,7 @@ const SignUpForm = ({}: {}) => {
       <div id='sign-up-form' className='px-6 py-8 max-w-[600px] mx-auto'>
         <h2 className='text-center my-5 text-4xl'>Sign Up</h2>
         <div className='mb-3'>
-          <Input placeholder='Username' value={username} onChange={handleChangeUsername} />
+          <Input placeholder='Username (alphanumeric only)' value={username} onChange={handleChangeUsername} />
         </div>
         <div className='mb-3'>
           <Input placeholder='Email' value={email} onChange={handleChangeEmail} />

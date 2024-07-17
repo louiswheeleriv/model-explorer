@@ -55,7 +55,9 @@ const AddUserModelModal = (props: Props) => {
     return apiCall({
       endpoint: '/factions/'+props.faction.id+'/models',
       method: 'POST',
-      body: { name: newModelName }
+      body: {
+        name: newModelName.trim()
+      }
     })
       .then((response) => response.json())
       .then((body) => {
@@ -73,7 +75,7 @@ const AddUserModelModal = (props: Props) => {
       method: 'POST',
       body: {
         model_id: modelId,
-        name: userModelName,
+        name: userModelName.trim(),
         user_model_group_id: userModelGroupId,
         quantity_by_status: {
           unassembled: userModelQuantityByStatus.unassembled,
@@ -103,7 +105,7 @@ const AddUserModelModal = (props: Props) => {
   useEffect(() => {
     const wasDisabled = addUserModelButtonDisabled;
     const isDisabled = !(
-      (selectedModelId === 'add_new' && newModelName) ||
+      (selectedModelId === 'add_new' && newModelName.trim()) ||
       (selectedModelId !== 'none' && selectedModelId !== 'add_new')
     );
     if (isDisabled !== wasDisabled) setAddUserModelButtonDisabled(isDisabled);
