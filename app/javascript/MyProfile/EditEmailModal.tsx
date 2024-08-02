@@ -2,27 +2,27 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import Button from "../common/Button";
-import { apiCall } from "../utils/helpers";
-import TextArea from "../common/TextArea";
+import Input from "../common/Input";
+import { acceptableEmail, apiCall } from "../utils/helpers";
 
 type Props = {
-  currentBio?: string;
+  currentEmail: string;
   onClose: () => void;
   visible?: boolean;
   className?: string;
 }
 
-const EditBioModal = (props: Props) => {
-  const [proposedBio, setProposedBio] = useState(props.currentBio || '');
+const EditEmailModal = (props: Props) => {
+  const [proposedEmail, setProposedEmail] = useState(props.currentEmail);
   const [error, setError] = useState('');
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
 
   function onSubmitButtonClick() {
     apiCall({
-      endpoint: '/my-profile/bio',
+      endpoint: '/my-profile/email',
       method: 'PUT',
       body: {
-        bio: proposedBio
+        email: proposedEmail
       }
     })
       .then((response) => response.json())
@@ -40,14 +40,14 @@ const EditBioModal = (props: Props) => {
   }
 
   useEffect(() => {
-    if (proposedBio !== props.currentBio) {
+    if (proposedEmail && proposedEmail !== props.currentEmail && acceptableEmail(proposedEmail)) {
       setSubmitButtonDisabled(false);
     } else {
       setSubmitButtonDisabled(true);
     }
-  }, [proposedBio]);
+  }, [proposedEmail]);
 
-  const componentId = 'edit-bio-modal';
+  const componentId = 'edit-email-modal';
 
   return (
     <div
@@ -61,7 +61,7 @@ const EditBioModal = (props: Props) => {
           <div className='p-4 border-b border-gray-600 modal-header'>
             <div className="flex items-center justify-between rounded-t">
               <h3 className="text-lg font-semibold">
-                Edit Bio
+                Edit Email
               </h3>
               <button type="button" onClick={onCloseButtonClicked} className="bg-transparent rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center hover:bg-gray-600 hover:text-white">
                 <FontAwesomeIcon icon={byPrefixAndName.fas['xmark']} />
@@ -71,11 +71,11 @@ const EditBioModal = (props: Props) => {
 
           <div className='p-4 modal-content'>
             <div className='mb-4'>
-              <div className="mb-2 text-sm font-medium">Bio</div>
-              <TextArea
-                value={proposedBio}
-                onChange={e => setProposedBio(e.target.value)}
-                className='mt-5'/>
+              <div className="mb-2 text-sm font-medium">Email</div>
+              <Input
+                value={proposedEmail}
+                onChange={e => setProposedEmail(e.target.value)}
+                className='mt-5' />
             </div>
 
             <div className='flex items-center mb-5'>
@@ -94,4 +94,4 @@ const EditBioModal = (props: Props) => {
   );
 };
 
-export default EditBioModal;
+export default EditEmailModal;

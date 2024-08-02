@@ -25,13 +25,24 @@ class AuthController < ApplicationController
 
   def sign_up
     username = params[:username]
+    display_name = params[:display_name]
     email = params[:email]
     password = params[:password]
 
     user = User.find_by(username: username)
     return render status: 400, json: { status: 400, error: 'A user already exists with that username' }.to_json if user
 
-    user = User.create(username: username, email: email, password: password)
+    if display_name.present?
+      user = User.find_by(display_name: display_name)
+      return render status: 400, json: { status: 400, error: 'A user already exists with that display name' }.to_json if user
+    end
+
+    user = User.create(
+      username: username,
+      display_name: display_name.presence,
+      email: email,
+      password: password
+    )
     session[:current_user_id] = user.id
 
     render status: 200, json: { status: 200, user: user }.to_json

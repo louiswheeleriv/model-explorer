@@ -45,11 +45,26 @@ class MyProfileController < ApplicationController
 
     new_name = params[:display_name]
     conflicting_user = ::User.find_by(display_name: new_name)
-    return render status: 400, json: { status: 400, error: "Name #{new_name} is not available" } if conflicting_user
+    return render status: 400, json: { status: 400, error: "A user already exists with name #{new_name}" } if conflicting_user
 
     user.update!(display_name: new_name)
 
     render status: 200, json: { status: 200, display_name: new_name }
+  end
+
+  def update_email
+    require_logged_in!
+
+    user = ::User.find_by(id: current_user_id)
+    return render status: 400, json: { status: 400, error: 'User not found' } unless user
+
+    new_email = params[:email]
+    conflicting_user = ::User.find_by(email: new_email)
+    return render status: 400, json: { status: 400, error: "A user already exists with email #{new_email}" } if conflicting_user
+
+    user.update!(email: new_email)
+
+    render status: 200, json: { status: 200, email: new_email }
   end
 
   def update_bio

@@ -5,6 +5,7 @@ import { apiCall } from "../utils/helpers";
 
 const SignUpForm = ({}: {}) => {
   const [username, setUsername] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmedPassword, setConfirmedPassword] = useState('');
@@ -13,6 +14,7 @@ const SignUpForm = ({}: {}) => {
 
   type InputTarget = { target: { value: string }};
   function handleChangeUsername(e: InputTarget) { setUsername(e.target.value) }
+  function handleChangeDisplayName(e: InputTarget) { setDisplayName(e.target.value) }
   function handleChangeEmail(e: InputTarget) { setEmail(e.target.value) }
   function handleChangePassword(e: InputTarget) { setPassword(e.target.value); }
   function handleChangeConfirmedPassword(e: InputTarget) { setConfirmedPassword(e.target.value); }
@@ -34,7 +36,12 @@ const SignUpForm = ({}: {}) => {
     apiCall({
       endpoint: '/sign-up',
       method: 'POST',
-      body: { username, email, password }
+      body: {
+        username: username,
+        display_name: displayName,
+        email: email,
+        password: password
+      }
     })
       .then((response) => response.json())
       .then((body) => {
@@ -54,6 +61,9 @@ const SignUpForm = ({}: {}) => {
         <h2 className='text-center my-5 text-4xl'>Sign Up</h2>
         <div className='mb-3'>
           <Input placeholder='Username (alphanumeric only)' value={username} onChange={handleChangeUsername} />
+        </div>
+        <div className='mb-3'>
+          <Input placeholder='(Optional) Display Name' value={displayName} onChange={handleChangeDisplayName} />
         </div>
         <div className='mb-3'>
           <Input placeholder='Email' value={email} onChange={handleChangeEmail} />

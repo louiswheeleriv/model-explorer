@@ -67,3 +67,7 @@ export async function uploadImage(image: File): Promise<string> {
   const imageUrl = await uploadImageToS3(presignedUrl, image);
   return imageUrl;
 }
+
+export function acceptableEmail(email: string) {
+  return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+}

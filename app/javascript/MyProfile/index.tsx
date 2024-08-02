@@ -8,6 +8,7 @@ import EditDisplayNameModal from "./EditDisplayNameModal";
 import EditBioModal from "./EditBioModal";
 import EditPasswordModal from "./EditPasswordModal";
 import EditProfilePictureModal from "./EditProfilePictureModal";
+import EditEmailModal from "./EditEmailModal";
 
 type Props = {
   user: User;
@@ -22,6 +23,7 @@ const MyProfile = (props: Props) => {
   const [editUsernameModalVisible, setEditUsernameModalVisible] = useState(false);
   const [editPasswordModalVisible, setEditPasswordModalVisible] = useState(false);
   const [editDisplayNameModalVisible, setEditDisplayNameModalVisible] = useState(false);
+  const [editEmailModalVisible, setEditEmailModalVisible] = useState(false);
   const [editBioModalVisible, setEditBioModalVisible] = useState(false);
 
   return (
@@ -66,6 +68,15 @@ const MyProfile = (props: Props) => {
         <Button onClick={() => setEditDisplayNameModalVisible(true)} className='flex-none ml-5 px-5 max-w-36'>Edit</Button>
       </div>
 
+      <div className='mt-5 mb-2 text-sm font-medium'>Email</div>
+      <div className='flex'>
+        <Input
+          defaultValue={props.user.email}
+          className='flex-1'
+          disabled />
+        <Button onClick={() => setEditEmailModalVisible(true)} className='flex-none ml-5 px-5 max-w-36'>Edit</Button>
+      </div>
+
       <div className='mt-5 mb-2 text-sm font-medium'>Bio</div>
       <div className='flex'>
         <Input
@@ -88,6 +99,11 @@ const MyProfile = (props: Props) => {
         currentDisplayName={props.user.display_name}
         visible={editDisplayNameModalVisible}
         onClose={() => setEditDisplayNameModalVisible(false)} />
+
+      <EditEmailModal
+        currentEmail={props.user.email}
+        visible={editEmailModalVisible}
+        onClose={() => setEditEmailModalVisible(false)} />
 
       <EditBioModal
         currentBio={props.user.bio}
