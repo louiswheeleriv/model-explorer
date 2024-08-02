@@ -88,6 +88,23 @@ class MyCollectionController < ApplicationController
     render status: 200, json: { status: 200, user_model: user_model }
   end
 
+  def delete_user_model
+    require_logged_in!
+
+    faction_id = params[:faction_id]
+    user_model_id = params[:user_model_id]
+
+    faction = ::Faction.find_by(id: faction_id)
+    return render status: 400, json: { status: 400, error: "Faction #{faction_id} not found." } unless faction
+
+    user_model = ::UserModel.find_by(id: user_model_id)
+    return render status: 400, json: { status: 400, error: "UserModel #{user_model_id} not found." } unless user_model
+    
+    user_model.destroy!
+
+    render status: 200, json: { status: 200 }
+  end
+
   def set_user_model_groups
     require_logged_in!
 

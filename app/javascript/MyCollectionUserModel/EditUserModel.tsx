@@ -43,6 +43,22 @@ const EditUserModel = (props: Props) => {
     }
   }
 
+  async function deleteUserModel() {
+    try {
+      apiCall({
+        endpoint: '/my-collection/factions/'+props.model.faction_id+'/user-models/'+props.userModel.id,
+        method: 'DELETE'
+      })
+        .then((response) => response.json())
+        .then((body) => {
+          if (body.status >= 300) throw new Error(body.error)
+          window.location.assign('/my-collection/' + props.faction.name);
+        });
+    } catch(err) {
+      if (err instanceof Error) setError(err.message);
+    }
+  }
+
   return (
     <>
       <div className='mt-5 mb-2 text-sm font-medium'>Faction</div>
@@ -76,10 +92,18 @@ const EditUserModel = (props: Props) => {
         onChange={e => {setUserModelName(e.target.value)}} />
 
       <div className='flex items-center my-5'>
-        <Button onClick={saveUserModel} disabled={saveButtonDisabled} className='max-w-[170px] mx-auto'>
-          <FontAwesomeIcon icon={byPrefixAndName.fas['floppy-disk']} className='mr-2' />
-          Save
-        </Button>
+        <div className='flex-1'></div>
+        <div className='flex-1 text-center'>
+          <Button onClick={saveUserModel} disabled={saveButtonDisabled} className='max-w-[170px] mx-auto'>
+            <FontAwesomeIcon icon={byPrefixAndName.fas['floppy-disk']} className='mr-2' />
+            Save
+          </Button>
+        </div>
+        <div className='flex-1 text-end'>
+          <Button onClick={deleteUserModel} className='max-w-[170px] mx-auto bg-red-500'>
+            <FontAwesomeIcon icon={byPrefixAndName.fas['trash']} className='text-white' />
+          </Button>
+        </div>
       </div>
 
       <div className='text-center text-red-500'>{error}</div>

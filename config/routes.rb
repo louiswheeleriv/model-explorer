@@ -33,6 +33,7 @@ Rails.application.routes.draw do
   post 'my-collection/factions' => 'my_collection#add_faction'
   post 'my-collection/factions/:faction_id/user-models' => 'my_collection#add_user_model'
   put 'my-collection/factions/:faction_id/user-models/:user_model_id' => 'my_collection#edit_user_model'
+  delete 'my-collection/factions/:faction_id/user-models/:user_model_id' => 'my_collection#delete_user_model'
   post 'my-collection/factions/:faction_id/groups' => 'my_collection#set_user_model_groups'
   get 'my-collection/:faction_name/user-models/:user_model_id' => 'my_collection#show_user_model'
 
