@@ -5,6 +5,7 @@ import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import UserModelGallery from "./UserModelGallery";
 import EditUserModel from "./EditUserModel";
 import EditUserModelStatus from "./EditUserModelStatus";
+import UserModelNotes from "./UserModelNotes";
 
 type Props = {
   faction: Faction;
@@ -74,9 +75,8 @@ const MyCollectionUserModel = (props: Props) => {
         }
 
         {mode === 'notes' &&
-          <div className='mh-[400px] text-center align-middle mt-5'>
-            Coming soon: Provide any interesting information or lore about your models
-          </div>
+          <UserModelNotes
+            userModel={props.user_model} />
         }
 
         {mode === 'edit' &&

@@ -30,8 +30,11 @@ class MyCollectionController < ApplicationController
   def update_user_faction
     require_logged_in!
     
-    faction_id = params[:faction_id]
-    user_faction = ::UserFaction.find_by(user_id: current_user_id, faction_id: faction_id)
+    user_faction_id = params[:user_faction_id]
+    user_faction = ::UserFaction.find_by(
+      user_id: current_user_id,
+      id: user_faction_id
+    )
     return render status: 400, json: { status: 400, error: 'Faction not found in your collection' } unless user_faction
 
     user_faction.name = params[:name] if params.key?(:name)
@@ -43,8 +46,11 @@ class MyCollectionController < ApplicationController
   def delete_user_faction
     require_logged_in!
     
-    faction_id = params[:faction_id]
-    user_faction = ::UserFaction.find_by(user_id: current_user_id, faction_id: faction_id)
+    user_faction_id = params[:user_faction_id]
+    user_faction = ::UserFaction.find_by(
+      user_id: current_user_id,
+      id: user_faction_id
+    )
     return render status: 400, json: { status: 400, error: 'Faction not found in your collection' } unless user_faction
 
     user_faction.destroy!
@@ -54,23 +60,23 @@ class MyCollectionController < ApplicationController
   def add_user_model
     require_logged_in!
 
-    faction_id = params[:faction_id]
+    user_faction_id = params[:user_faction_id]
     model_id = params[:model_id]
     quantity_by_status = params[:quantity_by_status]
-    faction = ::Faction.find_by(id: faction_id)
-    return render status: 400, json: { status: 400, error: "Faction #{faction_id} not found." } unless faction
-
-    user_faction = faction.user_factions.find_by(user_id: current_user_id)
-    return render status: 400, json: { status: 400, error: "No UserFaction found for Faction #{faction_id}"} unless user_faction
+    user_faction = ::UserFaction.find_by(
+      user_id: current_user_id,
+      id: user_faction_id
+    )
+    return render status: 400, json: { status: 400, error: 'Faction not found in your collection' } unless user_faction
 
     model = ::Model.find_by(id: model_id)
     return render status: 400, json: { status: 400, error: "Model #{model_id} not found." } unless model
 
     user_model = ::UserModel.create!(
       user_id: current_user_id,
-      user_faction_id: user_faction.id,
+      user_faction_id: user_faction_id,
       model_id: model_id,
-      name: params[:name],
+      name: params[:name].presence,
       user_model_group_id: params[:user_model_group_id],
       qty_unassembled: quantity_by_status['unassembled'],
       qty_assembled: quantity_by_status['assembled'],
@@ -84,12 +90,15 @@ class MyCollectionController < ApplicationController
   def edit_user_model
     require_logged_in!
     
-    faction_id = params[:faction_id]
+    user_faction_id = params[:user_faction_id]
     user_model_id = params[:user_model_id]
     quantity_by_status = params[:quantity_by_status]
 
-    faction = ::Faction.find_by(id: faction_id)
-    return render status: 400, json: { status: 400, error: "Faction #{faction_id} not found." } unless faction
+    user_faction = ::UserFaction.find_by(
+      user_id: current_user_id,
+      id: user_faction_id
+    )
+    return render status: 400, json: { status: 400, error: 'Faction not found in your collection' } unless user_faction
 
     user_model = ::UserModel.find_by(id: user_model_id)
     return render status: 400, json: { status: 400, error: "UserModel #{user_model_id} not found." } unless user_model
@@ -105,6 +114,7 @@ class MyCollectionController < ApplicationController
 
     user_model.user_model_group_id = params[:user_model_group_id] if params.key?(:user_model_group_id)
     user_model.name = params[:name] if params.key?(:name)
+    user_model.notes = params[:notes] if params.key?(:notes)
 
     user_model.save!
 
@@ -114,11 +124,14 @@ class MyCollectionController < ApplicationController
   def delete_user_model
     require_logged_in!
 
-    faction_id = params[:faction_id]
+    user_faction_id = params[:user_faction_id]
     user_model_id = params[:user_model_id]
 
-    faction = ::Faction.find_by(id: faction_id)
-    return render status: 400, json: { status: 400, error: "Faction #{faction_id} not found." } unless faction
+    user_faction = ::UserFaction.find_by(
+      user_id: current_user_id,
+      id: user_faction_id
+    )
+    return render status: 400, json: { status: 400, error: 'Faction not found in your collection' } unless user_faction
 
     user_model = ::UserModel.find_by(id: user_model_id)
     return render status: 400, json: { status: 400, error: "UserModel #{user_model_id} not found." } unless user_model
@@ -134,8 +147,11 @@ class MyCollectionController < ApplicationController
     proposed_groups = params[:user_model_groups]
     return render status: 400, json: { status: 400, error: "Param user_model_groups is required" } unless proposed_groups
 
-    user_faction = ::UserFaction.find_by(user_id: current_user_id, faction_id: params[:faction_id])
-    return render status: 400, json: { status: 400, error: "No UserFaction found for Faction #{params[:faction_id]}" } unless user_faction
+    user_faction = ::UserFaction.find_by(
+      user_id: current_user_id,
+      id: params[:user_faction_id]
+    )
+    return render status: 400, json: { status: 400, error: 'Faction not found in your collection' } unless user_faction
 
     ActiveRecord::Base.transaction do
       user_faction

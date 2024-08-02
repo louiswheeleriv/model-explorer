@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_02_185819) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_02_202502) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -89,6 +89,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_02_185819) do
     t.integer "qty_finished", default: 0, null: false
     t.bigint "user_model_group_id"
     t.bigint "user_faction_id", null: false
+    t.text "notes"
     t.index ["model_id"], name: "index_user_models_on_model_id"
     t.index ["user_faction_id"], name: "index_user_models_on_user_faction_id"
     t.index ["user_id", "model_id", "name"], name: "index_user_models_on_user_id_and_model_id_and_name", unique: true

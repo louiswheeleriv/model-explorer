@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Faction, UserModelGroup } from "../types/models";
+import { Faction, UserFaction, UserModelGroup } from "../types/models";
 import Button from "../common/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { byPrefixAndName } from "@awesome.me/kit-902717d512/icons";
@@ -9,6 +9,7 @@ import EditUserModelGroupModal from "./EditUserModelGroupModal";
 
 type Props = {
   faction: Faction;
+  userFaction: UserFaction;
   userModelGroups: UserModelGroup[];
   afterSave?: () => void;
   className?: string;
@@ -104,7 +105,7 @@ const UserFactionGroups = (props: Props) => {
 
   function saveProposedGroups() {
     apiCall({
-      endpoint: '/my-collection/factions/'+props.faction.id+'/groups',
+      endpoint: '/my-collection/factions/'+props.userFaction.id+'/groups',
       method: 'POST',
       body: {
         user_model_groups: proposedGroups.map((group, index) => (

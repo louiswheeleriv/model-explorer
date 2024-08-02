@@ -31,6 +31,7 @@ export type UserModel = {
   user_faction_id: number;
   user_model_group_id: number;
   name: string;
+  notes: string;
   qty_unassembled: number;
   qty_assembled: number;
   qty_in_progress: number;

@@ -72,7 +72,7 @@ const AddUserModelModal = (props: Props) => {
     if (modelId === 'add_new') modelId = await createModel();
 
     apiCall({
-      endpoint: '/my-collection/factions/'+props.faction.id+'/user-models',
+      endpoint: '/my-collection/factions/'+props.userFaction.id+'/user-models',
       method: 'POST',
       body: {
         model_id: modelId,

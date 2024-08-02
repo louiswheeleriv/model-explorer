@@ -78,6 +78,7 @@ const MyCollectionFaction = (props: Props) => {
         {mode === 'groups' &&
           <UserFactionGroups
             faction={props.faction}
+            userFaction={props.user_faction}
             userModelGroups={props.user_model_groups}
             afterSave={switchToModelsView}
           />

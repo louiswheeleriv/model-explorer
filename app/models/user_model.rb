@@ -4,6 +4,7 @@
 #
 #  id                  :bigint           not null, primary key
 #  name                :string
+#  notes               :text
 #  qty_assembled       :integer          default(0), not null
 #  qty_finished        :integer          default(0), not null
 #  qty_in_progress     :integer          default(0), not null
