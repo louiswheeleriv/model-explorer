@@ -16,7 +16,8 @@ module MyCollection
         model: user_model.model,
         user_model: user_model,
         user_model_groups: user_faction.user_model_groups.order(sort_index: :asc),
-        user_images: user_model.user_images
+        user_images: user_model.user_images,
+        user_model_image_associations: user_model.user_model_image_associations.order(sort_index: :asc)
       )
     end
   end

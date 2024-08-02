@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Faction, Model, UserFaction, UserImage, UserModel, UserModelGroup } from "../types/models";
+import { Faction, Model, UserFaction, UserImage, UserModel, UserModelGroup, UserModelImageAssociation } from "../types/models";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import UserModelGallery from "./UserModelGallery";
@@ -14,6 +14,7 @@ type Props = {
   user_model: UserModel;
   user_model_groups: UserModelGroup[];
   user_images: UserImage[];
+  user_model_image_associations: UserModelImageAssociation[];
 }
 
 type Mode = 'status' | 'gallery' | 'notes' | 'edit';
@@ -26,7 +27,7 @@ const MyCollectionUserModel = (props: Props) => {
     <div className='px-6 py-8 max-w-[600px] mx-auto'>
       <div className='flex'>
         <div className='flex-1'>
-          <a href={'/my-collection/user-factions'+props.user_faction.id}>
+          <a href={'/my-collection/user-factions/'+props.user_faction.id}>
             <FontAwesomeIcon icon={byPrefixAndName.fas['left']} className='mr-1' />
             {props.faction.name}
           </a>
@@ -71,7 +72,8 @@ const MyCollectionUserModel = (props: Props) => {
         {mode === 'gallery' &&
           <UserModelGallery
             userModel={props.user_model}
-            userImages={props.user_images} />
+            userImages={props.user_images}
+            userModelImageAssociations={props.user_model_image_associations} />
         }
 
         {mode === 'notes' &&

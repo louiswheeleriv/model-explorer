@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_02_202502) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_02_215337) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -48,17 +48,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_02_202502) do
     t.index ["user_id"], name: "index_user_factions_on_user_id"
   end
 
-  create_table "user_image_associations", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "user_image_id", null: false
-    t.integer "user_model_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_user_image_associations_on_user_id"
-    t.index ["user_image_id"], name: "index_user_image_associations_on_user_image_id"
-    t.index ["user_model_id"], name: "index_user_image_associations_on_user_model_id"
-  end
-
   create_table "user_images", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "url", null: false
@@ -75,6 +64,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_02_202502) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_faction_id", "name"], name: "index_user_model_groups_on_user_faction_id_and_name", unique: true
+  end
+
+  create_table "user_model_image_associations", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "user_image_id", null: false
+    t.integer "user_model_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "sort_index", null: false
+    t.index ["user_id"], name: "index_user_model_image_associations_on_user_id"
+    t.index ["user_image_id"], name: "index_user_model_image_associations_on_user_image_id"
+    t.index ["user_model_id"], name: "index_user_model_image_associations_on_user_model_id"
   end
 
   create_table "user_models", force: :cascade do |t|

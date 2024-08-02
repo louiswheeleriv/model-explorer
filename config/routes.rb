@@ -39,6 +39,7 @@ Rails.application.routes.draw do
   delete 'my-collection/user-factions/:user_faction_id/user-models/:user_model_id' => 'my_collection#delete_user_model'
   post 'my-collection/user-factions/:user_faction_id/groups' => 'my_collection#set_user_model_groups'
   get 'my-collection/user-factions/:user_faction_id/user-models/:user_model_id' => 'my_collection#show_user_model'
+  post 'my-collection/user-factions/:user_faction_id/user-models/:user_model_id/images' => 'my_collection#set_user_model_image_associations'
 
   get 'user-assets/upload' => 'user_assets#uploadable_url'
   post 'user-assets/upload' => 'user_assets#create'

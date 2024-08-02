@@ -66,3 +66,11 @@ export type UserImage = {
   user_id: number;
   url: string;
 }
+
+export type UserModelImageAssociation = {
+  id: number;
+  user_id: number;
+  user_model_id: number;
+  user_image_id: number;
+  sort_index: number;
+}

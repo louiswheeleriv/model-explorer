@@ -32,7 +32,7 @@ class UserAssetsController < ApplicationController
       url: asset_url
     )
 
-    ::UserImageAssociation.create(
+    ::UserModelImageAssociation.create(
       user_id: current_user_id,
       user_image: user_image,
       user_model: user_model
