@@ -22,6 +22,11 @@ Rails.application.routes.draw do
   get 'my-user' => 'auth#my_user'
 
   get 'my-profile' => 'my_profile#index'
+  put 'my-profile/username' => 'my_profile#update_username'
+  put 'my-profile/password' => 'my_profile#update_password'
+  put 'my-profile/display-name' => 'my_profile#update_display_name'
+  put 'my-profile/bio' => 'my_profile#update_bio'
+  put 'my-profile/profile-picture' => 'my_profile#update_profile_picture'
 
   get 'my-collection' => 'my_collection#index'
   get 'my-collection/:faction_name' => 'my_collection#show_faction'

@@ -1,42 +1,34 @@
-import React, { PropsWithChildren, HTMLInputTypeAttribute, ChangeEventHandler } from "react";
+import React, { ChangeEventHandler } from "react";
 
 type Props = {
   id?: string;
   className?: string;
-  type?: HTMLInputTypeAttribute;
   placeholder?: string;
-  defaultValue?: string | number | readonly string[] | undefined;
+  defaultValue?: string | readonly string[] | undefined;
   value?: string | number | readonly string[] | undefined;
-  onChange?: ChangeEventHandler<HTMLInputElement>;
+  onChange?: ChangeEventHandler<HTMLTextAreaElement>;
   disabled?: boolean;
-  min?: string | number | undefined;
-  max?: string | number | undefined;
 };
 
-const Input = (props: PropsWithChildren<Props>) => {
+const TextArea = (props: Props) => {
   return (
     <>
-      <input
+      <textarea
         id={props.id}
-        type={props.type || 'text'}
         className={
           (props.className ? props.className+' ' : '')+
           'block border text-sm rounded-lg w-full p-2.5 '+
           'bg-gray-600 border-gray-500 placeholder-gray-400 '+
-          'disabled:text-[#aaaaaa] '+
+          'disabled:text-[#aaaaaa] resize-y '+
           'focus:ring-primary-500 focus:border-primary-500'
         }
         placeholder={props.placeholder}
         defaultValue={props.defaultValue}
         value={props.value}
         onChange={props.onChange}
-        disabled={props.disabled}
-        min={props.min}
-        max={props.max}>
-          {props.children}
-      </input>
+        disabled={props.disabled} />
     </>
   );
 };
 
-export default Input;
+export default TextArea;

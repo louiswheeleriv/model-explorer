@@ -40,3 +40,30 @@ export function countByStatus(userModels: UserModel[]): QuantityByStatus {
   });
   return result;
 }
+
+async function getPresignedUrl(): Promise<string> {
+  return apiCall({
+    endpoint: '/user-assets/upload',
+    method: 'GET'
+  })
+    .then((response) => response.json())
+    .then((body) => {
+      if (body.status >= 300) throw new Error(body.error)
+      return body.presigned_url;
+    });
+}
+
+async function uploadImageToS3(presignedUrl: string, image: File): Promise<string> {
+  const response = await fetch(presignedUrl, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'multipart/form-data' },
+    body: image
+  });
+  return response.url.split('?')[0];
+}
+
+export async function uploadImage(image: File): Promise<string> {
+  const presignedUrl = await getPresignedUrl();
+  const imageUrl = await uploadImageToS3(presignedUrl, image);
+  return imageUrl;
+}
