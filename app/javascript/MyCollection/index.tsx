@@ -38,27 +38,35 @@ const MyCollection = (props: Props) => {
   });
 
   const gameSystemSections = props.user_game_systems.map((gameSystem) => {
-    const factionSections =
-    props.user_factions
-        .map((userFaction) => factionById[userFaction.faction_id])
-        .filter((faction) => faction.game_system_id === gameSystem.id)
+    const userFactionSections =
+      props.user_factions
+        .map((userFaction) => {
+          return {
+            faction: factionById[userFaction.faction_id],
+            userFaction: userFaction
+          }
+        })
+        .filter((userFactionData) => userFactionData.faction.game_system_id === gameSystem.id)
         .sort((a, b) => {
-          if (a.name < b.name) return -1;
-          if (a.name > b.name) return 1;
+          if (a.faction.name < b.faction.name) return -1;
+          if (a.faction.name > b.faction.name) return 1;
+          if (a.userFaction.name < b.userFaction.name) return -1;
+          if (a.userFaction.name > b.userFaction.name) return 1;
           return 0;
         })
-        .map((faction) => {
-          const factionUserModels = props.user_models.filter((um) => {
-            return factionIdByModelId[um.model_id] === faction.id;
+        .map((userFactionData) => {
+          const userFactionUserModels = props.user_models.filter((um) => {
+            return um.user_faction_id === userFactionData.userFaction.id;
           });
           return {
-            faction: faction,
-            factionNumByStatus: countByStatus(factionUserModels),
+            faction: userFactionData.faction,
+            userFaction: userFactionData.userFaction,
+            factionNumByStatus: countByStatus(userFactionUserModels),
           };
         });
     return {
       gameSystem: gameSystem,
-      factionSections: factionSections,
+      userFactionSections: userFactionSections,
     };
   });
 
@@ -87,13 +95,12 @@ const MyCollection = (props: Props) => {
           className='' />
 
         {gameSystemSections.map((gameSystemSection) => (
-          <Fragment key={gameSystemSection.gameSystem.id}>
-            <GameSystemSection
-              gameSystem={gameSystemSection.gameSystem}
-              factionSections={gameSystemSection.factionSections}
-              startExpanded={true}
-              className='mt-5'/>
-          </Fragment>
+          <GameSystemSection
+            key={gameSystemSection.gameSystem.id}
+            gameSystem={gameSystemSection.gameSystem}
+            userFactionSections={gameSystemSection.userFactionSections}
+            startExpanded={true}
+            className='mt-5'/>
         ))}
       </div>
     </>

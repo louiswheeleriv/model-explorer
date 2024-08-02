@@ -29,13 +29,15 @@ Rails.application.routes.draw do
   put 'my-profile/profile-picture' => 'my_profile#update_profile_picture'
 
   get 'my-collection' => 'my_collection#index'
-  get 'my-collection/:faction_name' => 'my_collection#show_faction'
+  get 'my-collection/:user_faction_id' => 'my_collection#show_faction'
   post 'my-collection/factions' => 'my_collection#add_faction'
+  put 'my-collection/factions/:faction_id' => 'my_collection#update_user_faction'
+  delete 'my-collection/factions/:faction_id' => 'my_collection#delete_user_faction'
   post 'my-collection/factions/:faction_id/user-models' => 'my_collection#add_user_model'
   put 'my-collection/factions/:faction_id/user-models/:user_model_id' => 'my_collection#edit_user_model'
   delete 'my-collection/factions/:faction_id/user-models/:user_model_id' => 'my_collection#delete_user_model'
   post 'my-collection/factions/:faction_id/groups' => 'my_collection#set_user_model_groups'
-  get 'my-collection/:faction_name/user-models/:user_model_id' => 'my_collection#show_user_model'
+  get 'my-collection/:user_faction_id/user-models/:user_model_id' => 'my_collection#show_user_model'
 
   get 'user-assets/upload' => 'user_assets#uploadable_url'
   post 'user-assets/upload' => 'user_assets#create'

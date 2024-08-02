@@ -19,7 +19,7 @@ export type ProposedUserModelGroup = {
   name: string;
 };
 
-const ManageUserModelGroups = (props: Props) => {
+const UserFactionGroups = (props: Props) => {
   const [proposedGroups, setProposedGroups] = useState<ProposedUserModelGroup[]>(props.userModelGroups);
   const [draftProposedGroup, setDraftProposedGroup] = useState<ProposedUserModelGroup>();
   const [draftOtherProposedGroups, setDraftOtherProposedGroups] = useState<ProposedUserModelGroup[]>(props.userModelGroups);
@@ -125,15 +125,6 @@ const ManageUserModelGroups = (props: Props) => {
 
   return (
     <div className={props.className} id='manage-user-models'>
-      <div className='flex items-center my-5'>
-        <div className='flex-1'>
-          <Button onClick={saveProposedGroups}>
-            <FontAwesomeIcon icon={byPrefixAndName.fas['layer-group']} className='mr-2' />
-            Save
-          </Button>
-        </div>
-      </div>
-
       <div className='text-xl my-5'>
         Model Groups
       </div>
@@ -187,6 +178,13 @@ const ManageUserModelGroups = (props: Props) => {
         </div>
       </div>
 
+      <div className='flex items-center my-5'>
+        <Button onClick={saveProposedGroups} className='mx-auto px-5'>
+          <FontAwesomeIcon icon={byPrefixAndName.fas['layer-group']} className='mr-2' />
+          Save
+        </Button>
+      </div>
+
       <AddUserModelGroupModal
         visible={addGroupModalVisible}
         proposedGroups={proposedGroups}
@@ -204,4 +202,4 @@ const ManageUserModelGroups = (props: Props) => {
   );
 };
 
-export default ManageUserModelGroups;
+export default UserFactionGroups;

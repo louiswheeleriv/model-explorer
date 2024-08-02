@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { GameSystem, Faction } from "../types/models";
+import { GameSystem, Faction, UserFaction } from "../types/models";
 import FactionProgressBar from "./FactionProgressBar";
 import $ from 'jquery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,8 +7,9 @@ import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 
 type Props = {
   gameSystem: GameSystem;
-  factionSections: {
+  userFactionSections: {
     faction: Faction;
+    userFaction: UserFaction;
     factionNumByStatus: Record<string, number>;
   }[];
   startExpanded: boolean;
@@ -37,11 +38,12 @@ const GameSystemSection = (props: Props) => {
       </div>
       <div className='faction-sections-container overflow-hidden'>
         <div className='faction-sections transition-margin-top duration-1000 delay-0'>
-          {props.factionSections.map((factionSection) => (
-            <Fragment key={factionSection.faction.id}>
+          {props.userFactionSections.map((userFactionSection) => (
+            <Fragment key={userFactionSection.userFaction.id}>
               <FactionProgressBar
-                faction={factionSection.faction}
-                numByStatus={factionSection.factionNumByStatus}
+                faction={userFactionSection.faction}
+                userFaction={userFactionSection.userFaction}
+                numByStatus={userFactionSection.factionNumByStatus}
                 className='mb-5'/>
             </Fragment>
           ))}

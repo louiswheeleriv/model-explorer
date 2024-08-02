@@ -10,8 +10,6 @@ class MyCollectionController < ApplicationController
 
   def show_faction
     require_logged_in!
-    
-    @faction = Faction.find_by(name: params[:faction_name])
   end
 
   def add_faction
@@ -21,11 +19,36 @@ class MyCollectionController < ApplicationController
     faction = ::Faction.find_by(id: faction_id)
     raise 'Faction not found' unless faction
 
-    user_faction = ::UserFaction.find_by(user_id: current_user_id, faction_id: faction_id)
-    raise "Faction #{faction.name} is already in your collection" if user_faction
-
-    user_faction = ::UserFaction.create(user_id: current_user_id, faction_id: faction_id)
+    user_faction = ::UserFaction.create(
+      user_id: current_user_id,
+      faction_id: faction_id,
+      name: params[:name]
+    )
     render status: 200, json: { status: 200, user_faction: user_faction, faction: faction }
+  end
+
+  def update_user_faction
+    require_logged_in!
+    
+    faction_id = params[:faction_id]
+    user_faction = ::UserFaction.find_by(user_id: current_user_id, faction_id: faction_id)
+    return render status: 400, json: { status: 400, error: 'Faction not found in your collection' } unless user_faction
+
+    user_faction.name = params[:name] if params.key?(:name)
+    user_faction.save!
+
+    render status: 200, json: { status: 200, user_faction: user_faction }
+  end
+
+  def delete_user_faction
+    require_logged_in!
+    
+    faction_id = params[:faction_id]
+    user_faction = ::UserFaction.find_by(user_id: current_user_id, faction_id: faction_id)
+    return render status: 400, json: { status: 400, error: 'Faction not found in your collection' } unless user_faction
+
+    user_faction.destroy!
+    render status: 200, json: { status: 200 }
   end
 
   def add_user_model

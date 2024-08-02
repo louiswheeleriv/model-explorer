@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState} from "react";
-import { Faction, Model, UserModel, UserModelGroup } from "../types/models";
+import { Faction, Model, UserFaction, UserModel, UserModelGroup } from "../types/models";
 import UserModelProgressBar from "./UserModelProgressBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { byPrefixAndName } from "@awesome.me/kit-902717d512/icons";
@@ -7,6 +7,7 @@ import $ from 'jquery';
 
 type Props = {
   faction: Faction;
+  userFaction: UserFaction;
   userModelGroup?: UserModelGroup;
   userModels: UserModel[];
   factionModelById: Record<number, Model>;
@@ -62,6 +63,7 @@ const UserModelGroupDisplay = (props: Props) => {
               <Fragment key={userModel.id}>
                 <UserModelProgressBar
                   faction={props.faction}
+                  userFaction={props.userFaction}
                   model={props.factionModelById[userModel.model_id]}
                   userModel={userModel}
                   className={'mb-5'} />

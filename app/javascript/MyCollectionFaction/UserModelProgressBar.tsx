@@ -1,5 +1,5 @@
 import React from "react";
-import { Faction, Model, UserModel } from "../types/models";
+import { Faction, Model, UserFaction, UserModel } from "../types/models";
 import StatusColorBar from "../common/StatusColorBar";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
@@ -7,6 +7,7 @@ import { countByStatus } from "../utils/helpers";
 
 type Props = {
   faction: Faction;
+  userFaction: UserFaction;
   model: Model;
   userModel: UserModel;
   startExpanded?: boolean;
@@ -20,7 +21,7 @@ const UserModelProgressBar = (props: Props) => {
 
   return (
     <div className={props.className} id={componentId}>
-      <a href={'/my-collection/'+props.faction.name+'/user-models/'+props.userModel.id}
+      <a href={'/my-collection/'+props.userFaction.id+'/user-models/'+props.userModel.id}
         className='p-4 bg-[#607499] rounded-t-md flex cursor-pointer items-center'>
           <div className='flex-1 items-start'>
             {userModelDisplayName}

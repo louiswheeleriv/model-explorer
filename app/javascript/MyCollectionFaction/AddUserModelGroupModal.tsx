@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import Button from "../common/Button";
 import Input from "../common/Input";
-import { ProposedUserModelGroup } from "./ManageUserModelGroups";
+import { ProposedUserModelGroup } from "./UserFactionGroups";
 
 type Props = {
   visible: boolean;

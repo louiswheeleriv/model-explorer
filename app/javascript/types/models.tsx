@@ -57,6 +57,7 @@ export type UserFaction = {
   id: number;
   user_id: number;
   faction_id: number;
+  name: string;
 }
 
 export type UserImage = {

@@ -27,6 +27,7 @@ const AddFactionModal = (props: Props) => {
   const [newGameSystemName, setNewGameSystemName] = useState('');
   const [selectedFactionId, setSelectedFactionId] = useState<string | number>('none');
   const [newFactionName, setNewFactionName] = useState('');
+  const [userFactionName, setUserFactionName] = useState('');
   const [factionDropdownOptions, setFactionDropdownOptions] = useState<{ value: string | number; label: string; }[]>([
     { value: 'none', label: 'Select Faction' },
     { value: 'add_new_faction', label: 'Add New Faction' }
@@ -82,7 +83,8 @@ const AddFactionModal = (props: Props) => {
         endpoint: '/my-collection/factions',
         method: 'POST',
         body: {
-          faction_id: factionId
+          faction_id: factionId,
+          name: userFactionName
         }
       })
         .then((response) => response.json())
@@ -105,8 +107,7 @@ const AddFactionModal = (props: Props) => {
   useEffect(() => {
     let factionOptions: { value: number | string; label: string }[] = [{ value: 'none', label: 'Select Faction' }];
     props.allFactions.filter((faction) => (
-      faction.game_system_id.toString() === selectedGameSystemId.toString() &&
-      !userFactionFactionIds.includes(faction.id)
+      faction.game_system_id.toString() === selectedGameSystemId.toString()
     )).forEach((faction) => {
       factionOptions.push({ value: faction.id, label: faction.name })
     })
@@ -182,6 +183,11 @@ const AddFactionModal = (props: Props) => {
                   onChange={e => setNewFactionName(e.target.value)}
                   className='mt-5' />
               )}
+              <Input
+                placeholder='(Optional) Custom Name (e.g. The Ultra Guys)'
+                defaultValue={userFactionName}
+                onChange={e => setUserFactionName(e.target.value)}
+                className='mt-5' />
             </div>
 
             <div className='flex items-center mb-5'>

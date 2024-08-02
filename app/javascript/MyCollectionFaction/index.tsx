@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { Faction, Model, UserModel, UserModelGroup } from "../types/models";
-import SummaryProgressBar from "../common/SummaryProgressBar";
+import { Faction, GameSystem, Model, UserFaction, UserModel, UserModelGroup } from "../types/models";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
-import { countByStatus } from "../utils/helpers";
-import ManageUserModels from "./ManageUserModels";
-import ManageUserModelGroups from "./ManageUserModelGroups";
+import UserFactionModels from "./UserFactionModels";
+import UserFactionGroups from "./UserFactionGroups";
+import UserFactionGallery from "./UserFactionGallery";
+import EditUserFaction from "./EditUserFaction";
 
 type Props = {
+  game_system: GameSystem;
   faction: Faction;
+  user_faction: UserFaction;
   faction_model_by_id: Record<number, Model>;
   user_models: UserModel[];
   user_model_groups: UserModelGroup[];
@@ -16,16 +18,6 @@ type Props = {
 
 const MyCollectionFaction = (props: Props) => {
   const [mode, setMode] = useState('models');
-
-  let numByStatus = countByStatus(props.user_models);
-  if (props.user_models.length === 0) numByStatus = { unassembled: 1, assembled: 0, in_progress: 0, finished: 0 };
-
-  const valueByLabel = {
-    'Models': props.user_models.reduce((acc, um) => (
-      acc + um.qty_unassembled + um.qty_assembled + um.qty_in_progress + um.qty_finished
-    ), 0),
-    'Complete': Math.round((numByStatus['finished'] / Object.values(numByStatus).reduce((acc, num) => acc + num, 0) * 100)) + '%'
-  }
 
   function switchToManageGroupsView() { setMode('groups') }
   function switchToModelsView() { location.reload() }
@@ -40,31 +32,70 @@ const MyCollectionFaction = (props: Props) => {
           </a>
         </div>
         <div className='flex-1'>
-          <h2 className='text-2xl text-center mb-5'>{props.faction.name}</h2>
+          <h2 className='text-2xl text-center mb-5'>
+            {props.user_faction.name ?
+              props.user_faction.name+' ('+props.faction.name+')' :
+              props.faction.name
+            }
+          </h2>
         </div>
         <div className='flex-1'></div>
       </div>
-      
-      <SummaryProgressBar
-        numByStatus={numByStatus}
-        valueByLabel={valueByLabel}
-      />
 
-      {mode === 'models' &&
-        <ManageUserModels
-          faction={props.faction}
-          userModels={props.user_models}
-          userModelGroups={props.user_model_groups}
-          factionModelById={props.faction_model_by_id}
-          onManageGroupsButtonClick={switchToManageGroupsView} />
-      }
-      {mode === 'groups' &&
-        <ManageUserModelGroups
-          faction={props.faction}
-          userModelGroups={props.user_model_groups}
-          afterSave={switchToModelsView}
-        />
-      }
+      <div className='flex mt-3'>
+        <div onClick={() => setMode('models')}
+          className={'flex-1 cursor-pointer text-center p-3'+(mode === 'models' ? ' border-b text-lg font-semibold' : '')}>
+            <FontAwesomeIcon icon={byPrefixAndName.fas['chess-knight']} size='lg' />
+            <span className='hidden sm:inline sm:ml-2'>Models</span>
+        </div>
+        <div onClick={() => setMode('groups')}
+          className={'flex-1 cursor-pointer text-center p-3'+(mode === 'groups' ? ' border-b text-lg font-semibold' : '')}>
+            <FontAwesomeIcon icon={byPrefixAndName.fas['layer-group']} size='lg' />
+            <span className='hidden sm:inline sm:ml-2'>Groups</span>
+        </div>
+        <div onClick={() => setMode('gallery')}
+          className={'flex-1 cursor-pointer text-center p-3'+(mode === 'gallery' ? ' border-b text-lg font-semibold' : '')}>
+            <FontAwesomeIcon icon={byPrefixAndName.fas['camera']} size='lg' />
+            <span className='hidden sm:inline sm:ml-2'>Gallery</span>
+        </div>
+        <div onClick={() => setMode('edit')}
+          className={'flex-1 cursor-pointer text-center p-3'+(mode === 'edit' ? ' border-b text-lg font-semibold' : '')}>
+            <FontAwesomeIcon icon={byPrefixAndName.fas['gear']} size='lg' />
+            <span className='hidden sm:inline sm:ml-2'>Edit</span>
+        </div>
+      </div>
+
+      <div className='mt-2'>
+        {mode === 'models' &&
+          <UserFactionModels
+            faction={props.faction}
+            userFaction={props.user_faction}
+            userModels={props.user_models}
+            userModelGroups={props.user_model_groups}
+            factionModelById={props.faction_model_by_id}
+            onManageGroupsButtonClick={switchToManageGroupsView} />
+        }
+        {mode === 'groups' &&
+          <UserFactionGroups
+            faction={props.faction}
+            userModelGroups={props.user_model_groups}
+            afterSave={switchToModelsView}
+          />
+        }
+        {mode === 'gallery' &&
+          <UserFactionGallery
+            faction={props.faction}
+            userImages={[]}
+          />
+        }
+        {mode === 'edit' &&
+          <EditUserFaction
+            gameSystem={props.game_system}
+            faction={props.faction}
+            userFaction={props.user_faction}
+          />
+        }
+      </div>
     </div>
   );
 };
