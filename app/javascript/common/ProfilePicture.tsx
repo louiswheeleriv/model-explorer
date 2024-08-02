@@ -2,7 +2,6 @@ import React from "react";
 
 type Props = {
   width: string;
-  height?: string;
   imageUrl?: string;
   id?: string;
   className?: string;
@@ -17,8 +16,13 @@ const ProfilePicture = (props: Props) => {
       id={props.id}
       className={props.className}
       src={props.imageUrl || defaultPicturePath}
-      style={{ width: props.width, height: props.height || props.width, borderRadius: '50%' }}
-      onClick={props.onClick}></img> 
+      style={{
+        width: props.width,
+        height: props.width,
+        objectFit: 'cover',
+        borderRadius: '50%'
+      }}
+      onClick={props.onClick}></img>
   );
 };
 

@@ -44,17 +44,11 @@ const EditProfilePictureModal = (props: Props) => {
   }
 
   async function handleFileSelected(e: React.ChangeEvent<HTMLInputElement>) {
-    console.log('handleFileSelected()');
     const selectedFile = e.target.files ? e.target.files[0] : undefined;
-    console.log('typeof selectedFile = '+(typeof selectedFile));
-    console.log('selectedFile?.name = '+selectedFile?.name);
     if (selectedFile) {
-      console.log('uploading file');
       const imageUrl = await uploadImage(selectedFile);
-      console.log('imageUrl = '+imageUrl);
       setProposedProfilePictureUrl(imageUrl);
     } else {
-      console.log('selectedFile is blank');
       setProposedProfilePictureUrl(undefined);
     }
   }

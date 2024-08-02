@@ -13,7 +13,7 @@ type Props = {
 }
 
 const EditDisplayNameModal = (props: Props) => {
-  const [proposedDisplayName, setProposedDisplayName] = useState(props.currentDisplayName);
+  const [proposedDisplayName, setProposedDisplayName] = useState(props.currentDisplayName || '');
   const [error, setError] = useState('');
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
 
