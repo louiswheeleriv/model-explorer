@@ -21,7 +21,7 @@ const EditUserFaction = (props: Props) => {
   async function saveUserFaction() {
     try {
       apiCall({
-        endpoint: '/my-collection/factions/'+props.userFaction.id,
+        endpoint: '/my-collection/user-factions/'+props.userFaction.id,
         method: 'PUT',
         body: {
           name: userFactionName
@@ -40,7 +40,7 @@ const EditUserFaction = (props: Props) => {
   async function deleteUserFaction() {
     try {
       apiCall({
-        endpoint: '/my-collection/factions/'+props.userFaction.id,
+        endpoint: '/my-collection/user-factions/'+props.userFaction.id,
         method: 'DELETE'
       })
         .then((response) => response.json())

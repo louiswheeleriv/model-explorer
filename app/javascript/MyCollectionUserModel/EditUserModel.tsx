@@ -27,7 +27,7 @@ const EditUserModel = (props: Props) => {
   async function saveUserModel() {
     try {
       apiCall({
-        endpoint: '/my-collection/factions/'+props.userFaction.id+'/user-models/'+props.userModel.id,
+        endpoint: '/my-collection/user-factions/'+props.userFaction.id+'/user-models/'+props.userModel.id,
         method: 'PUT',
         body: {
           user_model_group_id: userModelGroupId === 'None' ? null : userModelGroupId,
@@ -47,7 +47,7 @@ const EditUserModel = (props: Props) => {
   async function deleteUserModel() {
     try {
       apiCall({
-        endpoint: '/my-collection/factions/'+props.userFaction.id+'/user-models/'+props.userModel.id,
+        endpoint: '/my-collection/user-factions/'+props.userFaction.id+'/user-models/'+props.userModel.id,
         method: 'DELETE'
       })
         .then((response) => response.json())
