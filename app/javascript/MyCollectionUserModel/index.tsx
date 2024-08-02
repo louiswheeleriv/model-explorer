@@ -82,6 +82,7 @@ const MyCollectionUserModel = (props: Props) => {
         {mode === 'edit' &&
           <EditUserModel
             faction={props.faction}
+            userFaction={props.user_faction}
             model={props.model}
             userModel={props.user_model}
             userModelGroups={props.user_model_groups} />

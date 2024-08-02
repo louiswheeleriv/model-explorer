@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Faction, Model, UserModel, QuantityByStatus, UserModelGroup } from "../types/models";
+import { Faction, Model, UserModel, QuantityByStatus, UserModelGroup, UserFaction } from "../types/models";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import Button from "../common/Button";
@@ -18,6 +18,7 @@ export function openAddUserModelModal() {
 
 type Props = {
   faction: Faction;
+  userFaction: UserFaction;
   factionModels: Model[];
   userModels: UserModel[];
   userModelGroups: UserModelGroup[];
@@ -90,7 +91,7 @@ const AddUserModelModal = (props: Props) => {
         if (body.status >= 300) {
           setError(body.error || body.exception);
         } else {
-          window.location.assign('/my-collection/' + props.faction.name);
+          window.location.assign('/my-collection/' + props.userFaction.id);
         }
       });
   }

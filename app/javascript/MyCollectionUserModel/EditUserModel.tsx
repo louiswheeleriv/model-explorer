@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Faction, Model, UserModel, UserModelGroup } from "../types/models";
+import { Faction, Model, UserFaction, UserModel, UserModelGroup } from "../types/models";
 import Button from "../common/Button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
@@ -9,6 +9,7 @@ import Input from "../common/Input";
 
 type Props = {
   faction: Faction;
+  userFaction: UserFaction;
   model: Model;
   userModel: UserModel;
   userModelGroups: UserModelGroup[];
@@ -52,7 +53,7 @@ const EditUserModel = (props: Props) => {
         .then((response) => response.json())
         .then((body) => {
           if (body.status >= 300) throw new Error(body.error)
-          window.location.assign('/my-collection/' + props.faction.name);
+          window.location.assign('/my-collection/' + props.userFaction.id);
         });
     } catch(err) {
       if (err instanceof Error) setError(err.message);

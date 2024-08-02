@@ -90,7 +90,7 @@ const AddFactionModal = (props: Props) => {
         .then((response) => response.json())
         .then((body) => {
           if (body.status >= 300) throw new Error(body.error)
-          window.location.assign('/my-collection/' + body.faction.name);
+          window.location.assign('/my-collection/' + body.user_faction.id);
         })
     } catch(err) {
       if (err instanceof Error) setError(err.message);
