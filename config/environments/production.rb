@@ -7,6 +7,7 @@ Rails.application.configure do
   config.x.aws.region = ENV.fetch('AWS_REGION', 'us-east-2')
   config.x.aws.access_key_id = ENV.fetch('AWS_ACCESS_KEY_ID')
   config.x.aws.secret_access_key = ENV.fetch('AWS_SECRET_ACCESS_KEY')
+  config.x.aws.s3_bucket_name = ENV.fetch('S3_BUCKET_NAME')
 
   # Code is not reloaded between requests.
   config.enable_reloading = false
