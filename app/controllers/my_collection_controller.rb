@@ -19,11 +19,32 @@ class MyCollectionController < ApplicationController
     faction = ::Faction.find_by(id: faction_id)
     raise 'Faction not found' unless faction
 
-    user_faction = ::UserFaction.create(
-      user_id: current_user_id,
-      faction_id: faction_id,
-      name: params[:name]
-    )
+    user_faction = nil
+    ActiveRecord::Base.transaction do
+      user_faction = ::UserFaction.create(
+        user_id: current_user_id,
+        faction_id: faction_id,
+        name: params[:name]
+      )
+      ::UserModelGroup.create(
+        user_id: current_user_id,
+        user_faction: user_faction,
+        name: 'Characters',
+        sort_index: 0
+      )
+      ::UserModelGroup.create(
+        user_id: current_user_id,
+        user_faction: user_faction,
+        name: 'Infantry',
+        sort_index: 1
+      )
+      ::UserModelGroup.create(
+        user_id: current_user_id,
+        user_faction: user_faction,
+        name: 'Vehicles',
+        sort_index: 2
+      )
+    end
     render status: 200, json: { status: 200, user_faction: user_faction, faction: faction }
   end
 
