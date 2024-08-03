@@ -6,6 +6,7 @@ import UserModelGallery from "./UserModelGallery";
 import EditUserModel from "./EditUserModel";
 import EditUserModelStatus from "./EditUserModelStatus";
 import UserModelNotes from "./UserModelNotes";
+import TabsBar from "../common/TabsBar";
 
 type Props = {
   faction: Faction;
@@ -38,28 +39,15 @@ const MyCollectionUserModel = (props: Props) => {
         <div className='flex-1'></div>
       </div>
 
-      <div className='flex mt-3'>
-        <div onClick={() => setMode('status')}
-          className={'flex-1 cursor-pointer text-center p-3'+(mode === 'status' ? ' border-b text-lg font-semibold' : '')}>
-            <FontAwesomeIcon icon={byPrefixAndName.fas['paintbrush-fine']} size='lg' />
-            <span className='hidden sm:inline sm:ml-2'>Status</span>
-        </div>
-        <div onClick={() => setMode('gallery')}
-          className={'flex-1 cursor-pointer text-center p-3'+(mode === 'gallery' ? ' border-b text-lg font-semibold' : '')}>
-            <FontAwesomeIcon icon={byPrefixAndName.fas['camera']} size='lg' />
-            <span className='hidden sm:inline sm:ml-2'>Gallery</span>
-        </div>
-        <div onClick={() => setMode('notes')}
-          className={'flex-1 cursor-pointer text-center p-3'+(mode === 'notes' ? ' border-b text-lg font-semibold' : '')}>
-            <FontAwesomeIcon icon={byPrefixAndName.fas['book']} size='lg' />
-            <span className='hidden sm:inline sm:ml-2'>Notes</span>
-        </div>
-        <div onClick={() => setMode('edit')}
-          className={'flex-1 cursor-pointer text-center p-3'+(mode === 'edit' ? ' border-b text-lg font-semibold' : '')}>
-            <FontAwesomeIcon icon={byPrefixAndName.fas['gear']} size='lg' />
-            <span className='hidden sm:inline sm:ml-2'>Edit</span>
-        </div>
-      </div>
+      <TabsBar
+        tabs={[
+          { value: 'status', label: 'Status', icon: 'paintbrush-fine' },
+          { value: 'gallery', label: 'Gallery', icon: 'camera' },
+          { value: 'notes', label: 'Notes', icon: 'book' },
+          { value: 'edit', label: 'Edit', icon: 'gear' }
+        ]}
+        initialTab={mode}
+        onTabClicked={(tabValue: string) => setMode(tabValue)} />
 
       <div className='mt-2'>
         {mode === 'status' &&

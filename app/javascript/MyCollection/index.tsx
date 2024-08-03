@@ -71,39 +71,37 @@ const MyCollection = (props: Props) => {
   });
 
   return (
-    <>
-      <div className='px-6 py-8 max-w-[600px] mx-auto'>
-        <h2 className='text-2xl text-center mb-5'>My Collection</h2>
+    <div className='px-6 py-8 max-w-[600px] mx-auto'>
+      <h2 className='text-2xl text-center mb-5'>My Collection</h2>
 
-        <SummaryProgressBar
-          numByStatus={numByStatus}
-          valueByLabel={valueByLabel}
-        />
+      <SummaryProgressBar
+        numByStatus={numByStatus}
+        valueByLabel={valueByLabel}
+      />
 
-        <div className='flex mt-5'>
-          <div className='flex-1 text-end'>
-            <Button onClick={openAddFactionModal}>
-              <FontAwesomeIcon icon={byPrefixAndName.fas['flag']} className='mr-2' />
-              New Faction
-            </Button>
-          </div>
+      <div className='flex mt-5'>
+        <div className='flex-1 text-end'>
+          <Button onClick={openAddFactionModal}>
+            <FontAwesomeIcon icon={byPrefixAndName.fas['flag']} className='mr-2' />
+            New Faction
+          </Button>
         </div>
-        <AddFactionModal
-          userFactions={props.user_factions}
-          allFactions={props.all_factions}
-          allGameSystems={props.all_game_systems}
-          className='' />
-
-        {gameSystemSections.map((gameSystemSection) => (
-          <GameSystemSection
-            key={gameSystemSection.gameSystem.id}
-            gameSystem={gameSystemSection.gameSystem}
-            userFactionSections={gameSystemSection.userFactionSections}
-            startExpanded={true}
-            className='mt-5'/>
-        ))}
       </div>
-    </>
+      <AddFactionModal
+        userFactions={props.user_factions}
+        allFactions={props.all_factions}
+        allGameSystems={props.all_game_systems}
+        className='' />
+
+      {gameSystemSections.map((gameSystemSection) => (
+        <GameSystemSection
+          key={gameSystemSection.gameSystem.id}
+          gameSystem={gameSystemSection.gameSystem}
+          userFactionSections={gameSystemSection.userFactionSections}
+          startExpanded={true}
+          className='mt-5'/>
+      ))}
+    </div>
   );
 };
 

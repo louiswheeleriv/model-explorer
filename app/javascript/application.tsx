@@ -5,6 +5,7 @@ import TopNavBar from './TopNavBar';
 import SignInForm from "./auth/SignInForm";
 import SignUpForm from "./auth/SignUpForm";
 import MyProfile from "./MyProfile";
+import Social from "./Social";
 
 import MyCollection from "./MyCollection";
 import MyCollectionFaction from "./MyCollectionFaction";
@@ -20,5 +21,6 @@ mount({
   MyProfile,
   MyCollection,
   MyCollectionFaction,
-  MyCollectionUserModel
+  MyCollectionUserModel,
+  Social
 });

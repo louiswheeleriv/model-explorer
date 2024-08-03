@@ -6,6 +6,7 @@ import UserFactionModels from "./UserFactionModels";
 import UserFactionGroups from "./UserFactionGroups";
 import UserFactionGallery from "./UserFactionGallery";
 import EditUserFaction from "./EditUserFaction";
+import TabsBar from "../common/TabsBar";
 
 type Props = {
   game_system: GameSystem;
@@ -46,28 +47,15 @@ const MyCollectionFaction = (props: Props) => {
         <div className='flex-1'></div>
       </div>
 
-      <div className='flex mt-3'>
-        <div onClick={() => setMode('models')}
-          className={'flex-1 cursor-pointer text-center p-3'+(mode === 'models' ? ' border-b text-lg font-semibold' : '')}>
-            <FontAwesomeIcon icon={byPrefixAndName.fas['chess-knight']} size='lg' />
-            <span className='hidden sm:inline sm:ml-2'>Models</span>
-        </div>
-        <div onClick={() => setMode('groups')}
-          className={'flex-1 cursor-pointer text-center p-3'+(mode === 'groups' ? ' border-b text-lg font-semibold' : '')}>
-            <FontAwesomeIcon icon={byPrefixAndName.fas['layer-group']} size='lg' />
-            <span className='hidden sm:inline sm:ml-2'>Groups</span>
-        </div>
-        <div onClick={() => setMode('gallery')}
-          className={'flex-1 cursor-pointer text-center p-3'+(mode === 'gallery' ? ' border-b text-lg font-semibold' : '')}>
-            <FontAwesomeIcon icon={byPrefixAndName.fas['camera']} size='lg' />
-            <span className='hidden sm:inline sm:ml-2'>Gallery</span>
-        </div>
-        <div onClick={() => setMode('edit')}
-          className={'flex-1 cursor-pointer text-center p-3'+(mode === 'edit' ? ' border-b text-lg font-semibold' : '')}>
-            <FontAwesomeIcon icon={byPrefixAndName.fas['gear']} size='lg' />
-            <span className='hidden sm:inline sm:ml-2'>Edit</span>
-        </div>
-      </div>
+      <TabsBar
+        tabs={[
+          { value: 'models', label: 'Models', icon: 'chess-knight' },
+          { value: 'groups', label: 'Groups', icon: 'layer-group' },
+          { value: 'gallery', label: 'Gallery', icon: 'camera' },
+          { value: 'edit', label: 'Edit', icon: 'gear' }
+        ]}
+        initialTab={mode}
+        onTabClicked={(tabValue: string) => setMode(tabValue)} />
 
       <div className='mt-2'>
         {mode === 'models' &&

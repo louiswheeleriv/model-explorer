@@ -1,56 +1,13 @@
 import React from "react";
-import { User } from "./types/models";
+import { User } from "../types/models";
 import $ from 'jquery';
+import TopNavBarButton from "./TopNavBarButton";
 
 type Props = {
   current_user: User;
 };
 
 const TopNavBar = (props: Props) => {
-
-  let myCollectionButton = (
-    <>
-      <a href="/my-collection" className="block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">My Collection</a>
-    </>
-  );
-  let profileButton = (
-    <>
-      <a href="/my-profile" className="block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent">Profile</a>
-    </>
-  );
-  let signOutButton = (
-    <>
-      <a href='/sign-out' className='block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent'>Sign Out</a>
-    </>
-  );
-  let signInButton = (
-    <>
-      <a href='/sign-in' className='block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent'>Sign In</a>
-    </>
-  );
-  let signUpButton = (
-    <>
-      <a href='/sign-up' className='block py-2 px-3 rounded md:border-0 md:p-0 text-white md:hover:text-blue-500 hover:bg-gray-700 hover:text-white md:hover:bg-transparent'>Sign Up</a>
-    </>
-  );
-
-  let menuButtons;
-  if (props.current_user) {
-    menuButtons = (
-      <>
-        <li>{myCollectionButton}</li>
-        <li>{profileButton}</li>
-        <li>{signOutButton}</li>
-      </>
-    );
-  } else {
-    menuButtons = (
-      <>
-        <li>{signInButton}</li>
-        <li>{signUpButton}</li>
-      </>
-    );
-  }
 
   function toggleDropdown() {
     $('#navbar-menu').toggle();
@@ -65,13 +22,27 @@ const TopNavBar = (props: Props) => {
             <span className="self-center text-2xl font-semibold whitespace-nowrap">Model Explorer</span>
           </a>
           <button type="button" className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden focus:outline-none focus:ring-2 hover:bg-gray-700 focus:ring-gray-600" onClick={toggleDropdown}>
-              <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15"/>
-              </svg>
+            <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15"/>
+            </svg>
           </button>
           <div className="hidden w-full md:block md:w-auto" id="navbar-menu">
             <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 bg-gray-800 md:bg-gray-900 border-gray-700">
-              {menuButtons}
+              {props.current_user &&
+                <>
+                  <li><TopNavBarButton label='My Collection' href='/my-collection'/></li>
+                  <li><TopNavBarButton label='Social' href='/social'/></li>
+                  <li><TopNavBarButton label='Profile' href='/my-profile'/></li>
+                  <li><TopNavBarButton label='Sign Out' href='/sign-out'/></li>
+                </>
+              }
+              {!props.current_user &&
+                <>
+                  <li><TopNavBarButton label='Social' href='/social'/></li>
+                  <li><TopNavBarButton label='Sign In' href='/sign-in'/></li>
+                  <li><TopNavBarButton label='Sign Up' href='/sign-up'/></li>
+                </>
+              }
             </ul>
           </div>
         </div>

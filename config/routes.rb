@@ -48,4 +48,6 @@ Rails.application.routes.draw do
   post 'game-systems' => 'game_systems#create'
   post 'factions' => 'factions#create'
   post 'factions/:faction_id/models' => 'factions#create_model'
+
+  get 'social' => 'social#index'
 end
