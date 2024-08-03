@@ -14,7 +14,7 @@ type Props = {
 
 const UserListItem = (props: Props) => {
   function redirectToUserPage() {
-    // window.location.assign('/my-collection/user-factions/'+props.userFaction.id);
+    window.location.assign('/users/'+props.user.id);
   }
 
   return (

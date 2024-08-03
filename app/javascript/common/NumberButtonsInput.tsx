@@ -31,7 +31,7 @@ const NumberButtonsInput = (props: Props) => {
         className='rounded-l touch-manipulation'
         rounded={false}
         colorSet='red'
-        disabled={stateNumber <= 0}
+        disabled={props.disabled || stateNumber <= 0}
         onClick={() => setStateNumber(stateNumber - 1)}>
           <FontAwesomeIcon icon={byPrefixAndName.fas['minus']} />
       </Button>
@@ -41,6 +41,7 @@ const NumberButtonsInput = (props: Props) => {
         min={props.min}
         max={props.max}
         value={stateNumber}
+        disabled={props.disabled}
         onChange={e => setStateNumber(Number(e.target.value)) }
         className='flex-1 remove-arrow rounded-none text-xl max-w-[70px] text-center' />
 
@@ -48,6 +49,7 @@ const NumberButtonsInput = (props: Props) => {
         className='rounded-r touch-manipulation'
         rounded={false}
         colorSet='green'
+        disabled={props.disabled}
         onClick={() => setStateNumber(stateNumber + 1)}>
           <FontAwesomeIcon icon={byPrefixAndName.fas['plus']} />
       </Button>

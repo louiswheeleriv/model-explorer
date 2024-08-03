@@ -6,10 +6,10 @@ import SignInForm from "./auth/SignInForm";
 import SignUpForm from "./auth/SignUpForm";
 import MyProfile from "./MyProfile";
 import Social from "./Social";
-
-import MyCollection from "./MyCollection";
-import MyCollectionFaction from "./MyCollectionFaction";
-import MyCollectionUserModel from "./MyCollectionUserModel";
+import User from "./Social/User";
+import Collection from "./Collection";
+import CollectionFaction from "./CollectionFaction";
+import CollectionUserModel from "./CollectionUserModel";
 
 import 'flowbite';
 
@@ -19,8 +19,9 @@ mount({
   SignInForm,
   SignUpForm,
   MyProfile,
-  MyCollection,
-  MyCollectionFaction,
-  MyCollectionUserModel,
-  Social
+  Collection,
+  CollectionFaction,
+  CollectionUserModel,
+  Social,
+  User
 });

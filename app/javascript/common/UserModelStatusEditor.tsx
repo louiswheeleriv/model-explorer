@@ -5,6 +5,7 @@ import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import NumberButtonsInput from "./NumberButtonsInput";
 
 type Props = {
+  isCurrentUser: boolean;
   quantityByStatus: QuantityByStatus;
   onChange: Dispatch<SetStateAction<QuantityByStatus>>;
   className?: string;
@@ -36,6 +37,7 @@ const UserModelStatusEditor = (props: Props) => {
           stateNumber={quantityByStatus.unassembled}
           min={0}
           onChange={(x) => setQuantityByStatus({ ...quantityByStatus, unassembled: x })}
+          disabled={!props.isCurrentUser}
           className='flex-1' />
       </div>
       <div className='flex mt-5 items-center'>
@@ -47,6 +49,7 @@ const UserModelStatusEditor = (props: Props) => {
           stateNumber={quantityByStatus.assembled}
           min={0}
           onChange={(x) => setQuantityByStatus({ ...quantityByStatus, assembled: x })}
+          disabled={!props.isCurrentUser}
           className='flex-1' />
       </div>
       <div className='flex mt-5 items-center'>
@@ -58,6 +61,7 @@ const UserModelStatusEditor = (props: Props) => {
           stateNumber={quantityByStatus.in_progress}
           min={0}
           onChange={(x) => setQuantityByStatus({ ...quantityByStatus, in_progress: x })}
+          disabled={!props.isCurrentUser}
           className='flex-1' />
       </div>
       <div className='flex mt-5 items-center'>
@@ -69,6 +73,7 @@ const UserModelStatusEditor = (props: Props) => {
           stateNumber={quantityByStatus.finished}
           min={0}
           onChange={(x) => setQuantityByStatus({ ...quantityByStatus, finished: x })}
+          disabled={!props.isCurrentUser}
           className='flex-1' />
       </div>
     </div>
