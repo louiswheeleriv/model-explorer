@@ -212,7 +212,15 @@ class MyCollectionController < ApplicationController
       end
     end
 
-    render status: 200, json: { status: 200, user_model_image_associations: user_model.reload.user_model_image_associations.order(sort_index: :asc) }
+    render status: 200, json: {
+      status: 200,
+      images: user_model.reload.user_model_image_associations.order(sort_index: :asc).map do |assoc|
+        {
+          user_model_image_association: assoc,
+          user_image: assoc.user_image
+        }
+      end
+    }
   end
 
   def show_user_model

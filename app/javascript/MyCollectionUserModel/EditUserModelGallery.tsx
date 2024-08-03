@@ -5,15 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import { apiCall, uploadImage } from "../utils/helpers";
 
-import { Carousel } from "flowbite-react";
-
 type Props = {
   userModel: UserModel;
   userImages: UserImage[];
   userModelImageAssociations: UserModelImageAssociation[];
+  onCancel: () => void;
 }
-
-type Mode = 'view' | 'edit';
 
 type ProposedImage = {
   user_image_id?: number;
@@ -30,9 +27,7 @@ const EditUserModelGallery = (props: Props) => {
       };
     })
   );
-  const [imageUrls, setImageUrls] = useState<string[]>(props.userImages.map((img) => img.url));
   const [error, setError] = useState('');
-  const [selectedFiles, setSelectedFiles] = useState<File[]>();
 
   async function saveImages() {
     apiCall({
@@ -53,7 +48,7 @@ const EditUserModelGallery = (props: Props) => {
         if (body.status >= 300) {
           setError(body.error || body.exception);
         } else {
-          location.reload();
+          window.location.assign('/my-collection/user-factions/'+props.userModel.user_faction_id+'/user-models/'+props.userModel.id+'?mode=gallery');
         }
       });
   }
@@ -111,6 +106,14 @@ const EditUserModelGallery = (props: Props) => {
     <div id={componentId}>
       <div className='my-4 flex'>
         <div className='flex-1'>
+          <Button
+            onClick={props.onCancel}
+            className='px-3 mx-auto'>
+            <FontAwesomeIcon icon={byPrefixAndName.fas['xmark']} className='mr-2' />
+            Cancel
+          </Button>
+        </div>
+        <div className='flex-1 text-end'>
           <input
             id='image-input'
             type='file'
@@ -121,20 +124,26 @@ const EditUserModelGallery = (props: Props) => {
 
           <Button
             onClick={() => document.getElementById('image-input')?.click()}
-            className='px-3 mx-auto'>
-            <FontAwesomeIcon icon={byPrefixAndName.fas['camera']} className='mr-1' />
+            className='px-3 mx-auto mr-3'>
+            <FontAwesomeIcon icon={byPrefixAndName.fas['camera']} className='mr-2' />
             Add Image(s)
           </Button>
-        </div>
-        <div className='flex-1 text-end'>
           <Button
             onClick={saveImages}
             className='px-3 mx-auto'>
-            <FontAwesomeIcon icon={byPrefixAndName.fas['floppy-disk']} className='mr-1' />
+            <FontAwesomeIcon icon={byPrefixAndName.fas['floppy-disk']} className='mr-2' />
             Save
           </Button>
         </div>
       </div>
+
+      <div className='text-red-500 text-center'>{error}</div>
+
+      {proposedImages.length === 0 &&
+        <div className='text-center'>
+          No images
+        </div>
+      }
 
       {proposedImages.map((img, index) => (
         <div key={index} className='flex mt-5 p-4 border-2 border-gray-200'>

@@ -17,10 +17,10 @@ type Props = {
   user_model_image_associations: UserModelImageAssociation[];
 }
 
-type Mode = 'status' | 'gallery' | 'notes' | 'edit';
-
 const MyCollectionUserModel = (props: Props) => {
-  const [mode, setMode] = useState<Mode>('status');
+  const urlParams = new URLSearchParams(document.location.search);
+
+  const [mode, setMode] = useState<string>(urlParams.get('mode') || 'status');
   const userModelDisplayName = props.user_model.name ? props.user_model.name+' ('+props.model.name+')' : props.model.name;
 
   return (
