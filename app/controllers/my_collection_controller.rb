@@ -223,6 +223,49 @@ class MyCollectionController < ApplicationController
     }
   end
 
+  def set_user_faction_image_associations
+    require_logged_in!
+
+    user_faction = ::UserFaction.find_by(
+      user_id: current_user_id,
+      id: params[:user_faction_id]
+    )
+    return render status: 400, json: { status: 400, error: 'Faction not found in your collection' } unless user_faction
+
+    proposed_images = params[:images]
+
+    ActiveRecord::Base.transaction do
+      user_faction
+        .user_faction_image_associations
+        .destroy_all
+
+      proposed_images.each do |proposed_image|
+        user_image_id = proposed_image['user_image_id'] ||
+          ::UserImage.create!(
+            user_id: current_user_id,
+            url: proposed_image['url']
+          ).id
+        
+        ::UserFactionImageAssociation.create!(
+          user_id: current_user_id,
+          user_faction_id: user_faction.id,
+          user_image_id: user_image_id,
+          sort_index: proposed_image['sort_index']
+        )
+      end
+    end
+
+    render status: 200, json: {
+      status: 200,
+      images: user_faction.reload.user_faction_image_associations.order(sort_index: :asc).map do |assoc|
+        {
+          user_faction_image_association: assoc,
+          user_image: assoc.user_image
+        }
+      end
+    }
+  end
+
   def show_user_model
     require_logged_in!
   end

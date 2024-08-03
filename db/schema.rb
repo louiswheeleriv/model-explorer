@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_02_215337) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_03_141651) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -36,6 +36,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_02_215337) do
     t.datetime "updated_at", null: false
     t.index ["faction_id", "name"], name: "index_models_on_faction_id_and_name", unique: true
     t.index ["faction_id"], name: "index_models_on_faction_id"
+  end
+
+  create_table "user_faction_image_associations", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "user_image_id", null: false
+    t.integer "user_faction_id", null: false
+    t.integer "sort_index", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_faction_id"], name: "index_user_faction_image_associations_on_user_faction_id"
+    t.index ["user_id"], name: "index_user_faction_image_associations_on_user_id"
+    t.index ["user_image_id"], name: "index_user_faction_image_associations_on_user_image_id"
   end
 
   create_table "user_factions", force: :cascade do |t|

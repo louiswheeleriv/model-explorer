@@ -74,3 +74,11 @@ export type UserModelImageAssociation = {
   user_image_id: number;
   sort_index: number;
 }
+
+export type UserFactionImageAssociation = {
+  id: number;
+  user_id: number;
+  user_faction_id: number;
+  user_image_id: number;
+  sort_index: number;
+}

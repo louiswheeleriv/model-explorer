@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Faction, GameSystem, Model, UserFaction, UserModel, UserModelGroup } from "../types/models";
+import { Faction, GameSystem, Model, UserFaction, UserFactionImageAssociation, UserImage, UserModel, UserModelGroup } from "../types/models";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import UserFactionModels from "./UserFactionModels";
@@ -14,10 +14,14 @@ type Props = {
   faction_model_by_id: Record<number, Model>;
   user_models: UserModel[];
   user_model_groups: UserModelGroup[];
+  user_images: UserImage[];
+  user_faction_image_associations: UserFactionImageAssociation[];
 }
 
 const MyCollectionFaction = (props: Props) => {
-  const [mode, setMode] = useState('models');
+  const urlParams = new URLSearchParams(document.location.search);
+
+  const [mode, setMode] = useState<string>(urlParams.get('mode') || 'models');
 
   function switchToManageGroupsView() { setMode('groups') }
   function switchToModelsView() { location.reload() }
@@ -86,7 +90,9 @@ const MyCollectionFaction = (props: Props) => {
         {mode === 'gallery' &&
           <UserFactionGallery
             faction={props.faction}
-            userImages={[]}
+            userFaction={props.user_faction}
+            userImages={props.user_images}
+            userFactionImageAssociations={props.user_faction_image_associations}
           />
         }
         {mode === 'edit' &&
