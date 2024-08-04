@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { UserModelStatus } from "../types/models";
 
 const colorByStatus: Record<UserModelStatus, string> = {
@@ -52,36 +52,36 @@ const StatusColorBar = (props: Props) => {
     totalNumModels = 1;
   }
   
-  const statusesWithModels = statusOrder.filter((status) => numByStatus[status]);
-  let statusSections = statusesWithModels.map((status, i) => {
+  const visibleStatuses = statusOrder.map((status) => {
     let numInStatus = numByStatus[status];
-
     let pct = (numInStatus / totalNumModels) * 100;
     let roundedPercent = roundToNearest(pct, 5);
-
-    const borderRadiusClass = statusSegmentRadiusClass(i, statusesWithModels.length, props.rounding);
-
-    let height = 'h-[10px]';
-    if (props.size === 'large') height = 'h-[60px]';
+    if (roundedPercent === 0) return null;
+    return {
+      status: status,
+      roundedPercent: roundedPercent
+    };
+  }).filter(x => x !== null);
+  
+  let statusSections = visibleStatuses.map((statusData, i) => {
+    const borderRadiusClass = statusSegmentRadiusClass(i, visibleStatuses.length, props.rounding);
+    const height = props.size === 'large' ? 'h-[60px]' : 'h-[10px]';
     
     return (
-      <Fragment key={status}>
-        <div
-          className={
-            'bg-'+(colorByStatus[status] || 'white') +
-            ' flex-auto w-[' + roundedPercent + '%] '+
-            borderRadiusClass + ' ' + height
-          }></div>
-      </Fragment>
+      <div
+        key={statusData.status}
+        className={
+          'bg-'+(colorByStatus[statusData.status] || 'white') +
+          ' flex-auto w-[' + statusData.roundedPercent + '%] '+
+          borderRadiusClass + ' ' + height
+        }></div>
     )
   });
 
   return (
-    <>
-      <div className='flex items-center w-full'>
-        {statusSections}
-      </div>
-    </>
+    <div className='flex items-center w-full'>
+      {statusSections}
+    </div>
   );
 };
 
