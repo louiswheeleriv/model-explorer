@@ -19,6 +19,9 @@ type ProposedImage = {
 }
 
 const EditUserFactionGallery = (props: Props) => {
+  const [isUploadingFiles, setIsUploadingFiles] = useState(false);
+  const [numFilesUploaded, setNumFilesUploaded] = useState(0);
+  const [numFilesToUpload, setNumFilesToUpload] = useState(0);
   const [proposedImages, setProposedImages] = useState<ProposedImage[]>(
     props.userFactionImageAssociations.map((imgAssoc) => {
       const image = props.userImages.find((img) => img.id === imgAssoc.user_image_id);
@@ -57,15 +60,20 @@ const EditUserFactionGallery = (props: Props) => {
   async function handleFileSelected(e: React.ChangeEvent<HTMLInputElement>) {
     const selectedFiles = Array.from(e.target.files as FileList);
     if (!selectedFiles) return;
-    
+
+    setIsUploadingFiles(true);
+    setNumFilesUploaded(0);
+    setNumFilesToUpload(selectedFiles.length);
     let imageUrls = [];
     for (const file of selectedFiles) {
       const imageUrl = await uploadImage(file);
       imageUrls.push(imageUrl);
+      setNumFilesUploaded(imageUrls.length);
     }
     setProposedImages(
       proposedImages.concat(imageUrls.map((url) => ({ image_url: url })))
     );
+    setIsUploadingFiles(false);
   }
 
   function moveImageUp(index: number) {
@@ -138,9 +146,16 @@ const EditUserFactionGallery = (props: Props) => {
         </div>
       </div>
 
+      {isUploadingFiles &&
+        <div className='text-center'>
+          <FontAwesomeIcon icon={byPrefixAndName.fas['circle-notch']} className='my-3 fa-3x fa-spin' />
+          <div>Uploading {numFilesUploaded} / {numFilesToUpload}</div>
+        </div>
+      }
+
       <div className='text-red-500 text-center'>{error}</div>
 
-      {proposedImages.length === 0 &&
+      {proposedImages.length === 0 && !isUploadingFiles &&
         <div className='text-center'>
           No images
         </div>
