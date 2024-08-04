@@ -6,6 +6,7 @@ import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import { apiCall } from "../utils/helpers";
 import Select from "../common/Select";
 import Input from "../common/Input";
+import DeletionConfirmationModal from "../common/DeletionConfirmationModal";
 
 type Props = {
   gameSystem: GameSystem;
@@ -15,6 +16,7 @@ type Props = {
 
 const EditUserFaction = (props: Props) => {
   const [userFactionName, setUserFactionName] = useState(props.userFaction.name);
+  const [deletionConfirmationModalVisible, setDeletionConfirmationModalVisible] = useState(false);
   const [saveButtonDisabled, setSaveButtonDisabled] = useState(false);
   const [error, setError] = useState('');
 
@@ -84,9 +86,16 @@ const EditUserFaction = (props: Props) => {
           </Button>
         </div>
         <div className='flex-1 text-end'>
-          <Button onClick={deleteUserFaction} className='max-w-[170px] mx-auto bg-red-500'>
-            <FontAwesomeIcon icon={byPrefixAndName.fas['trash']} className='text-white' />
+          <Button
+            onClick={() => setDeletionConfirmationModalVisible(true)}
+            colorSet='red'
+            className='max-w-[170px] mx-auto'>
+              <FontAwesomeIcon icon={byPrefixAndName.fas['trash']} className='text-white' />
           </Button>
+          <DeletionConfirmationModal
+            visible={deletionConfirmationModalVisible}
+            onClose={() => setDeletionConfirmationModalVisible(false)}
+            onConfirm={deleteUserFaction} />
         </div>
       </div>
 
