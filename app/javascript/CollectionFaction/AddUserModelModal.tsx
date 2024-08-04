@@ -25,11 +25,17 @@ type Props = {
   userModelGroups: UserModelGroup[];
 };
 
+type ModelOption = {
+  value: string | number;
+  label: string;
+};
+
 const AddUserModelModal = (props: Props) => {
   const [selectedModelId, setSelectedModelId] = useState<string | number>('none');
   const [newModelName, setNewModelName] = useState('');
   const [userModelName, setUserModelName] = useState('');
   const [userModelGroupId, setUserModelGroupId] = useState<number | string | undefined>(undefined);
+  const [newGroupName, setNewGroupName] = useState('');
 
   const [userModelQuantityByStatus, setUserModelQuantityByStatus] = useState<QuantityByStatus>({
     unassembled: 0,
@@ -41,7 +47,10 @@ const AddUserModelModal = (props: Props) => {
   const [addUserModelButtonDisabled, setAddUserModelButtonDisabled] = useState(true);
   const [error, setError] = useState('');
 
-  let modelOptions: { value: string | number; label: string; }[] = [{ value: 'none', label: 'Select Model' }];
+  let modelOptions: ModelOption[] = [
+    { value: 'none', label: 'Select Model' },
+    { value: 'add_new', label: 'Add New Model' }
+  ];
   props.factionModels
     .sort((modelA, modelB) => {
       if (modelA.name < modelB.name) return -1;
@@ -50,8 +59,7 @@ const AddUserModelModal = (props: Props) => {
     })
     .forEach((model) => {
       modelOptions.push({ value: model.id, label: model.name })
-    })
-  modelOptions.push({ value: 'add_new', label: 'Add New Model' });
+    });
 
   async function createModel(): Promise<number> {
     return apiCall({
@@ -68,9 +76,26 @@ const AddUserModelModal = (props: Props) => {
       })
   }
 
+  async function createGroup(): Promise<number> {
+    return apiCall({
+      endpoint: '/user-factions/'+props.userFaction.id+'/group',
+      method: 'POST',
+      body: {
+        name: newGroupName.trim()
+      }
+    })
+      .then((response) => response.json())
+      .then((body) => {
+        if (body.status >= 300) throw new Error(body.error)
+        return body.user_model_group.id;
+      })
+  }
+
   async function addUserModel() {
     let modelId = selectedModelId;
     if (modelId === 'add_new') modelId = await createModel();
+    let groupId = userModelGroupId;
+    if (userModelGroupId === 'add_new') groupId = await createGroup();
 
     apiCall({
       endpoint: '/user-factions/'+props.userFaction.id+'/user-models',
@@ -78,7 +103,7 @@ const AddUserModelModal = (props: Props) => {
       body: {
         model_id: modelId,
         name: userModelName.trim(),
-        user_model_group_id: userModelGroupId,
+        user_model_group_id: groupId,
         quantity_by_status: {
           unassembled: userModelQuantityByStatus.unassembled,
           assembled: userModelQuantityByStatus.assembled,
@@ -155,13 +180,19 @@ const AddUserModelModal = (props: Props) => {
 
               <div className='mt-5 mb-2 text-sm font-medium'>Model Group</div>
               <Select
-                defaultValue={undefined}
                 onChange={e => {setUserModelGroupId(e.target.value)}}>
                   <option key={undefined} value={undefined}>None</option>
+                  <option key={'add_new'} value={'add_new'}>Add New Group</option>
                   {props.userModelGroups.map((group) => (
                     <option key={group.id} value={group.id}>{group.name}</option>
                   ))}
               </Select>
+              {userModelGroupId === 'add_new' && (
+                <Input
+                  placeholder='Group Name (e.g. Elite Infantry)'
+                  onChange={e => setNewGroupName(e.target.value)}
+                  className='mt-5' />
+              )}
             </div>
 
             <div className='overflow-hidden mb-5'>

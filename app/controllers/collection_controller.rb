@@ -147,6 +147,28 @@ class CollectionController < ApplicationController
     render status: 200, json: { status: 200 }
   end
 
+  def create_group
+    require_logged_in!
+
+    user_faction_id = params[:user_faction_id]
+    new_group_name = params[:name]
+
+    user_faction = ::UserFaction.find_by(user_id: current_user_id, id: user_faction_id)
+    return render status: 400, json: { status: 400, error: "UserFaction #{user_faction_id} not found" } unless user_faction
+
+    existing_group = user_faction.user_model_groups.find_by(name: new_group_name)
+    return render status: 400, json: { status: 400, error: "Group #{new_group_name} already exists in UserFaction" } if existing_group
+
+    group = ::UserModelGroup.create!(
+      user_id: current_user_id,
+      user_faction_id: user_faction_id,
+      name: new_group_name,
+      sort_index: user_faction.user_model_groups.count
+    )
+
+    render status: 200, json: { status: 200, user_model_group: group }
+  end
+
   def set_user_model_groups
     require_logged_in!
 
