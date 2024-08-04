@@ -60,7 +60,7 @@ const UserModelNotes = (props: Props) => {
         }
         {!props.isCurrentUser &&
           <div className='text-center'>
-            {proposedNotes}
+            {proposedNotes || 'No notes'}
           </div>
         }
       </div>

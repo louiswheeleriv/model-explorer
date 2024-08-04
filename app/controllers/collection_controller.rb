@@ -9,7 +9,9 @@ class CollectionController < ApplicationController
   end
 
   def show_faction
-    require_logged_in!
+  end
+
+  def show_user_model
   end
 
   def add_faction
@@ -286,10 +288,6 @@ class CollectionController < ApplicationController
         }
       end
     }
-  end
-
-  def show_user_model
-    require_logged_in!
   end
 
 end
