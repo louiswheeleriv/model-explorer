@@ -3,7 +3,9 @@
 # Table name: factions
 #
 #  id             :bigint           not null, primary key
+#  created_by     :integer
 #  name           :string           not null
+#  updated_by     :integer
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  game_system_id :bigint           not null

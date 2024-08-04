@@ -23,7 +23,6 @@ type Props = {
 
 const CollectionFaction = (props: Props) => {
   const urlParams = new URLSearchParams(document.location.search);
-
   const [mode, setMode] = useState<string>(urlParams.get('mode') || 'models');
 
   function switchToManageGroupsView() { setMode('groups') }

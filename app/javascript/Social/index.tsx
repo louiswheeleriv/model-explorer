@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { QuantityByStatus, User, UserImage } from "../types/models";
-import TabsBar from "../common/TabsBar";
 import UserList from "./UserList";
 
 type Props = {
@@ -10,35 +9,16 @@ type Props = {
 };
 
 const Social = (props: Props) => {
-  const urlParams = new URLSearchParams(document.location.search);
-  const [mode, setMode] = useState<string>(urlParams.get('mode') || 'users');
-  
   return (
     <div id='social-index' className='px-6 py-8 max-w-[600px] mx-auto'>
       <div className='text-2xl text-center mb-5'>
         Social
       </div>
 
-      <TabsBar
-        tabs={[
-          { value: 'explore', label: 'Explore', icon: 'chess-knight' },
-          { value: 'users', label: 'Users', icon: 'users' }
-        ]}
-        initialTab={mode}
-        onTabClicked={(tabValue: string) => setMode(tabValue)}
-        className='mb-3' />
-
-      {mode === 'explore' &&
-        <div className='text-center'>
-          Coming soon: Explore factions and models across all users on the platform.
-        </div>
-      }
-      {mode === 'users' &&
-        <UserList
-          users={props.users}
-          profilePictureByUserId={props.profile_picture_by_user_id}
-          numByStatusByUserId={props.num_by_status_by_user_id} />
-      }
+      <UserList
+        users={props.users}
+        profilePictureByUserId={props.profile_picture_by_user_id}
+        numByStatusByUserId={props.num_by_status_by_user_id} />
     </div>
   );
 };

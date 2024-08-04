@@ -39,6 +39,9 @@ const CollectionUserModel = (props: Props) => {
         <div className='flex-1'>
           <a href={'/user-factions/'+props.user_faction.id}>
             <FontAwesomeIcon icon={byPrefixAndName.fas['left']} className='mr-1' />
+            {props.is_current_user ?
+              'My ' :
+              (props.user.display_name || props.user.username)+"'s "}
             {props.faction.name}
           </a>
         </div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_03_141651) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_04_153952) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -19,6 +19,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_03_141651) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "game_system_id", null: false
+    t.integer "created_by"
+    t.integer "updated_by"
     t.index ["game_system_id", "name"], name: "index_factions_on_game_system_id_and_name", unique: true
   end
 
@@ -26,6 +28,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_03_141651) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "created_by"
+    t.integer "updated_by"
     t.index ["name"], name: "index_game_systems_on_name", unique: true
   end
 
@@ -34,6 +38,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_03_141651) do
     t.integer "faction_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "created_by"
+    t.integer "updated_by"
     t.index ["faction_id", "name"], name: "index_models_on_faction_id_and_name", unique: true
     t.index ["faction_id"], name: "index_models_on_faction_id"
   end
