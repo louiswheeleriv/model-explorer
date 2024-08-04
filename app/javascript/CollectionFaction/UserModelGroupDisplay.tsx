@@ -25,12 +25,11 @@ const UserModelGroupDisplay = (props: Props) => {
   }
 
   useEffect(() => {
-    const marginTop = isExpanded ? '0' : '-100%';
-    const opacity = isExpanded ? '100%' : 0;
+    const itemHeight = 88;
+    const maxHeight = isExpanded ? (itemHeight * props.userModels.length) + 'px' : 0;
     const angle = isExpanded ? 90 : 0;
     $('#'+componentId+' .models').css({
-      'margin-top': marginTop,
-      'opacity': opacity
+      'max-height': maxHeight
     });
     $('#'+componentId+' .group-collapse-icon').css({ 'transform': 'rotate('+angle+'deg)' });
   }, [isExpanded]);
@@ -44,7 +43,7 @@ const UserModelGroupDisplay = (props: Props) => {
         {props.userModelGroup ? props.userModelGroup.name : 'Ungrouped'}
       </div>
       <div className='overflow-hidden'>
-        <div className='models transition-all duration-500'>
+        <div className='models transition-[max-height] ease-in-out duration-500'>
           {props.userModels.length === 0 &&
             <div className='text-xl text-center my-5'>
               No Models

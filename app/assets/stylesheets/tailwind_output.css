@@ -3943,6 +3943,12 @@ input:checked + .toggle-bg {
   transition-duration: 150ms;
 }
 
+.transition-\[max-height\] {
+  transition-property: max-height;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
 .delay-0 {
   transition-delay: 0s;
 }
