@@ -25,41 +25,38 @@ type Props = {
   userModelGroups: UserModelGroup[];
 };
 
-type ModelOption = {
-  value: string | number;
-  label: string;
-};
+type UserModelCreationResult = {
+  createdUserModel: UserModel;
+  modelId: string | number;
+  userModelGroupId?: string | number;
+}
 
 const AddUserModelModal = (props: Props) => {
   const [selectedModelId, setSelectedModelId] = useState<string | number>('none');
   const [newModelName, setNewModelName] = useState('');
   const [userModelName, setUserModelName] = useState('');
-  const [userModelGroupId, setUserModelGroupId] = useState<number | string | undefined>(undefined);
+  const [userModelGroupId, setUserModelGroupId] = useState<number | string | undefined>('none');
   const [newGroupName, setNewGroupName] = useState('');
 
-  const [userModelQuantityByStatus, setUserModelQuantityByStatus] = useState<QuantityByStatus>({
-    unassembled: 0,
-    assembled: 0,
-    in_progress: 0,
-    finished: 0
-  });
-
-  const [addUserModelButtonDisabled, setAddUserModelButtonDisabled] = useState(true);
-  const [error, setError] = useState('');
-
-  let modelOptions: ModelOption[] = [
-    { value: 'none', label: 'Select Model' },
-    { value: 'add_new', label: 'Add New Model' }
-  ];
-  props.factionModels
-    .sort((modelA, modelB) => {
+  const [models, setModels] = useState<Model[]>(
+    props.factionModels.sort((modelA, modelB) => {
       if (modelA.name < modelB.name) return -1;
       if (modelA.name > modelB.name) return 1;
       return 0;
     })
-    .forEach((model) => {
-      modelOptions.push({ value: model.id, label: model.name })
-    });
+  );
+  const [userModelGroups, setUserModelGroups] = useState<UserModelGroup[]>(props.userModelGroups);
+
+  const zeroQuantityByStatus = {
+    unassembled: 0,
+    assembled: 0,
+    in_progress: 0,
+    finished: 0
+  };
+  const [userModelQuantityByStatus, setUserModelQuantityByStatus] = useState<QuantityByStatus>(zeroQuantityByStatus);
+
+  const [addUserModelButtonDisabled, setAddUserModelButtonDisabled] = useState(true);
+  const [error, setError] = useState('');
 
   async function createModel(): Promise<number> {
     return apiCall({
@@ -91,13 +88,14 @@ const AddUserModelModal = (props: Props) => {
       })
   }
 
-  async function addUserModel() {
+  async function saveUserModel(): Promise<UserModelCreationResult | undefined> {
     let modelId = selectedModelId;
     if (modelId === 'add_new') modelId = await createModel();
     let groupId = userModelGroupId;
+    if (userModelGroupId === 'none') groupId = undefined;
     if (userModelGroupId === 'add_new') groupId = await createGroup();
 
-    apiCall({
+    return apiCall({
       endpoint: '/user-factions/'+props.userFaction.id+'/user-models',
       method: 'POST',
       body: {
@@ -117,9 +115,61 @@ const AddUserModelModal = (props: Props) => {
         if (body.status >= 300) {
           setError(body.error || body.exception);
         } else {
-          window.location.assign('/user-factions/' + props.userFaction.id);
+          return {
+            createdUserModel: body.user_model,
+            modelId: modelId,
+            userModelGroupId: groupId
+          };
         }
       });
+  }
+
+  async function addUserModel() {
+    await saveUserModel();
+    location.reload();
+  }
+
+  async function addUserModelAndMore() {
+    const creationResult = await saveUserModel();
+    upsertCreatedModelToState(creationResult?.modelId);
+    upsertCreatedGroupToState(creationResult?.userModelGroupId);
+    resetModalInputs();
+  }
+
+  function upsertCreatedModelToState(modelId?: string | number) {
+    if (!modelId) return;
+    if (models.find((model) => model.id === Number(modelId))) return;
+    const newModel = {
+      id: Number(modelId),
+      faction_id: props.faction.id,
+      name: newModelName
+    };
+    setModels([models, newModel].flat().sort((modelA, modelB) => {
+      if (modelA.name < modelB.name) return -1;
+      if (modelA.name > modelB.name) return 1;
+      return 0;
+    }));
+  }
+
+  function upsertCreatedGroupToState(userModelGroupId?: string | number) {
+    if (!userModelGroupId) return;
+    if (userModelGroups.find((group) => group.id === Number(userModelGroupId))) return;
+    const newGroup = {
+      id: Number(userModelGroupId),
+      name: newGroupName,
+      user_id: props.userFaction.user_id,
+      user_faction_id: props.userFaction.id
+    };
+    setUserModelGroups([userModelGroups, newGroup].flat());
+  }
+
+  function resetModalInputs() {
+    setSelectedModelId('none');
+    setNewModelName('');
+    setUserModelName('');
+    setUserModelGroupId('none');
+    setNewGroupName('');
+    setUserModelQuantityByStatus(zeroQuantityByStatus);
   }
 
   function hideAddUserModelModal() {
@@ -136,7 +186,7 @@ const AddUserModelModal = (props: Props) => {
       (selectedModelId !== 'none' && selectedModelId !== 'add_new')
     );
     if (isDisabled !== wasDisabled) setAddUserModelButtonDisabled(isDisabled);
-  }, [selectedModelId, newModelName])
+  }, [selectedModelId, newModelName]);
 
   return (
     <div id="add-user-model-modal" tabIndex={-1} className="opacity-0 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 -z-50 justify-center flex items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full transition-all duration-250">
@@ -161,35 +211,39 @@ const AddUserModelModal = (props: Props) => {
                 id='model-selection'
                 value={selectedModelId}
                 onChange={e => setSelectedModelId(e.target.value)}>
-                  {modelOptions.map((opt) => (
-                    <option key={'model-selection-'+opt.value} value={opt.value}>{opt.label}</option>
+                  <option key={'model-selection-none'} value='none'>Select Model</option>
+                  <option key={'model-selection-add_new'} value='add_new'>Add New Model</option>
+                  {models.map((model) => (
+                    <option key={'model-selection-'+model.id} value={model.id}>{model.name}</option>
                   ))}
               </Select>
               {selectedModelId === 'add_new' && (
                 <Input
                   placeholder='General Model Name (e.g. Intercessors)'
-                  defaultValue={newModelName}
+                  value={newModelName}
                   onChange={e => setNewModelName(e.target.value)}
                   className='mt-5' />
               )}
               <Input
                   placeholder='(Optional) Custom Name (e.g. Intercessors with Chainswords)'
-                  defaultValue={userModelName}
+                  value={userModelName}
                   onChange={e => setUserModelName(e.target.value)}
                   className='mt-5' />
 
               <div className='mt-5 mb-2 text-sm font-medium'>Model Group</div>
               <Select
+                value={userModelGroupId}
                 onChange={e => {setUserModelGroupId(e.target.value)}}>
-                  <option key={undefined} value={undefined}>None</option>
+                  <option key={'none'} value={'none'}>None</option>
                   <option key={'add_new'} value={'add_new'}>Add New Group</option>
-                  {props.userModelGroups.map((group) => (
+                  {userModelGroups.map((group) => (
                     <option key={group.id} value={group.id}>{group.name}</option>
                   ))}
               </Select>
               {userModelGroupId === 'add_new' && (
                 <Input
                   placeholder='Group Name (e.g. Elite Infantry)'
+                  value={newGroupName}
                   onChange={e => setNewGroupName(e.target.value)}
                   className='mt-5' />
               )}
@@ -203,11 +257,17 @@ const AddUserModelModal = (props: Props) => {
                 className='model-status-editor' />
             </div>
 
-            <div className='flex items-center mb-5'>
-              <Button onClick={addUserModel} disabled={addUserModelButtonDisabled} className='max-w-[170px] mx-auto'>
-                <FontAwesomeIcon icon={byPrefixAndName.fas['plus']} className='mr-2' />
-                Add Model(s)
-              </Button>
+            <div className='flex mb-5'>
+              <div className='flex-1 text-center'>
+                <Button onClick={addUserModelAndMore} disabled={addUserModelButtonDisabled} className='max-w-[170px] mx-auto mr-5'>
+                  <FontAwesomeIcon icon={byPrefixAndName.fas['floppy-disks']} className='mr-2' />
+                  Add More
+                </Button>
+                <Button onClick={addUserModel} disabled={addUserModelButtonDisabled} className='max-w-[170px] mx-auto'>
+                  <FontAwesomeIcon icon={byPrefixAndName.fas['floppy-disk']} className='mr-2' />
+                  Save
+                </Button>
+              </div>
             </div>
 
             <div className='text-center text-red-500'>{error}</div>

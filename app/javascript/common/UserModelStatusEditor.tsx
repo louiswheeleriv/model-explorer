@@ -20,10 +20,7 @@ const UserModelStatusEditor = (props: Props) => {
 
   useEffect(() => {
     const different = JSON.stringify(props.quantityByStatus) != JSON.stringify(quantityByStatus);
-    if (different) {
-      console.log('Parent quantityByStatus changed, persisting to child');
-      setQuantityByStatus(props.quantityByStatus);
-    }
+    if (different) setQuantityByStatus(props.quantityByStatus);
   }, [props.quantityByStatus])
 
   return (
