@@ -3998,6 +3998,10 @@ input:checked + .toggle-bg {
   transition-duration: 75ms;
 }
 
+.duration-\[\'\+transitionDuration\+\'ms\] {
+  transition-duration: '+transitionDuration+'ms;
+}
+
 .ease-in {
   transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
 }
