@@ -19,7 +19,7 @@ const GameSystemSection = (props: Props) => {
     <CollapsibleListSection
       id={'game-system-section-' + props.gameSystem.id}
       headerText={props.gameSystem.name}
-      numItems={props.userFactionSections.length}>
+      className='mt-5'>
 
       {props.userFactionSections.map((userFactionSection) => (
         <FactionProgressBar

@@ -15,7 +15,7 @@ const UserModelSection = (props: Props) => {
     <CollapsibleListSection
       id={'user-model-section-'+props.user.id}
       headerText={props.user.display_name || props.user.username}
-      numItems={props.userModels.length}>
+      className='mt-5'>
 
       {props.userModels.length === 0 &&
         <div className='text-xl text-center my-5'>
