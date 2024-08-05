@@ -1,5 +1,5 @@
 import React from "react";
-import { UserFaction, GameSystem, Faction, Model, UserModel } from "../types/models";
+import { UserFaction, GameSystem, Faction, Model, UserModel, User } from "../types/models";
 import { countByStatus } from "../utils/helpers";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
@@ -10,6 +10,7 @@ import GameSystemSection from "./GameSystemSection";
 import AddFactionModal, { openAddFactionModal } from "./AddFactionModal";
 
 type Props = {
+  user: User;
   user_factions: UserFaction[];
   user_models: UserModel[];
   models: Model[];

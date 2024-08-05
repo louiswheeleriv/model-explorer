@@ -2,10 +2,8 @@
 
 class CollectionController < ApplicationController
 
-  def show_my_collection
+  def index
     require_logged_in!
-
-    @user = ::User.find_by(id: current_user_id)
   end
 
   def show_faction
