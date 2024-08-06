@@ -54,8 +54,8 @@ const CollectionUserModel = (props: Props) => {
       <TabsBar
         tabs={[
           { value: 'status', label: 'Status', icon: 'paintbrush-fine' },
-          { value: 'gallery', label: 'Gallery', icon: 'camera' },
           { value: 'notes', label: 'Notes', icon: 'book' },
+          { value: 'gallery', label: 'Gallery', icon: 'camera', iconBadgeNumber: props.user_model_image_associations.length },
           { value: 'edit', label: 'Edit', icon: 'gear' }
         ].filter((tab) => (
           props.is_current_user || !restrictedModes.includes(tab.value)
@@ -72,18 +72,18 @@ const CollectionUserModel = (props: Props) => {
             userModel={props.user_model} />
         }
 
+        {mode === 'notes' &&
+          <UserModelNotes
+            isCurrentUser={props.is_current_user}
+            userModel={props.user_model} />
+        }
+
         {mode === 'gallery' &&
           <UserModelGallery
             isCurrentUser={props.is_current_user}
             userModel={props.user_model}
             userImages={props.user_images}
             userModelImageAssociations={props.user_model_image_associations} />
-        }
-
-        {mode === 'notes' &&
-          <UserModelNotes
-            isCurrentUser={props.is_current_user}
-            userModel={props.user_model} />
         }
 
         {mode === 'edit' &&

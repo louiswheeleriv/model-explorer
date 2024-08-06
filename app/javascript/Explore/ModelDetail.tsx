@@ -47,7 +47,7 @@ const ModelDetail = (props: Props) => {
       <TabsBar
         tabs={[
           { value: 'userModels', label: 'User Models', icon: 'chess-knight' },
-          { value: 'gallery', label: 'Gallery', icon: 'camera' },
+          { value: 'gallery', label: 'Gallery', icon: 'camera', iconBadgeNumber: props.user_model_image_associations.length },
           { value: 'edit', label: 'Edit', icon: 'gear' }
         ].filter((tab) => (
           props.current_user || !restrictedModes.includes(tab.value)

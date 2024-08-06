@@ -42,7 +42,7 @@ const FactionDetail = (props: Props) => {
       <TabsBar
         tabs={[
           { value: 'models', label: 'Models', icon: 'chess-knight' },
-          { value: 'gallery', label: 'Gallery', icon: 'camera' },
+          { value: 'gallery', label: 'Gallery', icon: 'camera', iconBadgeNumber: props.user_faction_image_associations.length },
           { value: 'edit', label: 'Edit', icon: 'gear' }
         ].filter((tab) => (
           props.current_user || !restrictedModes.includes(tab.value)

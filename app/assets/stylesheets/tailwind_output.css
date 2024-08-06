@@ -1225,6 +1225,22 @@ input:checked + .toggle-bg {
   top: 1rem;
 }
 
+.-right-\[20px\] {
+  right: -20px;
+}
+
+.-top-\[9px\] {
+  top: -9px;
+}
+
+.-right-\[15px\] {
+  right: -15px;
+}
+
+.-right-\[11px\] {
+  right: -11px;
+}
+
 .-z-10 {
   z-index: -10;
 }
@@ -1614,6 +1630,10 @@ input:checked + .toggle-bg {
 
 .h-screen {
   height: 100vh;
+}
+
+.h-\[70px\] {
+  height: 70px;
 }
 
 .max-h-\[100\%\] {
@@ -3419,6 +3439,10 @@ input:checked + .toggle-bg {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
+}
+
+.text-\[3em\] {
+  font-size: 3em;
 }
 
 .font-bold {
@@ -6281,6 +6305,14 @@ input:checked + .toggle-bg {
 
   .sm\:mr-2 {
     margin-right: 0.5rem;
+  }
+
+  .sm\:ml-5 {
+    margin-left: 1.25rem;
+  }
+
+  .sm\:ml-3 {
+    margin-left: 0.75rem;
   }
 
   .sm\:inline {
