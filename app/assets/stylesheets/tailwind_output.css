@@ -3445,6 +3445,10 @@ input:checked + .toggle-bg {
   font-size: 3em;
 }
 
+.text-\[16px\] {
+  font-size: 16px;
+}
+
 .font-bold {
   font-weight: 700;
 }
