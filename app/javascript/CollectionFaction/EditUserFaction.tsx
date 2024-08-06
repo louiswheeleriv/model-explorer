@@ -20,6 +20,8 @@ const EditUserFaction = (props: Props) => {
   const [saveButtonDisabled, setSaveButtonDisabled] = useState(false);
   const [error, setError] = useState('');
 
+  const userFactionDisplayName = props.userFaction.name ? props.userFaction.name+' ('+props.faction.name+')' : props.faction.name;
+
   async function saveUserFaction() {
     try {
       apiCall({
@@ -94,6 +96,7 @@ const EditUserFaction = (props: Props) => {
           </Button>
           <DeletionConfirmationModal
             visible={deletionConfirmationModalVisible}
+            bodyText={'Are you sure you want to remove '+userFactionDisplayName+' from your collection?'}
             onClose={() => setDeletionConfirmationModalVisible(false)}
             onConfirm={deleteUserFaction} />
         </div>

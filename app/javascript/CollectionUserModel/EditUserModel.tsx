@@ -25,6 +25,7 @@ const EditUserModel = (props: Props) => {
   const [error, setError] = useState('');
 
   const userModelGroup = props.userModelGroups.find((group) => group.id === props.userModel.user_model_group_id);
+  const userModelDisplayName = props.userModel.name ? props.userModel.name+' ('+props.model.name+')' : props.model.name;
 
   async function saveUserModel() {
     try {
@@ -111,6 +112,7 @@ const EditUserModel = (props: Props) => {
           </Button>
           <DeletionConfirmationModal
             visible={deletionConfirmationModalVisible}
+            bodyText={'Are you sure you want to remove '+userModelDisplayName+' from your collection?'}
             onClose={() => setDeletionConfirmationModalVisible(false)}
             onConfirm={deleteUserModel} />
         </div>
