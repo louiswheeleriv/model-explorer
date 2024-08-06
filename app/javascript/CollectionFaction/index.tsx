@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Faction, GameSystem, Model, User, UserFaction, UserFactionImageAssociation, UserImage, UserModel, UserModelGroup } from "../types/models";
+import { Faction, GameSystem, Model, User, UserFaction, UserFactionImageAssociation, UserImage, UserModel, UserModelGroup, UserModelImageAssociation } from "../types/models";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import UserFactionModels from "./UserFactionModels";
@@ -19,11 +19,18 @@ type Props = {
   user_model_groups: UserModelGroup[];
   user_images: UserImage[];
   user_faction_image_associations: UserFactionImageAssociation[];
+  user_model_image_associations: UserModelImageAssociation[];
 }
 
 const CollectionFaction = (props: Props) => {
   const urlParams = new URLSearchParams(document.location.search);
   const [mode, setMode] = useState<string>(urlParams.get('mode') || 'models');
+
+  const userModelImageAssociationsByUserModelId = props.user_model_image_associations.reduce((acc: Record<number, UserModelImageAssociation[]>, assoc) => {
+    if (!acc[assoc.user_model_id]) acc[assoc.user_model_id] = [];
+    acc[assoc.user_model_id].push(assoc);
+    return acc;
+  }, {});
 
   function switchToManageGroupsView() { setMode('groups') }
   function switchToModelsView() { location.reload() }
@@ -76,6 +83,7 @@ const CollectionFaction = (props: Props) => {
             userFaction={props.user_faction}
             userModels={props.user_models}
             userModelGroups={props.user_model_groups}
+            userModelImageAssociationsByUserModelId={userModelImageAssociationsByUserModelId}
             factionModelById={props.faction_model_by_id}
             onManageGroupsButtonClick={switchToManageGroupsView} />
         }

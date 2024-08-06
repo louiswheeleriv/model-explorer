@@ -12,6 +12,7 @@ type Props = {
   user_factions: UserFaction[];
   models: Model[];
   user_models: UserModel[];
+  num_images_by_user_faction_id: Record<number, number>;
 };
 
 const User = (props: Props) => {
@@ -43,7 +44,8 @@ const User = (props: Props) => {
           userModels={props.user_models}
           models={props.models}
           factions={props.factions}
-          gameSystems={props.game_systems} />
+          gameSystems={props.game_systems}
+          numImagesByUserFactionId={props.num_images_by_user_faction_id} />
       }
       {mode === 'info' &&
         <div className='text-center'>

@@ -1,5 +1,5 @@
 import React from "react";
-import { GameSystem, Faction, UserFaction } from "../types/models";
+import { GameSystem, Faction, UserFaction, UserFactionImageAssociation, UserModelImageAssociation } from "../types/models";
 import FactionProgressBar from "./FactionProgressBar";
 import CollapsibleListSection from "../common/CollapsibleListSection";
 
@@ -9,6 +9,7 @@ type Props = {
     faction: Faction;
     userFaction: UserFaction;
     factionNumByStatus: Record<string, number>;
+    numImages: number;
   }[];
   startExpanded: boolean;
   className?: string;
@@ -27,6 +28,7 @@ const GameSystemSection = (props: Props) => {
           faction={userFactionSection.faction}
           userFaction={userFactionSection.userFaction}
           numByStatus={userFactionSection.factionNumByStatus}
+          numImages={userFactionSection.numImages}
           className='mb-5'/>
       ))}
     </CollapsibleListSection>

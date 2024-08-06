@@ -23,6 +23,12 @@ const ModelDetail = (props: Props) => {
   const urlParams = new URLSearchParams(document.location.search);
   const [mode, setMode] = useState<string>(urlParams.get('mode') || 'userModels');
 
+  const userModelImageAssociationsByUserModelId = props.user_model_image_associations.reduce((acc: Record<number, UserModelImageAssociation[]>, assoc) => {
+    if (!acc[assoc.user_model_id]) acc[assoc.user_model_id] = [];
+    acc[assoc.user_model_id].push(assoc);
+    return acc;
+  }, {});
+
   return (
     <div id='model-detail' className='px-6 py-8 max-w-[600px] mx-auto'>
       <div className='flex mb-5'>
@@ -55,7 +61,8 @@ const ModelDetail = (props: Props) => {
             faction={props.faction}
             model={props.model}
             users={props.users}
-            userModels={props.user_models} />
+            userModels={props.user_models}
+            userModelImageAssociationsByUserModelId={userModelImageAssociationsByUserModelId} />
         }
         {mode === 'gallery' &&
           <ModelGallery

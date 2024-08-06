@@ -1,5 +1,5 @@
 import React from "react";
-import { UserFaction, GameSystem, Faction, Model, UserModel, User } from "../types/models";
+import { UserFaction, GameSystem, Faction, Model, UserModel, User, UserFactionImageAssociation, UserModelImageAssociation } from "../types/models";
 import { countByStatus } from "../utils/helpers";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
@@ -18,12 +18,13 @@ type Props = {
   factions: Faction[];
   all_game_systems: GameSystem[];
   user_game_systems: GameSystem[];
+  num_images_by_user_faction_id: Record<number, number>;
 };
 
 const Collection = (props: Props) => {
   const numByStatus = countByStatus(props.user_models);
   let factionById: Record<number, Faction> = {};
-  props.all_factions.forEach((faction) => factionById[faction.id] = faction)
+  props.all_factions.forEach((faction) => factionById[faction.id] = faction);
 
   const valueByLabel = {
     'Factions': props.user_factions.length,
@@ -63,6 +64,7 @@ const Collection = (props: Props) => {
             faction: userFactionData.faction,
             userFaction: userFactionData.userFaction,
             factionNumByStatus: countByStatus(userFactionUserModels),
+            numImages: props.num_images_by_user_faction_id[userFactionData.userFaction.id] || 0
           };
         });
     return {

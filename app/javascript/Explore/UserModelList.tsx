@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Faction, Model, User, UserModel } from "../types/models";
+import { Faction, Model, User, UserModel, UserModelImageAssociation } from "../types/models";
 import Input from "../common/Input";
 import ModelListItem from "./ModelListItem";
 import UserModelSection from "./UserModelSection";
@@ -9,6 +9,7 @@ type Props = {
   model: Model;
   users: User[];
   userModels: UserModel[];
+  userModelImageAssociationsByUserModelId: Record<number, UserModelImageAssociation[]>;
 };
 
 type UserModelSectionData = {
@@ -65,6 +66,7 @@ const UserModelList = (props: Props) => {
             user={section.user}
             model={props.model}
             userModels={section.userModels}
+            userModelImageAssociationsByUserModelId={props.userModelImageAssociationsByUserModelId}
             className='mb-3' />
         ))}
       </div>

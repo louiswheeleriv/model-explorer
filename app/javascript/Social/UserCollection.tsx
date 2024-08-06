@@ -11,6 +11,7 @@ type Props = {
   models: Model[];
   factions: Faction[];
   gameSystems: GameSystem[];
+  numImagesByUserFactionId: Record<number, number>;
 };
 
 const UserCollection = (props: Props) => {
@@ -56,6 +57,7 @@ const UserCollection = (props: Props) => {
             faction: userFactionData.faction,
             userFaction: userFactionData.userFaction,
             factionNumByStatus: countByStatus(userFactionUserModels),
+            numImages: props.numImagesByUserFactionId[userFactionData.userFaction.id] || 0,
           };
         });
     return {

@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Faction, Model, UserFaction, UserModel, UserModelGroup } from "../types/models";
+import { Faction, Model, UserFaction, UserModel, UserModelGroup, UserModelImageAssociation } from "../types/models";
 import UserModelGroupDisplay from "./UserModelGroupDisplay";
 import Button from "../common/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,6 +14,7 @@ type Props = {
   userFaction: UserFaction;
   userModels: UserModel[];
   userModelGroups: UserModelGroup[];
+  userModelImageAssociationsByUserModelId: Record<number, UserModelImageAssociation[]>;
   factionModelById: Record<number, Model>;
   onManageGroupsButtonClick?: () => void;
   className?: string;
@@ -69,6 +70,7 @@ const UserFactionModels = (props: Props) => {
             userFaction={props.userFaction}
             userModelGroup={group}
             userModels={userModelsByGroupId[group.id] || []}
+            userModelImageAssociationsByUserModelId={props.userModelImageAssociationsByUserModelId}
             factionModelById={props.factionModelById} />
         </Fragment>
       ))}
@@ -79,6 +81,7 @@ const UserFactionModels = (props: Props) => {
           userFaction={props.userFaction}
           userModelGroup={undefined}
           userModels={userModelsUngrouped}
+          userModelImageAssociationsByUserModelId={props.userModelImageAssociationsByUserModelId}
           factionModelById={props.factionModelById} />
       }
     </div>

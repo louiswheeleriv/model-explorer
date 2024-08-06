@@ -1,5 +1,5 @@
 import React from "react";
-import { Faction, Model, UserFaction, UserModel, UserModelGroup } from "../types/models";
+import { Faction, Model, UserFaction, UserModel, UserModelGroup, UserModelImageAssociation } from "../types/models";
 import UserModelProgressBar from "./UserModelProgressBar";
 import CollapsibleListSection from "../common/CollapsibleListSection";
 
@@ -8,6 +8,7 @@ type Props = {
   userFaction: UserFaction;
   userModelGroup?: UserModelGroup;
   userModels: UserModel[];
+  userModelImageAssociationsByUserModelId: Record<number, UserModelImageAssociation[]>;
   factionModelById: Record<number, Model>;
   startExpanded?: boolean;
   className?: string;
@@ -41,6 +42,7 @@ const UserModelGroupDisplay = (props: Props) => {
             userFaction={props.userFaction}
             model={props.factionModelById[userModel.model_id]}
             userModel={userModel}
+            userModelImageAssociations={props.userModelImageAssociationsByUserModelId[userModel.id] || []}
             className={'mb-5'} />
         ))}
     </CollapsibleListSection>
