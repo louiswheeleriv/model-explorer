@@ -6267,6 +6267,10 @@ input:checked + .toggle-bg {
     margin-left: 0.5rem;
   }
 
+  .sm\:mr-2 {
+    margin-right: 0.5rem;
+  }
+
   .sm\:inline {
     display: inline;
   }

@@ -113,12 +113,10 @@ const EditUserModelGallery = (props: Props) => {
   return (
     <div id={componentId}>
       <div className='my-4 flex'>
-        <div className='flex-1'>
-          <Button
-            onClick={props.onCancel}
-            className='px-3 mx-auto'>
-            <FontAwesomeIcon icon={byPrefixAndName.fas['xmark']} className='mr-2' />
-            Cancel
+        <div className='flex-none'>
+          <Button onClick={props.onCancel} colorSet='lightgray'>
+            <FontAwesomeIcon icon={byPrefixAndName.fas['xmark']} className='sm:mr-2' />
+            <span className='hidden sm:inline'>Cancel</span>
           </Button>
         </div>
         <div className='flex-1 text-end'>
@@ -132,13 +130,11 @@ const EditUserModelGallery = (props: Props) => {
 
           <Button
             onClick={() => document.getElementById('image-input')?.click()}
-            className='px-3 mx-auto mr-3'>
+            className='mr-3'>
             <FontAwesomeIcon icon={byPrefixAndName.fas['camera']} className='mr-2' />
-            Add Image(s)
+            Add Images
           </Button>
-          <Button
-            onClick={saveImages}
-            className='px-3 mx-auto'>
+          <Button onClick={saveImages}>
             <FontAwesomeIcon icon={byPrefixAndName.fas['floppy-disk']} className='mr-2' />
             Save
           </Button>
