@@ -17,7 +17,7 @@ const TextArea = (props: Props) => {
         id={props.id}
         className={
           (props.className ? props.className+' ' : '')+
-          'block border text-sm rounded-lg w-full p-2.5 '+
+          'block border text-[16px] rounded-lg w-full p-2.5 '+
           'bg-gray-600 border-gray-500 placeholder-gray-400 '+
           'disabled:text-[#aaaaaa] resize-y '+
           'focus:ring-primary-500 focus:border-primary-500'
