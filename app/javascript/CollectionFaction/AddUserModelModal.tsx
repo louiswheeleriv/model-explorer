@@ -8,15 +8,11 @@ import Select from "../common/Select";
 import UserModelStatusEditor from "../common/UserModelStatusEditor";
 import $ from 'jquery';
 import { apiCall } from "../utils/helpers";
-
-export function openAddUserModelModal() {
-  $('#add-user-model-modal').css({
-    'opacity': 1,
-    'z-index': 5
-  });
-}
+import Modal from "../common/Modal";
 
 type Props = {
+  visible: boolean;
+  onClose: () => void;
   isCurrentUser: boolean;
   faction: Faction;
   userFaction: UserFaction;
@@ -189,93 +185,79 @@ const AddUserModelModal = (props: Props) => {
   }, [selectedModelId, newModelName]);
 
   return (
-    <div id="add-user-model-modal" tabIndex={-1} className="opacity-0 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 -z-50 justify-center flex items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full transition-all duration-250">
-      <div className="relative m-auto p-4 w-full max-w-md max-h-full">
-        <div className="relative rounded-lg shadow bg-gray-700">
-          
-          <div className='p-4 border-b border-gray-600 modal-header'>
-            <div className="flex items-center justify-between rounded-t">
-              <h3 className="text-lg font-semibold">
-                Add Model(s) to My Collection
-              </h3>
-              <button type="button" onClick={hideAddUserModelModal} className="bg-transparent rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center hover:bg-gray-600 hover:text-white">
-                <FontAwesomeIcon icon={byPrefixAndName.fas['xmark']} />
-              </button>
-            </div>
-          </div>
+    <Modal
+      id='add-user-model-modal'
+      headerText='Add Model(s) to My Collection'
+      visible={props.visible}
+      onClose={props.onClose}>
 
-          <div className='p-4 modal-content'>
-            <div className='mb-5'>
-              <label htmlFor="model-selection" className="block mb-2 text-sm font-medium">Model</label>
-              <Select
-                id='model-selection'
-                value={selectedModelId}
-                onChange={e => setSelectedModelId(e.target.value)}>
-                  <option key={'model-selection-none'} value='none'>Select Model</option>
-                  <option key={'model-selection-add_new'} value='add_new'>Add New Model</option>
-                  {models.map((model) => (
-                    <option key={'model-selection-'+model.id} value={model.id}>{model.name}</option>
-                  ))}
-              </Select>
-              {selectedModelId === 'add_new' && (
-                <Input
-                  placeholder='General Model Name (e.g. Intercessors)'
-                  value={newModelName}
-                  onChange={e => setNewModelName(e.target.value)}
-                  className='mt-5' />
-              )}
-              <Input
-                  placeholder='(Optional) Custom Name (e.g. Intercessors with Chainswords)'
-                  value={userModelName}
-                  onChange={e => setUserModelName(e.target.value)}
-                  className='mt-5' />
+      <div className='mb-5'>
+        <label htmlFor="model-selection" className="block mb-2 text-sm font-medium">Model</label>
+        <Select
+          id='model-selection'
+          value={selectedModelId}
+          onChange={e => setSelectedModelId(e.target.value)}>
+            <option key={'model-selection-none'} value='none'>Select Model</option>
+            <option key={'model-selection-add_new'} value='add_new'>Add New Model</option>
+            {models.map((model) => (
+              <option key={'model-selection-'+model.id} value={model.id}>{model.name}</option>
+            ))}
+        </Select>
+        {selectedModelId === 'add_new' && (
+          <Input
+            placeholder='General Model Name (e.g. Intercessors)'
+            value={newModelName}
+            onChange={e => setNewModelName(e.target.value)}
+            className='mt-5' />
+        )}
+        <Input
+            placeholder='(Optional) Custom Name (e.g. Intercessors with Chainswords)'
+            value={userModelName}
+            onChange={e => setUserModelName(e.target.value)}
+            className='mt-5' />
 
-              <div className='mt-5 mb-2 text-sm font-medium'>Model Group</div>
-              <Select
-                value={userModelGroupId}
-                onChange={e => {setUserModelGroupId(e.target.value)}}>
-                  <option key={'none'} value={'none'}>None</option>
-                  <option key={'add_new'} value={'add_new'}>Add New Group</option>
-                  {userModelGroups.map((group) => (
-                    <option key={group.id} value={group.id}>{group.name}</option>
-                  ))}
-              </Select>
-              {userModelGroupId === 'add_new' && (
-                <Input
-                  placeholder='Group Name (e.g. Elite Infantry)'
-                  value={newGroupName}
-                  onChange={e => setNewGroupName(e.target.value)}
-                  className='mt-5' />
-              )}
-            </div>
+        <div className='mt-5 mb-2 text-sm font-medium'>Model Group</div>
+        <Select
+          value={userModelGroupId}
+          onChange={e => {setUserModelGroupId(e.target.value)}}>
+            <option key={'none'} value={'none'}>None</option>
+            <option key={'add_new'} value={'add_new'}>Add New Group</option>
+            {userModelGroups.map((group) => (
+              <option key={group.id} value={group.id}>{group.name}</option>
+            ))}
+        </Select>
+        {userModelGroupId === 'add_new' && (
+          <Input
+            placeholder='Group Name (e.g. Elite Infantry)'
+            value={newGroupName}
+            onChange={e => setNewGroupName(e.target.value)}
+            className='mt-5' />
+        )}
+      </div>
 
-            <div className='overflow-hidden mb-5'>
-              <UserModelStatusEditor
-                isCurrentUser={props.isCurrentUser}
-                quantityByStatus={userModelQuantityByStatus}
-                onChange={setUserModelQuantityByStatus}
-                className='model-status-editor' />
-            </div>
+      <div className='overflow-hidden mb-5'>
+        <UserModelStatusEditor
+          isCurrentUser={props.isCurrentUser}
+          quantityByStatus={userModelQuantityByStatus}
+          onChange={setUserModelQuantityByStatus}
+          className='model-status-editor' />
+      </div>
 
-            <div className='flex mb-5'>
-              <div className='flex-1 text-center'>
-                <Button onClick={addUserModelAndMore} disabled={addUserModelButtonDisabled} className='max-w-[170px] mx-auto mr-5'>
-                  <FontAwesomeIcon icon={byPrefixAndName.fas['floppy-disks']} className='mr-2' />
-                  Add More
-                </Button>
-                <Button onClick={addUserModel} disabled={addUserModelButtonDisabled} className='max-w-[170px] mx-auto'>
-                  <FontAwesomeIcon icon={byPrefixAndName.fas['floppy-disk']} className='mr-2' />
-                  Save
-                </Button>
-              </div>
-            </div>
-
-            <div className='text-center text-red-500'>{error}</div>
-
-          </div>
+      <div className='flex mb-5'>
+        <div className='flex-1 text-center'>
+          <Button onClick={addUserModelAndMore} disabled={addUserModelButtonDisabled} className='max-w-[170px] mx-auto mr-5'>
+            <FontAwesomeIcon icon={byPrefixAndName.fas['floppy-disks']} className='mr-2' />
+            Add More
+          </Button>
+          <Button onClick={addUserModel} disabled={addUserModelButtonDisabled} className='max-w-[170px] mx-auto'>
+            <FontAwesomeIcon icon={byPrefixAndName.fas['floppy-disk']} className='mr-2' />
+            Save
+          </Button>
         </div>
       </div>
-    </div>
+
+      <div className='text-center text-red-500'>{error}</div>
+    </Modal>
   );
 };
 

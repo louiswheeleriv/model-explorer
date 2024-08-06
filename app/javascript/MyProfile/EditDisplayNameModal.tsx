@@ -4,11 +4,12 @@ import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import Button from "../common/Button";
 import Input from "../common/Input";
 import { apiCall } from "../utils/helpers";
+import Modal from "../common/Modal";
 
 type Props = {
   currentDisplayName: string;
   onClose: () => void;
-  visible?: boolean;
+  visible: boolean;
   className?: string;
 }
 
@@ -35,10 +36,6 @@ const EditDisplayNameModal = (props: Props) => {
       });
   }
 
-  function onCloseButtonClicked() {
-    props.onClose();
-  }
-
   useEffect(() => {
     if (proposedDisplayName && proposedDisplayName !== props.currentDisplayName) {
       setSubmitButtonDisabled(false);
@@ -47,50 +44,30 @@ const EditDisplayNameModal = (props: Props) => {
     }
   }, [proposedDisplayName]);
 
-  const componentId = 'edit-display-name-modal';
-
   return (
-    <div
-      id={componentId}
-      tabIndex={-1}
-      className={'overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 justify-center flex items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full transition-all duration-250 '+(props.visible ? 'opacity-1 z-5' : 'opacity-0 -z-50')}>
+    <Modal
+      id='edit-display-name-modal'
+      headerText='Edit Display Name'
+      visible={props.visible}
+      onClose={props.onClose}>
 
-      <div className="relative m-auto p-4 w-full max-w-md max-h-full">
-        <div className="relative rounded-lg shadow bg-gray-700">
-          
-          <div className='p-4 border-b border-gray-600 modal-header'>
-            <div className="flex items-center justify-between rounded-t">
-              <h3 className="text-lg font-semibold">
-                Edit Display Name
-              </h3>
-              <button type="button" onClick={onCloseButtonClicked} className="bg-transparent rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center hover:bg-gray-600 hover:text-white">
-                <FontAwesomeIcon icon={byPrefixAndName.fas['xmark']} />
-              </button>
-            </div>
-          </div>
-
-          <div className='p-4 modal-content'>
-            <div className='mb-4'>
-              <div className="mb-2 text-sm font-medium">Display Name</div>
-              <Input
-                value={proposedDisplayName}
-                onChange={e => setProposedDisplayName(e.target.value)}
-                className='mt-5' />
-            </div>
-
-            <div className='flex items-center mb-5'>
-              <Button onClick={onSubmitButtonClick} disabled={submitButtonDisabled} className='max-w-[170px] mx-auto'>
-                <FontAwesomeIcon icon={byPrefixAndName.fas['floppy-disk']} className='mr-2' />
-                Save
-              </Button>
-            </div>
-
-            <div className='text-center text-red-500'>{error}</div>
-
-          </div>
-        </div>
+      <div className='mb-4'>
+        <div className="mb-2 text-sm font-medium">Display Name</div>
+        <Input
+          value={proposedDisplayName}
+          onChange={e => setProposedDisplayName(e.target.value)}
+          className='mt-5' />
       </div>
-    </div>
+
+      <div className='flex items-center mb-5'>
+        <Button onClick={onSubmitButtonClick} disabled={submitButtonDisabled} className='max-w-[170px] mx-auto'>
+          <FontAwesomeIcon icon={byPrefixAndName.fas['floppy-disk']} className='mr-2' />
+          Save
+        </Button>
+      </div>
+
+      <div className='text-center text-red-500'>{error}</div>
+    </Modal>
   );
 };
 

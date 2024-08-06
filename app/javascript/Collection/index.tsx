@@ -1,5 +1,5 @@
-import React from "react";
-import { UserFaction, GameSystem, Faction, Model, UserModel, User, UserFactionImageAssociation, UserModelImageAssociation } from "../types/models";
+import React, { useState } from "react";
+import { UserFaction, GameSystem, Faction, Model, UserModel, User } from "../types/models";
 import { countByStatus } from "../utils/helpers";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
@@ -7,7 +7,7 @@ import Button from "../common/Button";
 
 import SummaryProgressBar from "../common/SummaryProgressBar";
 import GameSystemSection from "./GameSystemSection";
-import AddFactionModal, { openAddFactionModal } from "./AddFactionModal";
+import AddFactionModal from "./AddFactionModal";
 
 type Props = {
   user: User;
@@ -22,6 +22,8 @@ type Props = {
 };
 
 const Collection = (props: Props) => {
+  const [addFactionModalVisible, setAddFactionModalVisible] = useState(false);
+
   const numByStatus = countByStatus(props.user_models);
   let factionById: Record<number, Faction> = {};
   props.all_factions.forEach((faction) => factionById[faction.id] = faction);
@@ -84,13 +86,15 @@ const Collection = (props: Props) => {
 
       <div className='flex mt-5'>
         <div className='flex-1 text-end'>
-          <Button onClick={openAddFactionModal}>
+          <Button onClick={() => setAddFactionModalVisible(true)}>
             <FontAwesomeIcon icon={byPrefixAndName.fas['flag']} className='mr-2' />
             New Faction
           </Button>
         </div>
       </div>
       <AddFactionModal
+        visible={addFactionModalVisible}
+        onClose={() => setAddFactionModalVisible(false)}
         userFactions={props.user_factions}
         allFactions={props.all_factions}
         allGameSystems={props.all_game_systems}

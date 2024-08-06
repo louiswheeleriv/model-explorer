@@ -5,20 +5,15 @@ import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import Button from "../common/Button";
 import Input from "../common/Input";
 import Select from "../common/Select";
-import $ from 'jquery';
 import { apiCall } from "../utils/helpers";
-
-export function openAddFactionModal() {
-  $('#add-faction-modal').css({
-    'opacity': 1,
-    'z-index': 5
-  });
-}
+import Modal from "../common/Modal";
 
 type Props = {
   userFactions: UserFaction[];
   allFactions: Faction[];
   allGameSystems: GameSystem[];
+  visible: boolean;
+  onClose: () => void;
   className?: string;
 };
 
@@ -34,8 +29,6 @@ const AddFactionModal = (props: Props) => {
   ]);
   const [addFactionButtonDisabled, setAddFactionButtonDisabled] = useState(true);
   const [error, setError] = useState('');
-
-  const userFactionFactionIds = props.userFactions.map((userFaction) => userFaction.faction_id);
 
   async function createGameSystem(): Promise<number> {
     return apiCall({
@@ -97,13 +90,6 @@ const AddFactionModal = (props: Props) => {
     }
   }
 
-  function hideAddFactionModal() {
-    $('#add-faction-modal').css({
-      'opacity': 0,
-      'z-index': -5
-    });
-  }
-
   useEffect(() => {
     let factionOptions: { value: number | string; label: string }[] = [{ value: 'none', label: 'Select Faction' }];
     props.allFactions.filter((faction) => (
@@ -129,80 +115,66 @@ const AddFactionModal = (props: Props) => {
   }, [selectedGameSystemId, newGameSystemName, selectedFactionId, newFactionName])
 
   return (
-    <div id="add-faction-modal" tabIndex={-1} className="opacity-0 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 -z-50 justify-center flex items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full transition-all duration-250">
-      <div className="relative m-auto p-4 w-full max-w-md max-h-full">
-        <div className="relative rounded-lg shadow bg-gray-700">
-          
-          <div className='p-4 border-b border-gray-600 modal-header'>
-            <div className="flex items-center justify-between rounded-t">
-              <h3 className="text-lg font-semibold">
-                Add Faction to My Collection
-              </h3>
-              <button type="button" onClick={hideAddFactionModal} className="bg-transparent rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center hover:bg-gray-600 hover:text-white">
-                <FontAwesomeIcon icon={byPrefixAndName.fas['xmark']} />
-              </button>
-            </div>
-          </div>
+    <Modal
+      id='add-faction-modal'
+      headerText='Add Faction to My Collection'
+      visible={props.visible}
+      onClose={props.onClose}>
 
-          <div className='p-4 modal-content'>
-            <div className='mb-4'>
-              <label htmlFor="game-system-selection" className="block mb-2 text-sm font-medium">Game System</label>
-              <Select
-                id='game-system-selection'
-                value={selectedGameSystemId}
-                onChange={e => setSelectedGameSystemId(e.target.value)}>
-                  <option value='none'>Select Game System</option>
-                  {props.allGameSystems?.map((gameSystem) => (
-                    <option key={'game-system-selection-'+gameSystem.id} value={gameSystem.id}>{gameSystem.name}</option>
-                  ))}
-                  <option value='add_new_game_system'>Add New Game System</option>
-              </Select>
-              {selectedGameSystemId === 'add_new_game_system' && (
-                <Input
-                  placeholder='Name of New Game System'
-                  defaultValue={newGameSystemName}
-                  onChange={e => setNewGameSystemName(e.target.value)}
-                  className='mt-5' />
-              )}
-            </div>
-
-            <div className='mb-4'>
-              <label htmlFor="faction-selection" className="block mb-2 text-sm font-medium">Faction</label>
-              <Select
-                id='faction-selection'
-                value={selectedFactionId}
-                onChange={e => setSelectedFactionId(e.target.value)}>
-                  {factionDropdownOptions.map((opt) => (
-                    <option key={'faction-selection-'+opt.value} value={opt.value}>{opt.label}</option>
-                  ))}
-              </Select>
-              {(selectedFactionId === 'add_new_faction' || selectedGameSystemId === 'add_new_game_system') && (
-                <Input
-                  placeholder="Name of New Faction"
-                  defaultValue={newFactionName}
-                  onChange={e => setNewFactionName(e.target.value)}
-                  className='mt-5' />
-              )}
-              <Input
-                placeholder='(Optional) Custom Name (e.g. The Ultra Guys)'
-                defaultValue={userFactionName}
-                onChange={e => setUserFactionName(e.target.value)}
-                className='mt-5' />
-            </div>
-
-            <div className='flex items-center mb-5'>
-              <Button onClick={addFaction} disabled={addFactionButtonDisabled} className='max-w-[170px] mx-auto'>
-                <FontAwesomeIcon icon={byPrefixAndName.fas['flag']} className='mr-2' />
-                Add Faction
-              </Button>
-            </div>
-
-            <div className='text-center text-red-500'>{error}</div>
-
-          </div>
-        </div>
+      <div className='mb-4'>
+        <label htmlFor="game-system-selection" className="block mb-2 text-sm font-medium">Game System</label>
+        <Select
+          id='game-system-selection'
+          value={selectedGameSystemId}
+          onChange={e => setSelectedGameSystemId(e.target.value)}>
+            <option value='none'>Select Game System</option>
+            {props.allGameSystems?.map((gameSystem) => (
+              <option key={'game-system-selection-'+gameSystem.id} value={gameSystem.id}>{gameSystem.name}</option>
+            ))}
+            <option value='add_new_game_system'>Add New Game System</option>
+        </Select>
+        {selectedGameSystemId === 'add_new_game_system' && (
+          <Input
+            placeholder='Name of New Game System'
+            defaultValue={newGameSystemName}
+            onChange={e => setNewGameSystemName(e.target.value)}
+            className='mt-5' />
+        )}
       </div>
-    </div>
+
+      <div className='mb-4'>
+        <label htmlFor="faction-selection" className="block mb-2 text-sm font-medium">Faction</label>
+        <Select
+          id='faction-selection'
+          value={selectedFactionId}
+          onChange={e => setSelectedFactionId(e.target.value)}>
+            {factionDropdownOptions.map((opt) => (
+              <option key={'faction-selection-'+opt.value} value={opt.value}>{opt.label}</option>
+            ))}
+        </Select>
+        {(selectedFactionId === 'add_new_faction' || selectedGameSystemId === 'add_new_game_system') && (
+          <Input
+            placeholder="Name of New Faction"
+            defaultValue={newFactionName}
+            onChange={e => setNewFactionName(e.target.value)}
+            className='mt-5' />
+        )}
+        <Input
+          placeholder='(Optional) Custom Name (e.g. The Ultra Guys)'
+          defaultValue={userFactionName}
+          onChange={e => setUserFactionName(e.target.value)}
+          className='mt-5' />
+      </div>
+
+      <div className='flex items-center mb-5'>
+        <Button onClick={addFaction} disabled={addFactionButtonDisabled} className='max-w-[170px] mx-auto'>
+          <FontAwesomeIcon icon={byPrefixAndName.fas['flag']} className='mr-2' />
+          Add Faction
+        </Button>
+      </div>
+
+      <div className='text-center text-red-500'>{error}</div>
+    </Modal>
   );
 };
 

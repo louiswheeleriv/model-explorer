@@ -1,10 +1,10 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Faction, Model, UserFaction, UserModel, UserModelGroup, UserModelImageAssociation } from "../types/models";
 import UserModelGroupDisplay from "./UserModelGroupDisplay";
 import Button from "../common/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { byPrefixAndName } from "@awesome.me/kit-902717d512/icons";
-import AddUserModelModal, { openAddUserModelModal } from "./AddUserModelModal";
+import AddUserModelModal from "./AddUserModelModal";
 import SummaryProgressBar from "../common/SummaryProgressBar";
 import { countByStatus } from "../utils/helpers";
 
@@ -21,6 +21,8 @@ type Props = {
 }
 
 const UserFactionModels = (props: Props) => {
+  const [addUserModelModalVisible, setAddUserModelModalVisible] = useState(false);
+
   const userModelsByGroupId: Record<number, UserModel[]> = props.userModels.reduce((acc: Record<number, UserModel[]>, um) => {
     const groupId = um.user_model_group_id;
     if (!(groupId in acc)) acc[groupId] = [];
@@ -48,12 +50,14 @@ const UserFactionModels = (props: Props) => {
       {props.isCurrentUser &&
         <div className='flex items-center my-5'>
           <div className='flex-1 text-end'>
-            <Button onClick={openAddUserModelModal}>
+            <Button onClick={() => setAddUserModelModalVisible(true)}>
               <FontAwesomeIcon icon={byPrefixAndName.fas['plus']} className='mr-2' />
               New Model(s)
             </Button>
           </div>
           <AddUserModelModal
+            visible={addUserModelModalVisible}
+            onClose={() => setAddUserModelModalVisible(false)}
             isCurrentUser={props.isCurrentUser}
             faction={props.faction}
             userFaction={props.userFaction}
