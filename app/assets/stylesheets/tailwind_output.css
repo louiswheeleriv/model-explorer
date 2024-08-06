@@ -1632,6 +1632,10 @@ input:checked + .toggle-bg {
   max-height: 100%;
 }
 
+.max-h-\[90\%\] {
+  max-height: 90%;
+}
+
 .w-1\/2 {
   width: 50%;
 }
@@ -2925,6 +2929,14 @@ input:checked + .toggle-bg {
 .bg-gray-300 {
   --tw-bg-opacity: 1;
   background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+}
+
+.bg-\[rgba\(0\2c 0\2c 0\2c 0\.7\)\] {
+  background-color: rgba(0,0,0,0.7);
+}
+
+.bg-\[rgba\(0\2c 0\2c 0\2c 0\.85\)\] {
+  background-color: rgba(0,0,0,0.85);
 }
 
 .bg-opacity-50 {

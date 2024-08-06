@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Model, User, UserImage, UserModel, UserModelImageAssociation } from "../types/models";
 import { Carousel } from "flowbite-react";
+import ImageFullScreenOverlay from "../common/ImageFullScreenOverlay";
 
 type Props = {
   model: Model;
@@ -38,6 +39,14 @@ const ModelGallery = (props: Props) => {
     }))
   );
 
+  const [imageFullScreenOverlayVisible, setImageFullScreenOverlayVisible] = useState(false);
+  const [imageFullScreenOverlayImageUrl, setImageFullScreenOverlayImageUrl] = useState('');
+
+  function handleCarouselImageClicked(img: UserImage) {
+    setImageFullScreenOverlayImageUrl(img.url);
+    setImageFullScreenOverlayVisible(true);
+  }
+
   const componentId = 'model-gallery';
 
   return (
@@ -48,18 +57,25 @@ const ModelGallery = (props: Props) => {
         </div>
       }
       {images.length > 0 &&
-        <Carousel slide={false} className='h-[400px]'>
-          {images.map((img) => (
-            <div key={img.userImage.id} className='m-auto text-center items-center'>
-              <div className='mb-3'>
-                {img.user.display_name || img.user.username}'s {img.userModel.name || props.model.name}
+        <>
+          <Carousel slide={false} className='h-[400px]'>
+            {images.map((img) => (
+              <div key={img.userImage.id} className='m-auto text-center items-center'>
+                <div className='mb-3'>
+                  {img.user.display_name || img.user.username}'s {img.userModel.name || props.model.name}
+                </div>
+                <img
+                  src={img.userImage.url}
+                  onClick={() => handleCarouselImageClicked(img.userImage)}
+                  className='m-auto object-contain max-w-[75%] max-h-[100%]' />
               </div>
-              <img
-                src={img.userImage.url}
-                className='m-auto object-contain max-w-[75%] max-h-[100%]' />
-            </div>
-          ))}
-        </Carousel>
+            ))}
+          </Carousel>
+          <ImageFullScreenOverlay
+            visible={imageFullScreenOverlayVisible}
+            imageUrl={imageFullScreenOverlayImageUrl}
+            onClose={() => setImageFullScreenOverlayVisible(false)} />
+        </>
       }
     </div>
   );

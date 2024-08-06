@@ -5,6 +5,7 @@ import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import { Carousel } from "flowbite-react";
 import Button from "../common/Button";
 import EditUserFactionGallery from "./EditUserFactionGallery";
+import ImageFullScreenOverlay from "../common/ImageFullScreenOverlay";
 
 type Props = {
   isCurrentUser: boolean;
@@ -22,6 +23,14 @@ const UserFactionGallery = (props: Props) => {
         { id: 0, user_id: 0, url: 'URL_BROKEN' }
     ))
   );
+
+  const [imageFullScreenOverlayVisible, setImageFullScreenOverlayVisible] = useState(false);
+  const [imageFullScreenOverlayImageUrl, setImageFullScreenOverlayImageUrl] = useState('');
+
+  function handleCarouselImageClicked(img: UserImage) {
+    setImageFullScreenOverlayImageUrl(img.url);
+    setImageFullScreenOverlayVisible(true);
+  }
 
   const componentId = 'user-faction-gallery';
 
@@ -50,10 +59,15 @@ const UserFactionGallery = (props: Props) => {
                 <img
                   key={img.id}
                   src={img.url}
+                  onClick={() => handleCarouselImageClicked(img)}
                   className='object-contain max-w-[75%] max-h-[100%]' />
               ))}
             </Carousel>
           }
+          <ImageFullScreenOverlay
+            visible={imageFullScreenOverlayVisible}
+            imageUrl={imageFullScreenOverlayImageUrl}
+            onClose={() => setImageFullScreenOverlayVisible(false)} />
         </>
       }
       {mode === 'edit' &&
