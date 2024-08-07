@@ -9,11 +9,17 @@ type Props = {
 const Welcome = (props: Props) => {
   return (
     <div className='px-6 py-8 max-w-[600px] mx-auto'>
-      <h2 className='text-center text-2xl mb-[50px]'>
-        <FontAwesomeIcon icon={byPrefixAndName.fas['dice']} />
-        <span className='mx-4'>Welcome to Model Explorer!</span>
-        <FontAwesomeIcon icon={byPrefixAndName.fas['paintbrush-fine']} />
-      </h2>
+      <div className='flex justify-center mb-[50px]'>
+        <div className='flex-none my-auto mr-3'>
+          <FontAwesomeIcon icon={byPrefixAndName.fas['dice']} size='xl' />
+        </div>
+        <div className='flex-1 text-2xl text-center my-auto max-w-[300px]'>
+          Welcome to Model Explorer!
+        </div>
+        <div className='flex-none my-auto ml-3'>
+          <FontAwesomeIcon icon={byPrefixAndName.fas['paintbrush-fine']} size='xl' />
+        </div>
+      </div>
       <p className='text-center mb-5'>
         Model Explorer is a tool for you to manage and display your collection of miniatures, and explore those of your friends.
       </p>

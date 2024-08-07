@@ -27,7 +27,11 @@ const ImageFullScreenOverlay = (props: Props) => {
             className='m-auto object-contain max-h-[90%]' />
 
           <div className='text-center mt-3 text-xl'>
-            <a onClick={props.onClose}>Close</a>
+            <a
+              onClick={props.onClose}
+              className='cursor-pointer'>
+                Close
+            </a>
           </div>
         </div>
       </div>

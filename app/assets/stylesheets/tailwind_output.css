@@ -1660,6 +1660,10 @@ input:checked + .toggle-bg {
   max-height: 90%;
 }
 
+.max-h-\[300px\] {
+  max-height: 300px;
+}
+
 .w-1\/2 {
   width: 50%;
 }
@@ -1928,6 +1932,10 @@ input:checked + .toggle-bg {
 
 .max-w-\[90\%\] {
   max-width: 90%;
+}
+
+.max-w-\[300px\] {
+  max-width: 300px;
 }
 
 .flex-1 {
