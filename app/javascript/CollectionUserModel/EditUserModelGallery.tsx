@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { UserImage, UserModel, UserModelImageAssociation } from "../types/models";
 import Button from "../common/Button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -21,15 +21,15 @@ const EditUserModelGallery = (props: Props) => {
   const [isUploadingFiles, setIsUploadingFiles] = useState(false);
   const [numFilesUploaded, setNumFilesUploaded] = useState(0);
   const [numFilesToUpload, setNumFilesToUpload] = useState(0);
-  const [proposedImages, setProposedImages] = useState<ProposedImage[]>(
-    props.userModelImageAssociations.map((imgAssoc) => {
-      const image = props.userImages.find((img) => img.id === imgAssoc.user_image_id);
-      return {
-        user_image_id: imgAssoc.user_image_id,
-        image_url: image?.url || 'URL_BROKEN'
-      };
-    })
-  );
+  const originalImages = props.userModelImageAssociations.map((imgAssoc) => {
+    const image = props.userImages.find((img) => img.id === imgAssoc.user_image_id);
+    return {
+      user_image_id: imgAssoc.user_image_id,
+      image_url: image?.url || 'URL_BROKEN'
+    };
+  });
+  const [proposedImages, setProposedImages] = useState<ProposedImage[]>(originalImages);
+  const [saveButtonDisabled, setSaveButtonDisabled] = useState(true);
   const [error, setError] = useState('');
 
   async function saveImages() {
@@ -108,6 +108,17 @@ const EditUserModelGallery = (props: Props) => {
     ].flat());
   }
 
+  useEffect(() => {
+    setSaveButtonDisabled(
+      isUploadingFiles || (
+        proposedImages.length == originalImages.length &&
+        proposedImages.every((img, index) => (
+          img.user_image_id == originalImages[index]?.user_image_id
+        ))
+      )
+    );
+  }, [proposedImages, isUploadingFiles]);
+
   const componentId = 'edit-user-model-gallery';
 
   return (
@@ -134,7 +145,7 @@ const EditUserModelGallery = (props: Props) => {
             <FontAwesomeIcon icon={byPrefixAndName.fas['camera']} className='mr-2' />
             Add Images
           </Button>
-          <Button onClick={saveImages}>
+          <Button onClick={saveImages} disabled={saveButtonDisabled}>
             <FontAwesomeIcon icon={byPrefixAndName.fas['floppy-disk']} className='mr-2' />
             Save
           </Button>
