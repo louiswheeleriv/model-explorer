@@ -13,15 +13,14 @@ type Props = {
 const Modal = (props: PropsWithChildren<Props>) => {
   return (
     <div
-      id="deletion-confirmation-modal"
       tabIndex={-1}
       className={
         'overflow-y-auto overflow-x-hidden '+
         'fixed top-0 right-0 left-0 justify-center '+
-        'flex items-center w-full md:inset-0 h-[calc(100%-1rem)] '+
+        'flex items-center w-full h-full md:inset-0 '+
         'max-h-full transition-all duration-250 '+
         'bg-[rgba(0,0,0,0.85)] '+
-        (props.visible ? 'opacity-1 z-5' : 'opacity-0 -z-50')}>
+        (props.visible ? 'opacity-1 z-10' : 'opacity-0 -z-10')}>
 
       <div className="relative m-auto p-4 w-full max-w-md max-h-full">
         <div className="relative rounded-lg shadow bg-gray-700">
