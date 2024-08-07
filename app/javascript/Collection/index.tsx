@@ -25,9 +25,7 @@ const Collection = (props: Props) => {
   const [addFactionModalVisible, setAddFactionModalVisible] = useState(false);
 
   const numByStatus = countByStatus(props.user_models);
-  let factionById: Record<number, Faction> = {};
-  props.all_factions.forEach((faction) => factionById[faction.id] = faction);
-
+  
   const valueByLabel = {
     'Factions': props.user_factions.length,
     'Models': props.user_models.reduce((acc, um) => (
@@ -36,38 +34,40 @@ const Collection = (props: Props) => {
     'Complete': Math.round((numByStatus['finished'] / Object.values(numByStatus).reduce((acc, num) => acc + num) * 100)) + '%'
   }
 
-  let factionIdByModelId: Record<number, number> = {};
-  props.models.forEach((model) => {
-    factionIdByModelId[model.id] = model.faction_id;
-  });
+  const factionById = props.all_factions.reduce((acc: Record<number, Faction>, faction) => {
+    acc[faction.id] = faction;
+    return acc;
+  }, {});
+
+  const userModelsByUserFactionId = props.user_models.reduce((acc: Record<number, UserModel[]>, userModel) => {
+    const key = userModel.user_faction_id;
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(userModel);
+    return acc;
+  }, {});
 
   const gameSystemSections = props.user_game_systems.map((gameSystem) => {
     const userFactionSections =
       props.user_factions
+        .filter((userFaction) => factionById[userFaction.faction_id]?.game_system_id === gameSystem.id)
         .map((userFaction) => {
+          const userFactionUserModels = userModelsByUserFactionId[userFaction.id];
           return {
             faction: factionById[userFaction.faction_id],
-            userFaction: userFaction
-          }
+            userFaction: userFaction,
+            factionNumByStatus: countByStatus(userFactionUserModels),
+            numImages: props.num_images_by_user_faction_id[userFaction.id] || 0
+          };
         })
-        .filter((userFactionData) => userFactionData.faction.game_system_id === gameSystem.id)
         .sort((a, b) => {
+          const aNumModels = Object.values(a.factionNumByStatus).reduce((acc, n) => acc + n);
+          const bNumModels = Object.values(b.factionNumByStatus).reduce((acc, n) => acc + n);
+          // Sort by num models descending
+          if (aNumModels > bNumModels) return -1;
+          if (aNumModels < bNumModels) return 1;
           if (a.faction.name < b.faction.name) return -1;
           if (a.faction.name > b.faction.name) return 1;
-          if (a.userFaction.name < b.userFaction.name) return -1;
-          if (a.userFaction.name > b.userFaction.name) return 1;
           return 0;
-        })
-        .map((userFactionData) => {
-          const userFactionUserModels = props.user_models.filter((um) => {
-            return um.user_faction_id === userFactionData.userFaction.id;
-          });
-          return {
-            faction: userFactionData.faction,
-            userFaction: userFactionData.userFaction,
-            factionNumByStatus: countByStatus(userFactionUserModels),
-            numImages: props.num_images_by_user_faction_id[userFactionData.userFaction.id] || 0
-          };
         });
     return {
       gameSystem: gameSystem,
@@ -97,8 +97,7 @@ const Collection = (props: Props) => {
         onClose={() => setAddFactionModalVisible(false)}
         userFactions={props.user_factions}
         allFactions={props.all_factions}
-        allGameSystems={props.all_game_systems}
-        className='' />
+        allGameSystems={props.all_game_systems} />
 
       {gameSystemSections.map((gameSystemSection) => (
         <GameSystemSection
