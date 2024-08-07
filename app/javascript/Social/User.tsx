@@ -3,6 +3,8 @@ import { Faction, GameSystem, Model, User, UserFaction, UserImage, UserModel } f
 import TabsBar from "../common/TabsBar";
 import ProfilePicture from "../common/ProfilePicture";
 import UserCollection from "./UserCollection";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { byPrefixAndName } from "@awesome.me/kit-902717d512/icons";
 
 type Props = {
   user: User;
@@ -21,12 +23,22 @@ const User = (props: Props) => {
   
   return (
     <div id='user' className='px-6 py-8 max-w-[600px] mx-auto'>
-      <div className='text-2xl text-center mb-5'>
-        <ProfilePicture
-          width='100px'
-          imageUrl={props.profile_picture?.url}
-          className='mx-auto mb-2' />
-        {props.user.display_name || props.user.username}
+
+      <div className='flex'>
+        <div className='flex-1'>
+          <a href='/social'>
+            <FontAwesomeIcon icon={byPrefixAndName.fas['left']} className='mr-1' />
+            Social
+          </a>
+        </div>
+        <div className='flex-1 text-2xl text-center mb-5'>
+          <ProfilePicture
+            width='100px'
+            imageUrl={props.profile_picture?.url}
+            className='mx-auto mb-2' />
+          {props.user.display_name || props.user.username}
+        </div>
+        <div className='flex-1'></div>
       </div>
 
       <TabsBar

@@ -1241,6 +1241,10 @@ input:checked + .toggle-bg {
   right: -11px;
 }
 
+.start-0 {
+  inset-inline-start: 0px;
+}
+
 .-z-10 {
   z-index: -10;
 }
