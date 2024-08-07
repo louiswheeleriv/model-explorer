@@ -26,6 +26,10 @@ class User < ApplicationRecord
 
   attr_encrypted :password, key: Rails.configuration.x.encryption_key
 
+  def to_safe_attributes
+    attributes.except('password', 'encrypted_password', 'encrypted_password_iv')
+  end
+
   def password_length
     password.length
   end

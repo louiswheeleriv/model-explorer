@@ -7,7 +7,7 @@ module Social
     def props
       users = ::User.all.order(display_name: :asc, username: :asc)
       raw_props.merge(
-        users: users,
+        users: users.map(&:to_safe_attributes),
         profile_picture_by_user_id:
           ::UserImage
             .where(id: users.pluck(:profile_picture_id))

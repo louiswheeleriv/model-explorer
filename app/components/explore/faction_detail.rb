@@ -19,10 +19,10 @@ module Explore
       user_faction_image_associations = ::UserFactionImageAssociation.where(user_faction_id: user_factions.pluck(:id))
 
       raw_props.merge(
-        current_user: ::User.find_by(id: current_user_id),
+        current_user: ::User.find_by(id: current_user_id)&.to_safe_attributes,
         game_system: faction.game_system,
         faction: faction,
-        users: ::User.where(id: user_factions.distinct.pluck(:user_id)),
+        users: ::User.where(id: user_factions.distinct.pluck(:user_id)).map(&:to_safe_attributes),
         user_factions: user_factions,
         models: faction.models.order(name: :asc),
         num_users_by_model_id: num_users_by_model_id,

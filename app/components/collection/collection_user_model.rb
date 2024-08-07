@@ -9,7 +9,7 @@ module Collection
       user_faction = user_model.user_faction
       raw_props.merge(
         is_current_user: current_user_id == user_model.user_id,
-        user: user_model.user,
+        user: user_model.user.to_safe_attributes,
         faction: user_faction.faction,
         user_faction: user_faction,
         model: user_model.model,

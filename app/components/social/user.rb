@@ -30,7 +30,7 @@ module Social
         end.to_h
 
       raw_props.merge(
-        user: user,
+        user: user.to_safe_attributes,
         profile_picture: user.profile_picture,
         game_systems: ::GameSystem.where(id: factions.distinct.pluck(:game_system_id)),
         factions: factions,

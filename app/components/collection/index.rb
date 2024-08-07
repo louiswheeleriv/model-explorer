@@ -34,7 +34,7 @@ module Collection
         end.to_h
 
       raw_props.merge(
-        user: user,
+        user: user.to_safe_attributes,
         user_factions: user_factions,
         user_models: user_models,
         models: models,

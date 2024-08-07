@@ -5,8 +5,7 @@ class TopNavBar < ReactComponent
 
   def props
     raw_props.merge(
-      extra: 'set in server ruby code',
-      current_user: current_user_id ? User.find_by(id: current_user_id) : nil
+      current_user: current_user_id ? User.find_by(id: current_user_id)&.to_safe_attributes : nil
     )
   end
 end

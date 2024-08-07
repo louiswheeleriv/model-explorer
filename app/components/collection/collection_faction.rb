@@ -12,7 +12,7 @@ module Collection
       user_faction_image_associations = user_faction.user_faction_image_associations.order(sort_index: :asc)
       raw_props.merge(
         is_current_user: current_user_id == user_faction.user_id,
-        user: user_faction.user,
+        user: user_faction.user.to_safe_attributes,
         game_system: faction.game_system,
         faction: faction,
         user_faction: user_faction,
