@@ -33,11 +33,12 @@ const UserFactionModels = (props: Props) => {
   const userModelsUngrouped = props.userModels.filter((um) => !um.user_model_group_id);
 
   let numByStatus = countByStatus(props.userModels);
+  const totalNumModels = Object.values(numByStatus).reduce((acc, num) => acc + num);
   const valueByLabel = {
     'Models': props.userModels.reduce((acc, um) => (
       acc + um.qty_unassembled + um.qty_assembled + um.qty_in_progress + um.qty_finished
     ), 0),
-    'Complete': Math.round((numByStatus['finished'] / Object.values(numByStatus).reduce((acc, num) => acc + num, 0) * 100)) + '%'
+    'Complete': totalNumModels > 0 ? Math.round(((numByStatus['finished'] / totalNumModels) * 100)) + '%' : '0%'
   }
 
   return (

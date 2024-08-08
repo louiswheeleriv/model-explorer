@@ -15,7 +15,7 @@ function roundToNearest(num: number, multiple: number) {
 }
 
 type Props = {
-  numByStatus: Record<UserModelStatus, number>;
+  numByStatus?: Record<UserModelStatus, number>;
   rounding: 'all' | 'bottom';
   size: 'large' | 'small';
 }
@@ -27,24 +27,24 @@ function statusSegmentRadiusClass(segmentIndex: number, numSegments: number, rou
     switch (roundingMode) {
       case 'all': return 'rounded-md';
       case 'bottom': return 'rounded-b-md';
-    }    
+    }
   } else if (isFirstSegment) {
     switch (roundingMode) {
       case 'all': return 'rounded-l-md';
       case 'bottom': return 'rounded-bl-md';
-    }  
+    }
   } else if (isLastSegment) {
     switch (roundingMode) {
       case 'all': return 'rounded-r-md';
       case 'bottom': return 'rounded-br-md';
-    }  
+    }
   }
   return '';
 }
 
 const StatusColorBar = (props: Props) => {
-  let numByStatus = props.numByStatus;
-  let numByStatusZeroCase = { unassembled: 1, assembled: 0, in_progress: 0, finished: 0 };
+  const numByStatusZeroCase = { unassembled: 1, assembled: 0, in_progress: 0, finished: 0 };
+  let numByStatus = props.numByStatus || numByStatusZeroCase;
   let totalNumModels = Object.values(numByStatus).reduce(((acc, num) => acc + num), 0);
 
   if (totalNumModels < 1) {

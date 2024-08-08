@@ -8,7 +8,7 @@ import ProfilePicture from "../common/ProfilePicture";
 type Props = {
   user: User;
   profilePicture?: UserImage;
-  numByStatus: QuantityByStatus;
+  numByStatus?: QuantityByStatus;
   className?: string;
 };
 

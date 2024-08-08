@@ -16,13 +16,14 @@ type Props = {
 
 const UserCollection = (props: Props) => {
   const numByStatus = countByStatus(props.userModels);
-    
+  const totalNumModels = Object.values(numByStatus).reduce((acc, num) => acc + num);
+  
   const valueByLabel = {
     'Factions': props.userFactions.length,
     'Models': props.userModels.reduce((acc, um) => (
       acc + um.qty_unassembled + um.qty_assembled + um.qty_in_progress + um.qty_finished
     ), 0),
-    'Complete': Math.round((numByStatus['finished'] / Object.values(numByStatus).reduce((acc, num) => acc + num) * 100)) + '%'
+    'Complete': totalNumModels > 0 ? Math.round(((numByStatus['finished'] / totalNumModels) * 100)) + '%' : '0%'
   }
 
   const factionById = props.factions.reduce((acc: Record<number, Faction>, faction) => {

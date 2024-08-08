@@ -58,7 +58,7 @@ const EditUserModelStatus = (props: Props) => {
       draftQuantityByStatus.finished;
     setValueByLabel({
       'Models': totalNumModels,
-      'Complete': Math.round((draftQuantityByStatus.finished / totalNumModels) * 100)+'%'
+      'Complete': totalNumModels > 0 ? Math.round((draftQuantityByStatus.finished / totalNumModels) * 100)+'%' : '0%'
     });
   }, [draftQuantityByStatus]);
 

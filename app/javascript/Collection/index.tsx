@@ -25,13 +25,14 @@ const Collection = (props: Props) => {
   const [addFactionModalVisible, setAddFactionModalVisible] = useState(false);
 
   const numByStatus = countByStatus(props.user_models);
+  const totalNumModels = Object.values(numByStatus).reduce((acc, num) => acc + num);
   
   const valueByLabel = {
     'Factions': props.user_factions.length,
     'Models': props.user_models.reduce((acc, um) => (
       acc + um.qty_unassembled + um.qty_assembled + um.qty_in_progress + um.qty_finished
     ), 0),
-    'Complete': Math.round((numByStatus['finished'] / Object.values(numByStatus).reduce((acc, num) => acc + num) * 100)) + '%'
+    'Complete': totalNumModels > 0 ? Math.round(((numByStatus['finished'] / totalNumModels) * 100)) + '%' : '0%'
   }
 
   const factionById = props.all_factions.reduce((acc: Record<number, Faction>, faction) => {
