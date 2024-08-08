@@ -91,13 +91,19 @@ const AddFactionModal = (props: Props) => {
   }
 
   useEffect(() => {
-    let factionOptions: { value: number | string; label: string }[] = [{ value: 'none', label: 'Select Faction' }];
+    let factionOptions: { value: number | string; label: string }[] = [
+      { value: 'none', label: 'Select Faction' },
+      { value: 'add_new_faction', label: 'Add New Faction' }
+    ];
     props.allFactions.filter((faction) => (
       faction.game_system_id.toString() === selectedGameSystemId.toString()
-    )).forEach((faction) => {
+    )).sort((a, b) => {
+      if (a.name < b.name) return -1;
+      if (a.name > b.name) return 1;
+      return 0;
+    }).forEach((faction) => {
       factionOptions.push({ value: faction.id, label: faction.name })
     })
-    factionOptions.push({ value: 'add_new_faction', label: 'Add New Faction' });
     setFactionDropdownOptions(factionOptions);
   }, [selectedGameSystemId]);
 

@@ -75,7 +75,7 @@ const EditUserFaction = (props: Props) => {
 
       <div className='mt-5 mb-2 text-sm font-medium'>Custom Name</div>
       <Input
-        placeholder='(Optional) Custom Name (e.g. Intercessors with Chainswords)'
+        placeholder='(Optional) Custom Name (e.g. The Ultra Guys)'
         defaultValue={props.userFaction.name}
         onChange={e => {setUserFactionName(e.target.value)}} />
 
