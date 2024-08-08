@@ -5,11 +5,6 @@
     "@awesome.me/kit-902717d512": "^1.0.10",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
-    "@types/jquery": "^3.5.30",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
-    "@types/react-fontawesome": "^1.6.8",
-    "autoprefixer": "^10.4.19",
     "esbuild": "^0.21.5",
     "flowbite": "^2.3.0",
     "flowbite-react": "^0.10.1",
@@ -19,9 +14,6 @@
     "postcss-cli": "^11.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.23.1",
-    "react-select": "^5.8.0",
-    "sass": "^1.77.4",
     "typescript": "^5.4.5"
   },
   "scripts": {
@@ -32,6 +24,10 @@
     "defaults"
   ],
   "devDependencies": {
-    "tailwindcss": "^3.4.4"
+    "tailwindcss": "^3.4.4",
+    "@types/jquery": "^3.5.30",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@types/react-fontawesome": "^1.6.8"
   }
 }
