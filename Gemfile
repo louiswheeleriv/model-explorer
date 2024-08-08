@@ -46,7 +46,6 @@ gem "bootsnap", require: false
 
 gem 'rack-cors'
 gem 'attr_encrypted'
-gem 'graphql'
 gem 'hashie'
 
 gem "jsbundling-rails", "~> 1.3"
@@ -73,7 +72,6 @@ group :development do
   # gem "spring"
 
   gem 'annotate'
-  gem 'graphiql-rails'
 end
 
 group :test do
