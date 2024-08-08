@@ -43,7 +43,7 @@ const UserCollection = (props: Props) => {
       props.userFactions
         .filter((userFaction) => factionById[userFaction.faction_id]?.game_system_id === gameSystem.id)
         .map((userFaction) => {
-          const userFactionUserModels = userModelsByUserFactionId[userFaction.id];
+          const userFactionUserModels = userModelsByUserFactionId[userFaction.id] || [];
           return {
             faction: factionById[userFaction.faction_id],
             userFaction: userFaction,
