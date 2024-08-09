@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { UserImage, UserModel, UserModelImageAssociation } from "../types/models";
-import Button from "../common/Button";
+import { UserImage, UserModel, UserModelImageAssociation } from "../../types/models";
+import Button from "../../common/Button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
-import { apiCall, uploadImage } from "../utils/helpers";
+import { apiCall, generateUuid, uploadImage } from "../../utils/helpers";
+import { ProposedImage } from "./UserModelGalleryDraggableItem";
+import UserModelGalleryDraggableList from "./UserModelGalleryDraggableList";
 
 type Props = {
   userModel: UserModel;
   userImages: UserImage[];
   userModelImageAssociations: UserModelImageAssociation[];
   onCancel: () => void;
-}
-
-type ProposedImage = {
-  user_image_id?: number;
-  image_url: string;
 }
 
 const EditUserModelGallery = (props: Props) => {
@@ -24,11 +21,12 @@ const EditUserModelGallery = (props: Props) => {
   const originalImages = props.userModelImageAssociations.map((imgAssoc) => {
     const image = props.userImages.find((img) => img.id === imgAssoc.user_image_id);
     return {
-      user_image_id: imgAssoc.user_image_id,
-      image_url: image?.url || 'URL_BROKEN'
+      id: imgAssoc.user_image_id.toString(),
+      userImageId: imgAssoc.user_image_id,
+      imageUrl: image?.url || 'URL_BROKEN'
     };
   });
-  const [proposedImages, setProposedImages] = useState<ProposedImage[]>(originalImages);
+  const [images, setImages] = useState<ProposedImage[]>(originalImages);
   const [saveButtonDisabled, setSaveButtonDisabled] = useState(true);
   const [error, setError] = useState('');
 
@@ -37,13 +35,11 @@ const EditUserModelGallery = (props: Props) => {
       endpoint: '/user-models/'+props.userModel.id+'/images',
       method: 'POST',
       body: {
-        images: proposedImages.map((img, index) => (
-          {
-            user_image_id: img.user_image_id,
-            url: img.image_url,
-            sort_index: index
-          }
-        ))
+        images: images.map((img, index) => ({
+          user_image_id: img.userImageId,
+          url: img.imageUrl,
+          sort_index: index
+        }))
       }
     })
       .then((response) => response.json())
@@ -69,55 +65,27 @@ const EditUserModelGallery = (props: Props) => {
       imageUrls.push(imageUrl);
       setNumFilesUploaded(imageUrls.length);
     }
-    setProposedImages(
-      proposedImages.concat(imageUrls.map((url) => ({ image_url: url })))
+    setImages(
+      images.concat(
+        imageUrls.map((url) => ({
+          id: generateUuid(),
+          imageUrl: url
+        }))
+      )
     );
     setIsUploadingFiles(false);
-  }
-
-  function moveImageUp(index: number) {
-    if (index <= 0) throw 'Cannot move top image up!';
-
-    const imageToMoveUp = proposedImages[index];
-    const imageToMoveDown = proposedImages[index - 1];
-    setProposedImages([
-      proposedImages.slice(0, index - 1),
-      imageToMoveUp,
-      imageToMoveDown,
-      proposedImages.slice(index + 1)
-    ].flat());
-  }
-
-  function moveImageDown(index: number) {
-    if (index >= proposedImages.length - 1) throw 'Cannot move bottom image down!';
-
-    const imageToMoveDown = proposedImages[index];
-    const imageToMoveUp = proposedImages[index + 1];
-    setProposedImages([
-      proposedImages.slice(0, index),
-      imageToMoveUp,
-      imageToMoveDown,
-      proposedImages.slice(index + 2)
-    ].flat());
-  }
-
-  function removeImage(index: number) {
-    setProposedImages([
-      proposedImages.slice(0, index),
-      proposedImages.slice(index + 1)
-    ].flat());
   }
 
   useEffect(() => {
     setSaveButtonDisabled(
       isUploadingFiles || (
-        proposedImages.length == originalImages.length &&
-        proposedImages.every((img, index) => (
-          img.user_image_id == originalImages[index]?.user_image_id
+        images.length == originalImages.length &&
+        images.every((img, index) => (
+          img.userImageId == originalImages[index]?.userImageId
         ))
       )
     );
-  }, [proposedImages, isUploadingFiles]);
+  }, [images, isUploadingFiles]);
 
   const componentId = 'edit-user-model-gallery';
 
@@ -161,47 +129,15 @@ const EditUserModelGallery = (props: Props) => {
 
       <div className='text-red-500 text-center'>{error}</div>
 
-      {proposedImages.length === 0 && !isUploadingFiles &&
+      {images.length === 0 && !isUploadingFiles &&
         <div className='text-center'>
           No images
         </div>
       }
 
-      {proposedImages.map((img, index) => (
-        <div key={index} className='flex mt-5 p-4 border-2 border-gray-200'>
-          <img
-            key={index}
-            src={img.image_url}
-            className='flex-1 mx-auto max-w-[70%] max-h-[350px] object-contain' />
-          <div className='flex flex-col text-center'>
-            <div className='flex-1 align-middle'>
-              <div>
-                {index > 0 &&
-                  <FontAwesomeIcon
-                    icon={byPrefixAndName.fas['up']}
-                    onClick={() => moveImageUp(index)}
-                    className='cursor-pointer'
-                    size='xl' />
-                }
-              </div>
-              <div>
-                {index < proposedImages.length - 1 &&
-                  <FontAwesomeIcon
-                    icon={byPrefixAndName.fas['down']}
-                    onClick={() => moveImageDown(index)}
-                    className={'cursor-pointer'+(index > 0 ? ' mt-4' : '')}
-                    size='xl' />
-                }
-              </div>
-            </div>
-            <div className='flex-none'>
-              <Button onClick={() => removeImage(index)} className='mx-auto bg-red-500'>
-                <FontAwesomeIcon icon={byPrefixAndName.fas['trash']} className='text-white' />
-              </Button>
-            </div>
-          </div>
-        </div>
-      ))}
+      <UserModelGalleryDraggableList
+        images={images}
+        onImagesUpdated={setImages} />
     </div>
   );
 };
