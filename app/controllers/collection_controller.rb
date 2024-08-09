@@ -215,7 +215,7 @@ class CollectionController < ApplicationController
 
     ActiveRecord::Base.transaction do
       user_model
-        .user_model_image_associations
+        .user_image_associations
         .destroy_all
 
       proposed_images.each do |proposed_image|
@@ -225,7 +225,7 @@ class CollectionController < ApplicationController
             url: proposed_image['url']
           ).id
         
-        ::UserModelImageAssociation.create!(
+        ::UserImageAssociation.create!(
           user_id: current_user_id,
           user_model_id: user_model.id,
           user_image_id: user_image_id,
@@ -236,9 +236,9 @@ class CollectionController < ApplicationController
 
     render status: 200, json: {
       status: 200,
-      images: user_model.reload.user_model_image_associations.order(sort_index: :asc).map do |assoc|
+      images: user_model.reload.user_image_associations.order(sort_index: :asc).map do |assoc|
         {
-          user_model_image_association: assoc,
+          user_image_association: assoc,
           user_image: assoc.user_image
         }
       end
@@ -258,7 +258,7 @@ class CollectionController < ApplicationController
 
     ActiveRecord::Base.transaction do
       user_faction
-        .user_faction_image_associations
+        .user_image_associations
         .destroy_all
 
       proposed_images.each do |proposed_image|
@@ -268,7 +268,7 @@ class CollectionController < ApplicationController
             url: proposed_image['url']
           ).id
         
-        ::UserFactionImageAssociation.create!(
+        ::UserImageAssociation.create!(
           user_id: current_user_id,
           user_faction_id: user_faction.id,
           user_image_id: user_image_id,
@@ -279,9 +279,9 @@ class CollectionController < ApplicationController
 
     render status: 200, json: {
       status: 200,
-      images: user_faction.reload.user_faction_image_associations.order(sort_index: :asc).map do |assoc|
+      images: user_faction.reload.user_image_associations.order(sort_index: :asc).map do |assoc|
         {
-          user_faction_image_association: assoc,
+          user_image_association: assoc,
           user_image: assoc.user_image
         }
       end

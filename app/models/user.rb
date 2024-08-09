@@ -22,7 +22,7 @@ class User < ApplicationRecord
   has_many :user_model_groups, dependent: :destroy
   has_many :user_models, dependent: :destroy
   has_many :user_images, dependent: :destroy
-  has_many :user_model_image_associations, dependent: :destroy
+  has_many :user_image_associations, dependent: :destroy
 
   attr_encrypted :password, key: Rails.configuration.x.encryption_key
 

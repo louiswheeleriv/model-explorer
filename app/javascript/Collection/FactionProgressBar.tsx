@@ -1,5 +1,5 @@
 import React from "react";
-import { Faction, UserFaction, UserFactionImageAssociation, UserModelImageAssociation } from "../types/models";
+import { Faction, UserFaction } from "../types/models";
 import StatusColorBar from "../common/StatusColorBar";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';

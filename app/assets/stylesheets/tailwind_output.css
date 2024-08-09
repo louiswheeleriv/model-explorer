@@ -1563,6 +1563,10 @@ input:checked + .toggle-bg {
   height: 10px;
 }
 
+.h-\[300px\] {
+  height: 300px;
+}
+
 .h-\[400px\] {
   height: 400px;
 }
@@ -1600,16 +1604,8 @@ input:checked + .toggle-bg {
   height: 100vh;
 }
 
-.h-\[300px\] {
-  height: 300px;
-}
-
 .max-h-\[100\%\] {
   max-height: 100%;
-}
-
-.max-h-\[350px\] {
-  max-height: 350px;
 }
 
 .max-h-\[90\%\] {
@@ -1918,10 +1914,6 @@ input:checked + .toggle-bg {
   flex-shrink: 0;
 }
 
-.grow {
-  flex-grow: 1;
-}
-
 .origin-\[0\] {
   transform-origin: 0;
 }
@@ -2125,10 +2117,6 @@ input:checked + .toggle-bg {
 
 .justify-between {
   justify-content: space-between;
-}
-
-.justify-items-end {
-  justify-items: end;
 }
 
 .gap-1 {
@@ -3264,14 +3252,14 @@ input:checked + .toggle-bg {
   padding-bottom: 1rem;
 }
 
-.py-8 {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-}
-
 .py-5 {
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
+}
+
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .pb-2\.5 {

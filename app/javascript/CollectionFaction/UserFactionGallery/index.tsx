@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Faction, UserFaction, UserImage, UserFactionImageAssociation } from "../../types/models";
+import { Faction, UserFaction, UserImage, UserImageAssociation } from "../../types/models";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import { Carousel } from "flowbite-react";
@@ -12,13 +12,13 @@ type Props = {
   faction: Faction;
   userFaction: UserFaction;
   userImages: UserImage[];
-  userFactionImageAssociations: UserFactionImageAssociation[];
+  userImageAssociations: UserImageAssociation[];
 }
 
 const UserFactionGallery = (props: Props) => {
   const [mode, setMode] = useState<string>('view');
   const [images, setImages] = useState<UserImage[]>(
-    props.userFactionImageAssociations.map((assoc) => (
+    props.userImageAssociations.map((assoc) => (
       props.userImages.find((img) => img.id === assoc.user_image_id) ||
         { id: 0, user_id: 0, url: 'URL_BROKEN' }
     ))
@@ -75,7 +75,7 @@ const UserFactionGallery = (props: Props) => {
           faction={props.faction}
           userFaction={props.userFaction}
           userImages={props.userImages}
-          userFactionImageAssociations={props.userFactionImageAssociations}
+          userImageAssociations={props.userImageAssociations}
           onCancel={() => setMode('view')} />
       }
     </div>

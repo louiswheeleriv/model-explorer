@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Faction, GameSystem, Model, User, UserFaction, UserFactionImageAssociation, UserImage } from "../types/models";
+import { Faction, GameSystem, Model, User, UserFaction, UserImageAssociation, UserImage } from "../types/models";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { byPrefixAndName } from "@awesome.me/kit-902717d512/icons";
 import ModelList from "./ModelList";
@@ -16,7 +16,7 @@ type Props = {
   models: Model[];
   num_users_by_model_id: Record<number, number>;
   user_images: UserImage[];
-  user_faction_image_associations: UserFactionImageAssociation[];
+  user_image_associations: UserImageAssociation[];
 };
 
 const FactionDetail = (props: Props) => {
@@ -42,7 +42,7 @@ const FactionDetail = (props: Props) => {
       <TabsBar
         tabs={[
           { value: 'models', label: 'Models', icon: 'chess-knight' },
-          { value: 'gallery', label: 'Gallery', icon: 'camera', iconBadgeNumber: props.user_faction_image_associations.length },
+          { value: 'gallery', label: 'Gallery', icon: 'camera', iconBadgeNumber: props.user_image_associations.length },
           { value: 'edit', label: 'Edit', icon: 'gear' }
         ].filter((tab) => (
           props.current_user || !restrictedModes.includes(tab.value)
@@ -62,7 +62,7 @@ const FactionDetail = (props: Props) => {
             users={props.users}
             userFactions={props.user_factions}
             userImages={props.user_images}
-            userFactionImageAssociations={props.user_faction_image_associations} />
+            userImageAssociations={props.user_image_associations} />
         }
         {mode === 'edit' &&
           <EditFaction

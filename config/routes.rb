@@ -40,7 +40,6 @@ Rails.application.routes.draw do
   post 'user-models/:user_model_id/images' => 'collection#set_user_model_image_associations'
 
   get 'user-assets/upload' => 'user_assets#uploadable_url'
-  post 'user-assets/upload' => 'user_assets#create'
 
   post 'game-systems' => 'game_systems#create'
   post 'factions' => 'factions#create'

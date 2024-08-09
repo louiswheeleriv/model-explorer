@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { UserImage, Faction, UserFaction, UserFactionImageAssociation } from "../../types/models";
+import { UserImage, Faction, UserFaction, UserImageAssociation } from "../../types/models";
 import Button from "../../common/Button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
@@ -11,7 +11,7 @@ type Props = {
   faction: Faction;
   userFaction: UserFaction;
   userImages: UserImage[];
-  userFactionImageAssociations: UserFactionImageAssociation[];
+  userImageAssociations: UserImageAssociation[];
   onCancel: () => void;
 }
 
@@ -19,7 +19,7 @@ const EditUserFactionGallery = (props: Props) => {
   const [isUploadingFiles, setIsUploadingFiles] = useState(false);
   const [numFilesUploaded, setNumFilesUploaded] = useState(0);
   const [numFilesToUpload, setNumFilesToUpload] = useState(0);
-  const originalImages = props.userFactionImageAssociations.map((imgAssoc) => {
+  const originalImages = props.userImageAssociations.map((imgAssoc) => {
     const image = props.userImages.find((img) => img.id === imgAssoc.user_image_id);
     return {
       id: imgAssoc.user_image_id.toString(),

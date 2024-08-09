@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Faction, GameSystem, Model, User, UserImage, UserModel, UserModelImageAssociation } from "../types/models";
+import { Faction, GameSystem, Model, User, UserImage, UserModel, UserImageAssociation } from "../types/models";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { byPrefixAndName } from "@awesome.me/kit-902717d512/icons";
 import TabsBar from "../common/TabsBar";
@@ -15,7 +15,7 @@ type Props = {
   users: User[];
   user_models: UserModel[];
   user_images: UserImage[];
-  user_model_image_associations: UserModelImageAssociation[];
+  user_image_associations: UserImageAssociation[];
 };
 
 const ModelDetail = (props: Props) => {
@@ -23,11 +23,14 @@ const ModelDetail = (props: Props) => {
   const urlParams = new URLSearchParams(document.location.search);
   const [mode, setMode] = useState<string>(urlParams.get('mode') || 'userModels');
 
-  const userModelImageAssociationsByUserModelId = props.user_model_image_associations.reduce((acc: Record<number, UserModelImageAssociation[]>, assoc) => {
-    if (!acc[assoc.user_model_id]) acc[assoc.user_model_id] = [];
-    acc[assoc.user_model_id].push(assoc);
-    return acc;
-  }, {});
+  const userImageAssociationsByUserModelId =
+    props.user_image_associations
+      .reduce((acc: Record<number, UserImageAssociation[]>, assoc) => {
+        const key = assoc.user_model_id!;
+        if (!acc[key]) acc[key] = [];
+        acc[key].push(assoc);
+        return acc;
+      }, {});
 
   return (
     <div id='model-detail' className='px-6 py-8 max-w-[600px] mx-auto'>
@@ -47,7 +50,7 @@ const ModelDetail = (props: Props) => {
       <TabsBar
         tabs={[
           { value: 'userModels', label: 'User Models', icon: 'chess-knight' },
-          { value: 'gallery', label: 'Gallery', icon: 'camera', iconBadgeNumber: props.user_model_image_associations.length },
+          { value: 'gallery', label: 'Gallery', icon: 'camera', iconBadgeNumber: props.user_image_associations.length },
           { value: 'edit', label: 'Edit', icon: 'gear' }
         ].filter((tab) => (
           props.current_user || !restrictedModes.includes(tab.value)
@@ -62,7 +65,7 @@ const ModelDetail = (props: Props) => {
             model={props.model}
             users={props.users}
             userModels={props.user_models}
-            userModelImageAssociationsByUserModelId={userModelImageAssociationsByUserModelId} />
+            userImageAssociationsByUserModelId={userImageAssociationsByUserModelId} />
         }
         {mode === 'gallery' &&
           <ModelGallery
@@ -70,7 +73,7 @@ const ModelDetail = (props: Props) => {
             users={props.users}
             userModels={props.user_models}
             userImages={props.user_images}
-            userModelImageAssociations={props.user_model_image_associations} />
+            userImageAssociations={props.user_image_associations} />
         }
         {mode === 'edit' &&
           <EditModel

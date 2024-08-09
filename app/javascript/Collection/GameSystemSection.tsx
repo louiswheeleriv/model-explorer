@@ -1,5 +1,5 @@
 import React from "react";
-import { GameSystem, Faction, UserFaction, UserFactionImageAssociation, UserModelImageAssociation } from "../types/models";
+import { GameSystem, Faction, UserFaction } from "../types/models";
 import FactionProgressBar from "./FactionProgressBar";
 import CollapsibleListSection from "../common/CollapsibleListSection";
 

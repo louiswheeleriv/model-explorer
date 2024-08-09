@@ -16,7 +16,7 @@ module Explore
           .distinct
           .count('user_id')
 
-      user_faction_image_associations = ::UserFactionImageAssociation.where(user_faction_id: user_factions.pluck(:id))
+      user_image_associations = ::UserImageAssociation.where(user_faction_id: user_factions.pluck(:id))
 
       raw_props.merge(
         current_user: ::User.find_by(id: current_user_id)&.to_safe_attributes,
@@ -26,8 +26,8 @@ module Explore
         user_factions: user_factions,
         models: faction.models.order(name: :asc),
         num_users_by_model_id: num_users_by_model_id,
-        user_images: ::UserImage.where(id: user_faction_image_associations.distinct.pluck(:user_image_id)),
-        user_faction_image_associations: user_faction_image_associations
+        user_images: ::UserImage.where(id: user_image_associations.distinct.pluck(:user_image_id)),
+        user_image_associations: user_image_associations
       )
     end
   end  

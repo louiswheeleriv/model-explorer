@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Faction, GameSystem, Model, User, UserFaction, UserFactionImageAssociation, UserImage, UserModel, UserModelGroup, UserModelImageAssociation } from "../types/models";
+import { Faction, GameSystem, Model, User, UserFaction, UserImage, UserModel, UserModelGroup, UserImageAssociation } from "../types/models";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import UserFactionModels from "./UserFactionModels";
@@ -18,19 +18,27 @@ type Props = {
   user_models: UserModel[];
   user_model_groups: UserModelGroup[];
   user_images: UserImage[];
-  user_faction_image_associations: UserFactionImageAssociation[];
-  user_model_image_associations: UserModelImageAssociation[];
+  user_image_associations: UserImageAssociation[];
 }
 
 const CollectionFaction = (props: Props) => {
   const urlParams = new URLSearchParams(document.location.search);
   const [mode, setMode] = useState<string>(urlParams.get('mode') || 'models');
 
-  const userModelImageAssociationsByUserModelId = props.user_model_image_associations.reduce((acc: Record<number, UserModelImageAssociation[]>, assoc) => {
-    if (!acc[assoc.user_model_id]) acc[assoc.user_model_id] = [];
-    acc[assoc.user_model_id].push(assoc);
-    return acc;
-  }, {});
+  const userFactionImageAssociations =
+    props.user_image_associations
+      .filter(assoc => assoc.user_faction_id);
+
+  const userModelImageAssociationsByUserModelId =
+    props.user_image_associations
+      .filter(assoc => assoc.user_model_id)
+      .reduce((acc: Record<number, UserImageAssociation[]>, assoc) => {
+        const key = assoc.user_model_id;
+        if (!key) throw 'Invalid UserImageAssociation: '+JSON.stringify(assoc);
+        if (!acc[key]) acc[key] = [];
+        acc[key].push(assoc);
+        return acc;
+      }, {});
 
   function switchToManageGroupsView() { setMode('groups') }
 
@@ -70,7 +78,7 @@ const CollectionFaction = (props: Props) => {
         tabs={[
           { value: 'models', label: 'Models', icon: 'chess-knight' },
           { value: 'groups', label: 'Groups', icon: 'layer-group' },
-          { value: 'gallery', label: 'Gallery', icon: 'camera', iconBadgeNumber: props.user_faction_image_associations.length },
+          { value: 'gallery', label: 'Gallery', icon: 'camera', iconBadgeNumber: userFactionImageAssociations.length },
           { value: 'edit', label: 'Edit', icon: 'gear' }
         ].filter((tab) => (
           props.is_current_user || ['models', 'gallery'].includes(tab.value)
@@ -86,7 +94,7 @@ const CollectionFaction = (props: Props) => {
             userFaction={props.user_faction}
             userModels={props.user_models}
             userModelGroups={props.user_model_groups}
-            userModelImageAssociationsByUserModelId={userModelImageAssociationsByUserModelId}
+            userImageAssociationsByUserModelId={userModelImageAssociationsByUserModelId}
             factionModelById={props.faction_model_by_id}
             onManageGroupsButtonClick={switchToManageGroupsView} />
         }
@@ -104,7 +112,7 @@ const CollectionFaction = (props: Props) => {
             faction={props.faction}
             userFaction={props.user_faction}
             userImages={props.user_images}
-            userFactionImageAssociations={props.user_faction_image_associations}
+            userImageAssociations={userFactionImageAssociations}
           />
         }
         {mode === 'edit' &&

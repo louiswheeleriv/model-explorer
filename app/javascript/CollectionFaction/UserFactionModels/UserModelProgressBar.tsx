@@ -1,5 +1,5 @@
 import React from "react";
-import { Faction, Model, UserFaction, UserModel, UserModelImageAssociation } from "../../types/models";
+import { Faction, Model, UserFaction, UserModel, UserImageAssociation } from "../../types/models";
 import StatusColorBar from "../../common/StatusColorBar";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
@@ -10,7 +10,7 @@ type Props = {
   userFaction: UserFaction;
   model: Model;
   userModel: UserModel;
-  userModelImageAssociations: UserModelImageAssociation[];
+  userImageAssociations: UserImageAssociation[];
   startExpanded?: boolean;
   className?: string;
 }
@@ -33,10 +33,10 @@ const UserModelProgressBar = (props: Props) => {
               <FontAwesomeIcon icon={byPrefixAndName.fas['chess-knight']} className='mr-2' />
               {totalQuantity}
             </div>
-            {props.userModelImageAssociations.length > 0 &&
+            {props.userImageAssociations.length > 0 &&
               <div className='flex-none ml-3'>
                 <FontAwesomeIcon icon={byPrefixAndName.fas['camera']} className='mr-2' />
-                {props.userModelImageAssociations.length}
+                {props.userImageAssociations.length}
               </div>
             }
           </div>

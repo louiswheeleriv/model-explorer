@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Model, User, UserImage, UserModel, UserModelImageAssociation } from "../types/models";
+import { Model, User, UserImage, UserModel, UserImageAssociation } from "../types/models";
 import { Carousel } from "flowbite-react";
 import ImageFullScreenOverlay from "../common/ImageFullScreenOverlay";
 
@@ -8,7 +8,7 @@ type Props = {
   users: User[];
   userModels: UserModel[];
   userImages: UserImage[];
-  userModelImageAssociations: UserModelImageAssociation[];
+  userImageAssociations: UserImageAssociation[];
 }
 
 type ImageData = {
@@ -32,9 +32,9 @@ const ModelGallery = (props: Props) => {
   }, {});
 
   const [images, setImages] = useState<ImageData[]>(
-    props.userModelImageAssociations.map((assoc) => ({
+    props.userImageAssociations.map((assoc) => ({
       user: userById[assoc.user_id],
-      userModel: userModelById[assoc.user_model_id],
+      userModel: userModelById[assoc.user_model_id!],
       userImage: userImageById[assoc.user_image_id]
     }))
   );

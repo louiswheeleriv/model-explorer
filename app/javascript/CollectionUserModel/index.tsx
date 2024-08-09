@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Faction, Model, User, UserFaction, UserImage, UserModel, UserModelGroup, UserModelImageAssociation } from "../types/models";
+import { Faction, Model, User, UserFaction, UserImage, UserModel, UserModelGroup, UserImageAssociation } from "../types/models";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import UserModelGallery from "./UserModelGallery";
@@ -17,7 +17,7 @@ type Props = {
   user_model: UserModel;
   user_model_groups: UserModelGroup[];
   user_images: UserImage[];
-  user_model_image_associations: UserModelImageAssociation[];
+  user_image_associations: UserImageAssociation[];
 }
 
 const CollectionUserModel = (props: Props) => {
@@ -55,7 +55,7 @@ const CollectionUserModel = (props: Props) => {
         tabs={[
           { value: 'status', label: 'Status', icon: 'paintbrush-fine' },
           { value: 'notes', label: 'Notes', icon: 'book' },
-          { value: 'gallery', label: 'Gallery', icon: 'camera', iconBadgeNumber: props.user_model_image_associations.length },
+          { value: 'gallery', label: 'Gallery', icon: 'camera', iconBadgeNumber: props.user_image_associations.length },
           { value: 'edit', label: 'Edit', icon: 'gear' }
         ].filter((tab) => (
           props.is_current_user || !restrictedModes.includes(tab.value)
@@ -83,7 +83,7 @@ const CollectionUserModel = (props: Props) => {
             isCurrentUser={props.is_current_user}
             userModel={props.user_model}
             userImages={props.user_images}
-            userModelImageAssociations={props.user_model_image_associations} />
+            userImageAssociations={props.user_image_associations} />
         }
 
         {mode === 'edit' &&

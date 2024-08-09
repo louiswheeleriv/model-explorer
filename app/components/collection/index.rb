@@ -14,13 +14,13 @@ module Collection
       user_faction_factions = ::Faction.where(id: user_factions.distinct.pluck(:faction_id))
       user_game_systems = all_game_systems.where(id: user_faction_factions.distinct.pluck(:game_system_id))
 
-      user_faction_image_associations_by_faction_id =
-        ::UserFactionImageAssociation
+      num_user_faction_image_associations_by_user_faction_id =
+        ::UserImageAssociation
           .where(user_faction_id: user_factions.pluck(:id))
           .group(:user_faction_id)
           .count
-      user_model_image_associations_by_faction_id =
-        ::UserModelImageAssociation
+      num_user_model_image_associations_by_user_faction_id =
+        ::UserImageAssociation
           .where(user_model_id: user_models.pluck(:id))
           .joins(:user_model)
           .group(:user_faction_id)
@@ -28,8 +28,8 @@ module Collection
       num_images_by_user_faction_id =
         user_factions.pluck(:id).map do |user_faction_id|
           num_images =
-            (user_faction_image_associations_by_faction_id[user_faction_id] || 0) +
-            (user_model_image_associations_by_faction_id[user_faction_id] || 0)
+            (num_user_faction_image_associations_by_user_faction_id[user_faction_id] || 0) +
+            (num_user_model_image_associations_by_user_faction_id[user_faction_id] || 0)
           [user_faction_id, num_images]
         end.to_h
 

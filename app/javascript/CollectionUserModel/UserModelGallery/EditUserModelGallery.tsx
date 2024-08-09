@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { UserImage, UserModel, UserModelImageAssociation } from "../../types/models";
+import { UserImage, UserModel, UserImageAssociation } from "../../types/models";
 import Button from "../../common/Button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
@@ -10,7 +10,7 @@ import UserModelGalleryDraggableList from "./UserModelGalleryDraggableList";
 type Props = {
   userModel: UserModel;
   userImages: UserImage[];
-  userModelImageAssociations: UserModelImageAssociation[];
+  userImageAssociations: UserImageAssociation[];
   onCancel: () => void;
 }
 
@@ -18,7 +18,7 @@ const EditUserModelGallery = (props: Props) => {
   const [isUploadingFiles, setIsUploadingFiles] = useState(false);
   const [numFilesUploaded, setNumFilesUploaded] = useState(0);
   const [numFilesToUpload, setNumFilesToUpload] = useState(0);
-  const originalImages = props.userModelImageAssociations.map((imgAssoc) => {
+  const originalImages = props.userImageAssociations.map((imgAssoc) => {
     const image = props.userImages.find((img) => img.id === imgAssoc.user_image_id);
     return {
       id: imgAssoc.user_image_id.toString(),

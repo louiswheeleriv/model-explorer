@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { UserImage, UserModel, UserModelImageAssociation } from "../../types/models";
+import { UserImage, UserModel, UserImageAssociation } from "../../types/models";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import { Carousel } from "flowbite-react";
@@ -11,7 +11,7 @@ type Props = {
   isCurrentUser: boolean;
   userModel: UserModel;
   userImages: UserImage[];
-  userModelImageAssociations: UserModelImageAssociation[];
+  userImageAssociations: UserImageAssociation[];
 }
 
 type Mode = 'view' | 'edit';
@@ -19,7 +19,7 @@ type Mode = 'view' | 'edit';
 const UserModelGallery = (props: Props) => {
   const [mode, setMode] = useState<Mode>('view');
   const [images, setImages] = useState<UserImage[]>(
-    props.userModelImageAssociations.map((assoc) => (
+    props.userImageAssociations.map((assoc) => (
       props.userImages.find((img) => img.id === assoc.user_image_id) ||
         { id: 0, user_id: 0, url: 'URL_BROKEN' }
     ))
@@ -75,7 +75,7 @@ const UserModelGallery = (props: Props) => {
         <EditUserModelGallery
           userModel={props.userModel}
           userImages={props.userImages}
-          userModelImageAssociations={props.userModelImageAssociations}
+          userImageAssociations={props.userImageAssociations}
           onCancel={() => setMode('view')} />
       }
     </div>
