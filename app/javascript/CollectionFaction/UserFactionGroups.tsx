@@ -137,20 +137,20 @@ const UserFactionGroups = (props: Props) => {
             <div
               className='flex-1 cursor-pointer'
               onClick={() => handleEditGroupClicked(group, index)}>
-                <span className='text-xl'>{group.name}</span>
+                <span className='text-2xl'>{group.name}</span>
                 <FontAwesomeIcon
                   icon={byPrefixAndName.fas['pencil']}
                   className='ml-5'
                   size='lg' />
             </div>
-            <div className='flex-1 text-end'>
+            <div className='flex-none text-end'>
               <div>
                 {index > 0 &&
                   <FontAwesomeIcon
                     icon={byPrefixAndName.fas['up']}
                     onClick={() => moveGroupUp(index)}
-                    className='cursor-pointer'
-                    size='xl' />
+                    className='cursor-pointer p-3'
+                    size='2xl' />
                 }
               </div>
               <div>
@@ -158,8 +158,8 @@ const UserFactionGroups = (props: Props) => {
                   <FontAwesomeIcon
                     icon={byPrefixAndName.fas['down']}
                     onClick={() => moveGroupDown(index)}
-                    className={'cursor-pointer'+(index > 0 ? ' mt-4' : '')}
-                    size='xl' />
+                    className='cursor-pointer p-3'
+                    size='2xl' />
                 }
               </div>
             </div>
