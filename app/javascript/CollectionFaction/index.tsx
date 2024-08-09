@@ -33,7 +33,10 @@ const CollectionFaction = (props: Props) => {
   }, {});
 
   function switchToManageGroupsView() { setMode('groups') }
-  function switchToModelsView() { location.reload() }
+
+  function handleGroupsSaved() {
+    window.location.assign('/user-factions/'+props.user_faction.id+'?mode=groups');
+  }
 
   return (
     <div className='px-6 py-8 max-w-[600px] mx-auto'>
@@ -92,7 +95,7 @@ const CollectionFaction = (props: Props) => {
             faction={props.faction}
             userFaction={props.user_faction}
             userModelGroups={props.user_model_groups}
-            afterSave={switchToModelsView}
+            afterSave={handleGroupsSaved}
           />
         }
         {mode === 'gallery' &&

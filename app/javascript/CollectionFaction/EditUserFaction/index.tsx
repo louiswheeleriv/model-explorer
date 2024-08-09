@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Faction, GameSystem, UserFaction } from "../types/models";
-import Button from "../common/Button";
+import { Faction, GameSystem, UserFaction } from "../../types/models";
+import Button from "../../common/Button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
-import { apiCall } from "../utils/helpers";
-import Select from "../common/Select";
-import Input from "../common/Input";
-import DeletionConfirmationModal from "../common/DeletionConfirmationModal";
+import { apiCall } from "../../utils/helpers";
+import Select from "../../common/Select";
+import Input from "../../common/Input";
+import DeletionConfirmationModal from "../../common/DeletionConfirmationModal";
 
 type Props = {
   gameSystem: GameSystem;
@@ -34,7 +34,7 @@ const EditUserFaction = (props: Props) => {
         .then((response) => response.json())
         .then((body) => {
           if (body.status >= 300) throw new Error(body.error)
-          location.reload();
+          window.location.assign('/user-factions/'+props.userFaction.id+'?mode=edit');
         });
     } catch(err) {
       if (err instanceof Error) setError(err.message);

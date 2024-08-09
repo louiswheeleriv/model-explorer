@@ -1,7 +1,7 @@
 import React from "react";
-import { Faction, Model, UserFaction, UserModel, UserModelGroup, UserModelImageAssociation } from "../types/models";
+import { Faction, Model, UserFaction, UserModel, UserModelGroup, UserModelImageAssociation } from "../../types/models";
 import UserModelProgressBar from "./UserModelProgressBar";
-import CollapsibleListSection from "../common/CollapsibleListSection";
+import CollapsibleListSection from "../../common/CollapsibleListSection";
 
 type Props = {
   faction: Faction;

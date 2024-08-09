@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { UserImage, Faction, UserFaction, UserFactionImageAssociation } from "../types/models";
-import Button from "../common/Button";
+import { UserImage, Faction, UserFaction, UserFactionImageAssociation } from "../../types/models";
+import Button from "../../common/Button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
-import { apiCall, uploadImage } from "../utils/helpers";
+import { apiCall, uploadImage } from "../../utils/helpers";
 
 type Props = {
   faction: Faction;

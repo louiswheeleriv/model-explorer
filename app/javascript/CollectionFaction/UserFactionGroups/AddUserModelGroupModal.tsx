@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
-import Button from "../common/Button";
-import Input from "../common/Input";
-import { ProposedUserModelGroup } from "./UserFactionGroups";
-import Modal from "../common/Modal";
+import Button from "../../common/Button";
+import Input from "../../common/Input";
+import Modal from "../../common/Modal";
+import { ProposedUserModelGroup } from "./UserFactionGroupsDraggableItem";
+import { generateUuid } from "../../utils/helpers";
 
 type Props = {
   visible: boolean;
@@ -15,7 +16,11 @@ type Props = {
 }
 
 const AddUserModelGroupModal = (props: Props) => {
-  const emptyGroup = { name: '' };
+  const emptyGroup = {
+    id: generateUuid(),
+    userModelGroupId: undefined,
+    name: ''
+  };
 
   const [proposedGroup, setProposedGroup] = useState(emptyGroup);
   const [error, setError] = useState('');

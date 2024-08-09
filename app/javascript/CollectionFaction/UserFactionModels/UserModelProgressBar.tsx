@@ -1,9 +1,9 @@
 import React from "react";
-import { Faction, Model, UserFaction, UserModel, UserModelImageAssociation } from "../types/models";
-import StatusColorBar from "../common/StatusColorBar";
+import { Faction, Model, UserFaction, UserModel, UserModelImageAssociation } from "../../types/models";
+import StatusColorBar from "../../common/StatusColorBar";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
-import { countByStatus } from "../utils/helpers";
+import { countByStatus } from "../../utils/helpers";
 
 type Props = {
   faction: Faction;

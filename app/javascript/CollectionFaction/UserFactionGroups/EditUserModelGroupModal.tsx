@@ -1,23 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
-import Button from "../common/Button";
-import Input from "../common/Input";
-import { ProposedUserModelGroup } from "./UserFactionGroups";
-import Modal from "../common/Modal";
+import Button from "../../common/Button";
+import Input from "../../common/Input";
+import Modal from "../../common/Modal";
+import { ProposedUserModelGroup } from "./UserFactionGroupsDraggableItem";
+import { generateUuid } from "../../utils/helpers";
 
 type Props = {
   visible: boolean;
   group?: ProposedUserModelGroup;
-  otherProposedGroups: ProposedUserModelGroup[];
-  onSubmit: (origGroup: ProposedUserModelGroup, draftGroup: ProposedUserModelGroup) => void;
+  groups: ProposedUserModelGroup[];
+  onSubmit: (group: ProposedUserModelGroup) => void;
   onDelete: (group: ProposedUserModelGroup) => void;
   onClose: () => void;
   className?: string;
 }
 
 const EditUserModelGroupModal = (props: Props) => {
-  const emptyGroup = { name: '' };
+  const emptyGroup = {
+    id: generateUuid(),
+    userModelGroupId: undefined,
+    name: ''
+  };
 
   const [draftGroup, setDraftGroup] = useState(props.group || emptyGroup);
   const [error, setError] = useState('');
@@ -25,9 +30,8 @@ const EditUserModelGroupModal = (props: Props) => {
 
   function onSubmitButtonClick() {
     if (!draftGroup) throw 'No draft group provided.';
-    if (!props.group) throw 'No old group provided.';
 
-    props.onSubmit(props.group, draftGroup);
+    props.onSubmit(draftGroup);
   }
 
   function onDeleteButtonClick() {
@@ -39,7 +43,7 @@ const EditUserModelGroupModal = (props: Props) => {
   useEffect(() => {
     if (draftGroup &&
         draftGroup.name.length > 0 &&
-        props.otherProposedGroups.some((group) => group.name === draftGroup.name)) {
+        props.groups.some((group) => group.id !== draftGroup.id && group.name === draftGroup.name)) {
       setError('Group '+draftGroup.name+' already exists.');
       setSubmitButtonDisabled(true);
     } else {
@@ -73,8 +77,7 @@ const EditUserModelGroupModal = (props: Props) => {
         <div className='flex-1'></div>
         <div className='flex-1 text-center'>
           <Button onClick={onSubmitButtonClick} disabled={submitButtonDisabled} className='max-w-[170px] mx-auto'>
-            <FontAwesomeIcon icon={byPrefixAndName.fas['layer-plus']} className='mr-2' />
-            Submit
+            Done
           </Button>
         </div>
         <div className='flex-1 text-end'>

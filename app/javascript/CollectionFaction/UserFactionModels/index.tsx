@@ -1,12 +1,12 @@
 import React, { Fragment, useState } from "react";
-import { Faction, Model, UserFaction, UserModel, UserModelGroup, UserModelImageAssociation } from "../types/models";
+import { Faction, Model, UserFaction, UserModel, UserModelGroup, UserModelImageAssociation } from "../../types/models";
 import UserModelGroupDisplay from "./UserModelGroupDisplay";
-import Button from "../common/Button";
+import Button from "../../common/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { byPrefixAndName } from "@awesome.me/kit-902717d512/icons";
 import AddUserModelModal from "./AddUserModelModal";
-import SummaryProgressBar from "../common/SummaryProgressBar";
-import { countByStatus } from "../utils/helpers";
+import SummaryProgressBar from "../../common/SummaryProgressBar";
+import { countByStatus } from "../../utils/helpers";
 
 type Props = {
   isCurrentUser: boolean;

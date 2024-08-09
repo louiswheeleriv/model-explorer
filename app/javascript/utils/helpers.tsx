@@ -1,4 +1,5 @@
-import { QuantityByStatus, UserModel, UserModelStatus } from "../types/models";
+import { QuantityByStatus, UserModel } from "../types/models";
+import { v4 as uuidv4 } from 'uuid';
 
 export function apiCall({ endpoint, method, body}: {endpoint: string, method: string, body?: object}) {
   return fetch(endpoint, {
@@ -70,4 +71,8 @@ export async function uploadImage(image: File): Promise<string> {
 
 export function acceptableEmail(email: string) {
   return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+}
+
+export function generateUuid() {
+  return uuidv4();
 }

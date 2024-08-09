@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Faction, UserFaction, UserImage, UserFactionImageAssociation } from "../types/models";
+import { Faction, UserFaction, UserImage, UserFactionImageAssociation } from "../../types/models";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import { Carousel } from "flowbite-react";
-import Button from "../common/Button";
+import Button from "../../common/Button";
 import EditUserFactionGallery from "./EditUserFactionGallery";
-import ImageFullScreenOverlay from "../common/ImageFullScreenOverlay";
+import ImageFullScreenOverlay from "../../common/ImageFullScreenOverlay";
 
 type Props = {
   isCurrentUser: boolean;

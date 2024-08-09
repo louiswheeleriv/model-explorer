@@ -2017,6 +2017,10 @@ input:checked + .toggle-bg {
   cursor: wait;
 }
 
+.touch-none {
+  touch-action: none;
+}
+
 .touch-manipulation {
   touch-action: manipulation;
 }
@@ -3251,6 +3255,11 @@ input:checked + .toggle-bg {
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+
+.py-5 {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
 }
 
 .pb-2\.5 {

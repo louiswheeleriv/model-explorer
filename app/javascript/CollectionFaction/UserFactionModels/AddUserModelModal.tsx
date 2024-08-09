@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Faction, Model, UserModel, QuantityByStatus, UserModelGroup, UserFaction } from "../types/models";
+import { Faction, Model, UserModel, QuantityByStatus, UserModelGroup, UserFaction } from "../../types/models";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
-import Button from "../common/Button";
-import Input from "../common/Input";
-import Select from "../common/Select";
-import UserModelStatusEditor from "../common/UserModelStatusEditor";
+import Button from "../../common/Button";
+import Input from "../../common/Input";
+import Select from "../../common/Select";
+import UserModelStatusEditor from "../../common/UserModelStatusEditor";
 import $ from 'jquery';
-import { apiCall } from "../utils/helpers";
-import Modal from "../common/Modal";
+import { apiCall } from "../../utils/helpers";
+import Modal from "../../common/Modal";
 
 type Props = {
   visible: boolean;
@@ -122,7 +122,7 @@ const AddUserModelModal = (props: Props) => {
 
   async function addUserModel() {
     await saveUserModel();
-    location.reload();
+    window.location.assign('/user-factions/'+props.userFaction.id+'?mode=models');
   }
 
   async function addUserModelAndMore() {
