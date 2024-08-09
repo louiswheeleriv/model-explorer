@@ -28,7 +28,7 @@ const UserFactionGroupsDraggableItem = (props: Props) => {
 
   return (
     <li
-      className='my-5 p-4 border-2 border-gray-200 rounded flex items-center touch-none'
+      className='my-5 p-4 border-2 border-gray-200 rounded flex items-center'
       ref={setNodeRef}
       {...attributes}
       style={{
@@ -46,7 +46,7 @@ const UserFactionGroupsDraggableItem = (props: Props) => {
       <FontAwesomeIcon
         icon={byPrefixAndName.fas['grip-vertical']}
         size='xl'
-        className='flex-none p-5 cursor-grab'
+        className='flex-none touch-none p-5 cursor-grab'
         {...listeners} />
     </li>
   );

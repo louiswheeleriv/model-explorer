@@ -29,7 +29,7 @@ const UserFactionGalleryDraggableItem = (props: Props) => {
 
   return (
     <li
-      className='my-5 p-4 border-2 border-gray-200 rounded flex items-center touch-none h-[300px]'
+      className='my-5 p-4 border-2 border-gray-200 rounded flex items-center h-[300px]'
       ref={setNodeRef}
       {...attributes}
       style={{
@@ -46,7 +46,7 @@ const UserFactionGalleryDraggableItem = (props: Props) => {
           <FontAwesomeIcon
             icon={byPrefixAndName.fas['grip-vertical']}
             size='xl'
-            className='flex-none p-5 cursor-grab'
+            className='flex-none touch-none p-5 cursor-grab'
             {...listeners} />
         </div>
         <div className='flex-1 flex items-end'>
