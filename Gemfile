@@ -47,6 +47,7 @@ gem "bootsnap", require: false
 gem 'rack-cors'
 gem 'attr_encrypted'
 gem 'hashie'
+gem 'net-pop', github: 'ruby/net-pop'
 
 gem "jsbundling-rails", "~> 1.3"
 gem "view_component", "~> 3.12"
