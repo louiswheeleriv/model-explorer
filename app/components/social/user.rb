@@ -19,7 +19,7 @@ module Social
         ::UserImageAssociation
           .where(user_model_id: user_models.pluck(:id))
           .joins(:user_model)
-          .group(:user_faction_id)
+          .group('user_models.user_faction_id')
           .count
       num_images_by_user_faction_id =
         user_factions.pluck(:id).map do |user_faction_id|
