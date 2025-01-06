@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   post 'sign-in' => 'auth#sign_in'
   get 'sign-up' => 'auth#show_sign_up'
   post 'sign-up' => 'auth#sign_up'
+  get 'forgot-password' => 'auth#show_forgot_password'
+  post 'forgot-password' => 'auth#forgot_password'
   get 'sign-out' => 'auth#show_sign_out'
   get 'my-user' => 'auth#my_user'
 

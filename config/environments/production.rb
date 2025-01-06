@@ -77,6 +77,19 @@ Rails.application.configure do
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "model_explorer_production"
 
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: 'mail.privateemail.com',
+    port: 587,
+    domain: 'mini-painter.com',
+    user_name: ENV.fetch('EMAIL_USERNAME'),
+    password: ENV.fetch('EMAIL_PASSWORD'),
+    authentication: 'plain',
+    enable_starttls: true,
+    open_timeout: 5,
+    read_timeout: 5
+  }
+
   config.action_mailer.perform_caching = false
 
   # Ignore bad email addresses and do not raise email delivery errors.

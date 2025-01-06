@@ -6,6 +6,9 @@ class AuthController < ApplicationController
   def show_sign_up
   end
 
+  def show_forgot_password
+  end
+
   def show_sign_out
     session[:current_user_id] = nil
     redirect_to '/'
@@ -46,6 +49,19 @@ class AuthController < ApplicationController
     session[:current_user_id] = user.id
 
     render status: 200, json: { status: 200, user: user }.to_json
+  end
+
+  def forgot_password
+    usernameOrEmail = params[:usernameOrEmail]
+    user = User.find_by(username: usernameOrEmail)
+    user = User.find_by(email: usernameOrEmail) unless user
+
+    puts "Forgot password, user: #{user&.username}"
+    return render status: 200, json: { status: 200 }.to_json unless user
+
+    PasswordResetMailer.with(user_id: user.id).password_reset_email.deliver_now
+    
+    render status: 200, json: { status: 200 }.to_json
   end
 
   def my_user
