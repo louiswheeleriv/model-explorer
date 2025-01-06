@@ -68,7 +68,13 @@ class AuthController < ApplicationController
       password_reset_code_valid_until: 24.hours.since
     )
 
-    PasswordResetMailer.with(user_id: user.id).password_reset_email.deliver_now
+    PasswordResetMailer
+      .with(
+        user_id: user.id,
+        password_reset_code: reset_code
+      )
+      .password_reset_email
+      .deliver_now
     
     render status: 200, json: { status: 200 }.to_json
   end
