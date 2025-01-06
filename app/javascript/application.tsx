@@ -5,6 +5,7 @@ import TopNavBar from './TopNavBar';
 import SignInForm from "./auth/SignInForm";
 import SignUpForm from "./auth/SignUpForm";
 import ForgotPasswordForm from "./auth/ForgotPasswordForm";
+import PasswordResetForm from "./auth/PasswordResetForm";
 import MyProfile from "./MyProfile";
 import Social from "./Social";
 import User from "./Social/User";
@@ -24,6 +25,7 @@ mount({
   SignInForm,
   SignUpForm,
   ForgotPasswordForm,
+  PasswordResetForm,
   MyProfile,
   Collection,
   CollectionFaction,

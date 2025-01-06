@@ -2,16 +2,18 @@
 #
 # Table name: users
 #
-#  id                    :bigint           not null, primary key
-#  bio                   :text
-#  display_name          :string
-#  email                 :string           default("foo@test.com"), not null
-#  encrypted_password    :string           not null
-#  encrypted_password_iv :string           not null
-#  username              :string           not null
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
-#  profile_picture_id    :bigint
+#  id                              :bigint           not null, primary key
+#  bio                             :text
+#  display_name                    :string
+#  email                           :string           default("foo@test.com"), not null
+#  encrypted_password              :string           not null
+#  encrypted_password_iv           :string           not null
+#  password_reset_code             :string
+#  password_reset_code_valid_until :datetime
+#  username                        :string           not null
+#  created_at                      :datetime         not null
+#  updated_at                      :datetime         not null
+#  profile_picture_id              :bigint
 #
 # Indexes
 #

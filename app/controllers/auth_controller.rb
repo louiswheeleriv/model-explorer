@@ -9,6 +9,9 @@ class AuthController < ApplicationController
   def show_forgot_password
   end
 
+  def show_password_reset
+  end
+
   def show_sign_out
     session[:current_user_id] = nil
     redirect_to '/'
@@ -59,8 +62,29 @@ class AuthController < ApplicationController
     puts "Forgot password, user: #{user&.username}"
     return render status: 200, json: { status: 200 }.to_json unless user
 
+    reset_code = SecureRandom.uuid
+    user.update!(
+      password_reset_code: reset_code,
+      password_reset_code_valid_until: 24.hours.since
+    )
+
     PasswordResetMailer.with(user_id: user.id).password_reset_email.deliver_now
     
+    render status: 200, json: { status: 200 }.to_json
+  end
+
+  def password_reset
+    user = User.find_by(password_reset_code: params[:code])
+    return render status: 400, json: { status: 400, error: 'Password reset code invalid' }.to_json unless user
+
+    return render status: 400, json: { status: 400, error: 'Password reset code expired' }.to_json unless user.password_reset_code_valid_until.future?
+
+    user.update!(
+      password: params[:password],
+      password_reset_code: nil,
+      password_reset_code_valid_until: nil
+    )
+
     render status: 200, json: { status: 200 }.to_json
   end
 
