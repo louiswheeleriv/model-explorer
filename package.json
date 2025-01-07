@@ -1,5 +1,5 @@
 {
-  "name": "model-explorer",
+  "name": "mini-painter",
   "private": "true",
   "dependencies": {
     "@awesome.me/kit-902717d512": "^1.0.10",

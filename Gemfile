@@ -44,16 +44,18 @@ gem "bootsnap", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
-gem 'rack-cors'
 gem 'attr_encrypted'
+gem 'aws-sdk-s3'
+gem 'clockwork'
+gem 'daemons'
+gem 'delayed_job_active_record'
 gem 'hashie'
 gem 'net-pop', github: 'ruby/net-pop'
+gem 'rack-cors'
 
 gem "jsbundling-rails", "~> 1.3"
 gem "view_component", "~> 3.12"
 gem 'cssbundling-rails'
-
-gem 'aws-sdk-s3'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
