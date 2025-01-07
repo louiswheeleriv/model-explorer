@@ -1,12 +1,23 @@
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
+import Button from "./common/Button";
+import { Carousel } from "flowbite-react";
 
 type Props = {
 
 };
 
 const Welcome = (props: Props) => {
+
+  function goToSocial() {
+    window.location.assign('/social');
+  }
+
+  function signUp() {
+    window.location.assign('/sign-up');
+  }
+
   return (
     <div className='px-6 py-8 max-w-[600px] mx-auto'>
       <div className='flex justify-center mb-[50px]'>
@@ -21,11 +32,36 @@ const Welcome = (props: Props) => {
         </div>
       </div>
       <p className='text-center mb-5'>
-        MiniPainter is a tool for you to manage and display your collection of miniatures, and explore those of your friends.
+        MiniPainter is a tool to manage and display your collection of miniatures, and explore those of your friends.
       </p>
-      <p className='text-center'>
-        Many features are still in development. Check back often for updates!
-      </p>
+
+      <div className='text-center mb-5'>
+        <Button onClick={goToSocial} className='px-5'>View Collections</Button>
+      </div>
+      <div className='text-center mb-2'>
+        <Button onClick={signUp} className='px-5'>Get Started for Free</Button>
+      </div>
+      
+      <Carousel slide={true} className='h-[400px]'>
+        <img
+          src='/images/landing_page_my_collection.png'
+          className='object-contain max-w-[75%] max-h-[100%]'
+          style={{
+            width: '70%'
+          }}></img>
+        <img
+          src='/images/landing_page_space_cadets.png'
+          className='object-contain max-w-[75%] max-h-[100%]'
+          style={{
+            width: '70%'
+          }}></img>
+        <img
+          src='/images/landing_page_riflemen.png'
+          className='object-contain max-w-[75%] max-h-[100%]'
+          style={{
+            width: '70%'
+          }}></img>
+      </Carousel>
     </div>
   );
 };
