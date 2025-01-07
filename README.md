@@ -1,4 +1,4 @@
-# model-explorer
+# mini-painter
 
 Rails/React app for uploading and browsing collections of painted miniatures.
 
