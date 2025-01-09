@@ -42,7 +42,7 @@ const FactionProgressBar = (props: Props) => {
             }
           </div>
         </div>
-        <div className='flex-none text-right'>
+        <div className='flex-none text-right content-center'>
           <FontAwesomeIcon icon={byPrefixAndName.fas['chevron-right']} />
         </div>
       </div>
