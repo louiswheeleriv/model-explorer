@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_07_033028) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_09_115751) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -59,6 +59,32 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_07_033028) do
     t.index ["faction_id"], name: "index_models_on_faction_id"
   end
 
+  create_table "post_comments", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "post_id", null: false
+    t.text "body", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id", "user_id"], name: "index_post_comments_on_post_id_and_user_id"
+  end
+
+  create_table "post_reactions", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "post_id", null: false
+    t.string "reaction", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id", "reaction"], name: "index_post_reactions_on_post_id_and_reaction"
+  end
+
+  create_table "posts", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_posts_on_user_id"
+  end
+
   create_table "user_factions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "faction_id", null: false
@@ -69,6 +95,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_07_033028) do
     t.index ["user_id"], name: "index_user_factions_on_user_id"
   end
 
+  create_table "user_follows", force: :cascade do |t|
+    t.integer "following_user_id", null: false
+    t.integer "followed_user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["followed_user_id"], name: "index_user_follows_on_followed_user_id"
+    t.index ["following_user_id"], name: "index_user_follows_on_following_user_id"
+  end
+
   create_table "user_image_associations", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "user_image_id", null: false
@@ -77,6 +112,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_07_033028) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_model_id"
+    t.integer "post_id"
+    t.index ["post_id"], name: "index_user_image_associations_on_post_id"
     t.index ["user_faction_id"], name: "index_user_image_associations_on_user_faction_id"
     t.index ["user_id"], name: "index_user_image_associations_on_user_id"
     t.index ["user_image_id"], name: "index_user_image_associations_on_user_image_id"
@@ -99,6 +136,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_07_033028) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_faction_id", "name"], name: "index_user_model_groups_on_user_faction_id_and_name", unique: true
+  end
+
+  create_table "user_model_posts", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "post_id", null: false
+    t.integer "user_model_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_user_model_posts_on_post_id"
   end
 
   create_table "user_models", force: :cascade do |t|

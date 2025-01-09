@@ -26,6 +26,21 @@ class User < ApplicationRecord
   has_many :user_images, dependent: :destroy
   has_many :user_image_associations, dependent: :destroy
 
+  has_many :posts, dependent: :destroy
+  has_many :post_reactions, dependent: :destroy
+  has_many :post_comments, dependent: :destroy
+  has_many :user_model_posts, dependent: :destroy
+
+  has_many :user_follows_sent,
+           class_name: 'UserFollow',
+           foreign_key: 'following_user_id',
+           dependent: :destroy
+  has_many :user_follows_received,
+           class_name: 'UserFollow',
+           foreign_key: 'followed_user_id',
+           dependent: :destroy
+
+
   attr_encrypted :password, key: Rails.configuration.x.encryption_key
 
   def to_safe_attributes
@@ -38,6 +53,18 @@ class User < ApplicationRecord
 
   def profile_picture
     ::UserImage.find_by(id: profile_picture_id)
+  end
+
+  def following
+    User
+      .joins('INNER JOIN user_follows ON user_follows.followed_user_id = users.id')
+      .where('user_follows.following_user_id = ?', id)
+  end
+
+  def followers
+    User
+      .joins('INNER JOIN user_follows ON user_follows.following_user_id = users.id')
+      .where('user_follows.followed_user_id = ?', id)
   end
 
 end
