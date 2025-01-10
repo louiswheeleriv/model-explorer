@@ -113,6 +113,8 @@ GEM
     bindex (0.8.1)
     bootsnap (1.18.4)
       msgpack (~> 1.2)
+    bugsnag (6.27.1)
+      concurrent-ruby (~> 1.0)
     builder (3.3.0)
     capybara (3.40.0)
       addressable
@@ -321,6 +323,7 @@ DEPENDENCIES
   attr_encrypted
   aws-sdk-s3
   bootsnap
+  bugsnag
   capybara
   clockwork
   cssbundling-rails

@@ -46,6 +46,7 @@ gem "bootsnap", require: false
 
 gem 'attr_encrypted'
 gem 'aws-sdk-s3'
+gem 'bugsnag'
 gem 'clockwork'
 gem 'daemons'
 gem 'delayed_job_active_record'
