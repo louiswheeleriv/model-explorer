@@ -75,3 +75,27 @@ export type UserImageAssociation = {
   user_model_id?: number;
   sort_index: number;
 }
+
+export type Post = {
+  id: number;
+  user_id: number;
+  body: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export type PostComment = {
+  id: number;
+  post_id: number;
+  user_id: number;
+  body: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export type PostReaction = {
+  id: number;
+  post_id: number;
+  user_id: number;
+  reaction: string;
+}

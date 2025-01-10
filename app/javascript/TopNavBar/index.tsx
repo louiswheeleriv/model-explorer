@@ -30,16 +30,18 @@ const TopNavBar = (props: Props) => {
             {props.current_user &&
               <>
                 <li><TopNavBarButton label='My Collection' href='/my-collection'/></li>
-                <li><TopNavBarButton label='Explore' href='/explore'/></li>
                 <li><TopNavBarButton label='Social' href='/social'/></li>
+                <li><TopNavBarButton label='Users' href='/users'/></li>
+                <li><TopNavBarButton label='Models' href='/models'/></li>
                 <li><TopNavBarButton label='Profile' href='/my-profile'/></li>
                 <li><TopNavBarButton label='Sign Out' href='/sign-out'/></li>
               </>
             }
             {!props.current_user &&
               <>
-                <li><TopNavBarButton label='Explore' href='/explore'/></li>
                 <li><TopNavBarButton label='Social' href='/social'/></li>
+                <li><TopNavBarButton label='Users' href='/users'/></li>
+                <li><TopNavBarButton label='Models' href='/models'/></li>
                 <li><TopNavBarButton label='Sign In' href='/sign-in'/></li>
                 <li><TopNavBarButton label='Sign Up' href='/sign-up'/></li>
               </>

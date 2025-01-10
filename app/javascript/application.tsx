@@ -8,6 +8,7 @@ import ForgotPasswordForm from "./auth/ForgotPasswordForm";
 import PasswordResetForm from "./auth/PasswordResetForm";
 import MyProfile from "./MyProfile";
 import Social from "./Social";
+import Users from "./Social/Users";
 import User from "./Social/User";
 import Explore from "./Explore";
 import GameSystemDetail from "./Explore/GameSystemDetail";
@@ -31,6 +32,7 @@ mount({
   CollectionFaction,
   CollectionUserModel,
   Social,
+  Users,
   User,
   Explore,
   GameSystemDetail,

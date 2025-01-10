@@ -6,7 +6,7 @@
     "strict": true,
     "skipLibCheck": true,
     "jsx": "react",
-    "lib": ["es2019", "dom"],
+    "lib": ["es2021", "dom"],
     "moduleResolution": "bundler"
   }
 }

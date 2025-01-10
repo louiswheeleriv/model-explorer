@@ -17,5 +17,5 @@ class Post < ApplicationRecord
   has_many :post_reactions, dependent: :destroy
   has_many :post_comments, dependent: :destroy
   has_many :user_model_posts, dependent: :destroy
-  has_many :user_model_image_associations, dependent: :nil
+  has_many :user_model_image_associations, dependent: :nullify
 end

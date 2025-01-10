@@ -52,9 +52,10 @@ Rails.application.routes.draw do
   put 'models/:model_id' => 'factions#update_model'
 
   get 'social' => 'social#index'
+  get 'users' => 'social#users'
   get 'users/:user_id' => 'social#show_user'
 
-  get 'explore' => 'explore#index'
+  get 'models' => 'explore#index'
   get 'game-systems/:game_system_id' => 'explore#show_game_system'
   get 'factions/:faction_id' => 'explore#show_faction'
   get 'models/:model_id' => 'explore#show_model'
