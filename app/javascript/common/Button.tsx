@@ -1,5 +1,7 @@
 import React, { PropsWithChildren, MouseEventHandler } from "react";
 
+export type ButtonColorSet = 'default' | 'transparentDarkText' | 'transparentLightText' | 'lightgray' | 'blue' | 'green' | 'red';
+
 type Props = {
   id?: string;
   className?: string;
@@ -7,20 +9,26 @@ type Props = {
   onClick?: MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
   rounded?: boolean;
-  colorSet?: 'default' | 'lightgray' | 'blue' | 'green' | 'red';
+  colorSet?: ButtonColorSet;
 };
 
 const Button = (props: PropsWithChildren<Props>) => {
   const rounded = props.rounded !== undefined ? props.rounded : true;
   const colorSet = props.colorSet || 'blue';
 
+  const classesByColorSet = {
+    default: 'text-white',
+    transparentDarkText: 'bg-transparent text-gray-700 hover:text-gray-800',
+    transparentLightText: 'bg-transparent text-white',
+    lightgray: 'bg-gray-300 hover:bg-gray-400 text-gray-700 hover:text-gray-800',
+    blue: 'bg-blue-500 hover:bg-blue-700 text-white',
+    green: 'bg-green-400 hover:bg-green-600 text-white',
+    red: 'bg-red-500 hover:bg-red-700 text-white',
+  }
+
   let classNames = [];
   if (rounded) classNames.push('rounded');
-  if (!colorSet || colorSet === 'default') classNames.push('text-white');
-  if (colorSet === 'lightgray') classNames.push('bg-gray-400', 'hover:bg-gray-500', 'text-gray-700', 'hover:text-gray-800');
-  if (colorSet === 'blue') classNames.push('bg-blue-500', 'hover:bg-blue-700 text-white');
-  if (colorSet === 'green') classNames.push('bg-green-400', 'hover:bg-green-600 text-white');
-  if (colorSet === 'red') classNames.push('bg-red-500', 'hover:bg-red-700 text-white');
+  classNames.push(classesByColorSet[colorSet || 'default']);
 
   classNames.push(
     'font-bold', 'py-2', 'px-3', 'cursor-pointer',
@@ -30,16 +38,14 @@ const Button = (props: PropsWithChildren<Props>) => {
   if (props.className) classNames.push(props.className);
 
   return (
-    <>
-      <button
-        id={props.id}
-        type={props.type || 'button'}
-        className={classNames.join(' ')}
-        onClick={props.onClick}
-        disabled={props.disabled}>
-          {props.children}
-      </button>
-    </>
+    <button
+      id={props.id}
+      type={props.type || 'button'}
+      className={classNames.join(' ')}
+      onClick={props.onClick}
+      disabled={props.disabled}>
+        {props.children}
+    </button>
   );
 };
 

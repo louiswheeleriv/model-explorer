@@ -1,12 +1,20 @@
 import React from "react";
 import ProfilePicture from "../common/ProfilePicture";
 import { friendlyDateTimeString } from "../utils/helpers";
+import DropdownButton from "../common/DropdownButton";
+import DropdownButtonItem from "../common/DropdownButtonItem";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { byPrefixAndName } from "@awesome.me/kit-902717d512/icons";
 
 type Props = {
   userId: number;
   userDisplayName: string;
+  currentUserId?: number;
   userProfilePictureUrl?: string;
   timestamp?: string;
+  onDelete?: () => void;
+  isActionsDropdownOpen?: boolean;
+  onToggleActionsDropdown?: () => void;
   className?: string;
 };
 
@@ -28,6 +36,25 @@ const PostHeader = (props: Props) => {
           <div className='text-xs text-gray-300'>{friendlyDateTimeString(props.timestamp)}</div>
         }
       </div>
+      {props.userId === props.currentUserId &&
+        <div className='flex-none'>
+          <DropdownButton
+            colorSet='transparentLightText'
+            isOpen={props.isActionsDropdownOpen}
+            onToggle={props.onToggleActionsDropdown}>
+              <DropdownButtonItem
+                isFirst={true}
+                isLast={true}
+                onClick={props.onDelete}
+                className='text-red-500 hover:text-red-700'>
+                  <FontAwesomeIcon
+                    icon={byPrefixAndName.fas['trash']}
+                    className='mr-2' />
+                  Delete
+              </DropdownButtonItem>
+          </DropdownButton>
+        </div>
+      }
     </div>
   );
 };

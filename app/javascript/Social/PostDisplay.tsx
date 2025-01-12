@@ -1,7 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import { PostData } from "../types/models";
-import ProfilePicture from "../common/ProfilePicture";
-import { friendlyDateTimeString } from "../utils/helpers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { byPrefixAndName } from "@awesome.me/kit-902717d512/icons";
 import PostHeader from "./PostHeader";
@@ -9,8 +7,9 @@ import { Carousel } from "flowbite-react";
 
 type Props = {
   postData: PostData;
-  isLoggedIn: boolean;
+  currentUserId: number;
   reactToPost: (postId: number, reaction: string, toggle: boolean) => void;
+  onDelete?: () => void;
   viewComments: () => void;
   className?: string;
 };
@@ -20,8 +19,15 @@ const PostDisplay = (props: Props) => {
   // const postBodyHtml = props.postData.post.body.replaceAll(regexBoldUsernames, '<b>$1</b>');
   const postBodyHtml = props.postData.post.body;
 
+  const [isActionsDropdownOpen, setIsActionsDropdownOpen] = useState(false);
+
   function likedByCurrentUser(): boolean {
     return props.postData.current_user_reactions.length > 0;
+  }
+
+  function handleDeleteClicked() {
+    setIsActionsDropdownOpen(false);
+    if (props.onDelete) props.onDelete();
   }
 
   return (
@@ -29,8 +35,12 @@ const PostDisplay = (props: Props) => {
       <PostHeader
         userId={props.postData.user.id}
         userDisplayName={props.postData.user.display_name || props.postData.user.username}
+        currentUserId={props.currentUserId}
         userProfilePictureUrl={props.postData.profile_picture?.url}
-        timestamp={props.postData.post.created_at} />
+        timestamp={props.postData.post.created_at}
+        isActionsDropdownOpen={isActionsDropdownOpen}
+        onToggleActionsDropdown={() => setIsActionsDropdownOpen(!isActionsDropdownOpen)}
+        onDelete={handleDeleteClicked} />
 
       <div
         className='text-sm text-left mb-2'
@@ -59,7 +69,7 @@ const PostDisplay = (props: Props) => {
           {props.postData.post_reactions.length > 0 && props.postData.post_reactions.length}
         </div>
         <div className='flex-1'></div>
-        {props.postData.post_comments.length === 0 && props.isLoggedIn &&
+        {props.postData.post_comments.length === 0 && props.currentUserId &&
           <div
             className='flex-none text-right cursor-pointer'
             onClick={props.viewComments}>

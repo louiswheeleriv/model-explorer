@@ -13,9 +13,10 @@ type Props = {
   post: Post;
   postComments: PostComment[];
   visible: boolean;
-  isLoggedIn: boolean;
+  currentUserId?: number;
   reactToPostComment: (postId: number, postCommentId: number, reaction: string, toggle: boolean) => void;
   submitComment: (postId: number, body: string) => void;
+  onDelete?: (postCommentId: number) => void;
   onClose: () => void;
   className?: string;
 };
@@ -28,6 +29,10 @@ const PostCommentsModal = (props: Props) => {
     setDraftCommentBody('');
   }
 
+  function handleDeleteComment(postCommentId: number) {
+    if (props.onDelete) props.onDelete(postCommentId);
+  }
+
   return (
     <Modal
       headerText='Post Comments'
@@ -38,8 +43,10 @@ const PostCommentsModal = (props: Props) => {
         <PostCommentDisplay
           key={postComment.id}
           postComment={postComment}
+          currentUserId={props.currentUserId}
           reactToPostComment={props.reactToPostComment}
-          isLastComment={index == (props.postComments.length - 1)} />
+          isLastComment={index == (props.postComments.length - 1)}
+          onDelete={() => handleDeleteComment(postComment.id)} />
       ))}
 
       {props.postComments.length == 0 &&
@@ -48,7 +55,7 @@ const PostCommentsModal = (props: Props) => {
         </div>
       }
 
-      {props.isLoggedIn &&
+      {props.currentUserId &&
         <div className='flex'>
           <Input
             placeholder='Add a comment'

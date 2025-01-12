@@ -8,6 +8,7 @@ import { byPrefixAndName } from "@awesome.me/kit-902717d512/icons";
 import Select from "../common/Select";
 import PostCommentsModal from "./PostCommentsModal";
 import DraftPostModal from "./DraftPostModal";
+import DeletionConfirmationModal from "../common/DeletionConfirmationModal";
 
 type PostFilter = 'all' | 'following' | 'mine';
 type PostFeedState = {
@@ -35,7 +36,14 @@ const Social = (props: Props) => {
     filter: 'all',
     page: 1
   });
+
   const [postCommentsModalVisible, setPostCommentsModalVisible] = useState(false);
+
+  const [postIdToDelete, setPostIdToDelete] = useState<number | null>(null);
+  const [commentIdToDelete, setCommentIdToDelete] = useState<number | null>(null);
+  const [postDeletionConfirmationModalVisible, setPostDeletionConfirmationModalVisible] = useState(false);
+  const [commentDeletionConfirmationModalVisible, setCommentDeletionConfirmationModalVisible] = useState(false);
+
   const [commentModalPost, setCommentModalPost] = useState<Post | null>(null);
   const [commentModalPostComments, setCommentModalPostComments] = useState<PostComment[]>([]);
   const [draftPostModalVisible, setDraftPostModalVisible] = useState(false);
@@ -169,10 +177,76 @@ const Social = (props: Props) => {
       });
   }
 
+  async function deletePost(postId: number) {
+    apiCall({
+      method: 'DELETE',
+      endpoint: '/social/posts/'+postId
+    })
+      .then((response) => response.json())
+      .then((body) => {
+        if (body.status >= 300) throw new Error(body.error);
+
+        setPostDatas(postDatas.filter((postData) => postData.post.id !== postId));
+      });
+  }
+
+  async function deletePostComment(postCommentId: number) {
+    apiCall({
+      method: 'DELETE',
+      endpoint: '/social/post_comments/'+postCommentId
+    })
+      .then((response) => response.json())
+      .then((body) => {
+        if (body.status >= 300) throw new Error(body.error);
+
+        setPostDatas(postDatas.map((postData) => {
+          return {
+            ...postData,
+            post_comments: postData.post_comments.filter((postComment) => postComment.id !== postCommentId)
+          };
+        }));
+        setCommentModalPostComments(
+          commentModalPostComments.filter((postComment) => postComment.id !== postCommentId)
+        );
+      });
+  }
+
   function viewComments(post: Post, postComments: PostComment[]) {
     setCommentModalPost(post);
     setCommentModalPostComments(postComments);
     setPostCommentsModalVisible(true);
+  }
+
+  function handleDeletePostClicked(postId: number) {
+    setPostIdToDelete(postId);
+    setPostDeletionConfirmationModalVisible(true);
+  }
+
+  function handleDeletePostCanceled() {
+    setPostDeletionConfirmationModalVisible(false);
+    setPostIdToDelete(null);
+  }
+
+  function handleDeletePostConfirmed() {
+    setPostDeletionConfirmationModalVisible(false);
+    if (postIdToDelete) deletePost(postIdToDelete);
+    setPostIdToDelete(null);
+  }
+
+  function handleDeleteCommentClicked(postCommentId: number) {
+    setCommentIdToDelete(postCommentId);
+    setCommentDeletionConfirmationModalVisible(true);
+  }
+
+  function handleDeleteCommentCanceled() {
+    setCommentDeletionConfirmationModalVisible(false);
+    setCommentIdToDelete(null);
+  }
+
+  function handleDeleteCommentConfirmed() {
+    setCommentDeletionConfirmationModalVisible(false);
+    if (commentIdToDelete) deletePostComment(commentIdToDelete);
+    setCommentIdToDelete(null);
   }
 
   useEffect(() => {
@@ -232,19 +306,33 @@ const Social = (props: Props) => {
         <PostCommentsModal
           visible={postCommentsModalVisible}
           onClose={() => setPostCommentsModalVisible(false)}
-          isLoggedIn={!!props.current_user}
+          currentUserId={props.current_user?.id}
           post={commentModalPost}
           postComments={commentModalPostComments}
           reactToPostComment={reactToPostComment}
-          submitComment={submitComment} />
+          submitComment={submitComment}
+          onDelete={handleDeleteCommentClicked} />
       }
+
+      <DeletionConfirmationModal
+        visible={postDeletionConfirmationModalVisible}
+        bodyText={'Are you sure you want to delete this post?'}
+        onClose={handleDeletePostCanceled}
+        onConfirm={handleDeletePostConfirmed} />
+
+      <DeletionConfirmationModal
+        visible={commentDeletionConfirmationModalVisible}
+        bodyText={'Are you sure you want to delete this comment?'}
+        onClose={handleDeleteCommentCanceled}
+        onConfirm={handleDeleteCommentConfirmed} />
 
       {postDatas.map((postData) => (
         <PostDisplay
           key={postData.post.id}
           postData={postData}
-          isLoggedIn={!!props.current_user}
+          currentUserId={props.current_user?.id}
           reactToPost={reactToPost}
+          onDelete={() => handleDeletePostClicked(postData.post.id)}
           viewComments={() => viewComments(postData.post, postData.post_comments)}
           className='mb-5' />
       ))}

@@ -1,7 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import { PostComment } from "../types/models";
-import ProfilePicture from "../common/ProfilePicture";
-import { friendlyDateTimeString } from "../utils/helpers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { byPrefixAndName } from "@awesome.me/kit-902717d512/icons";
 import PostHeader from "./PostHeader";
@@ -9,7 +7,9 @@ import PostHeader from "./PostHeader";
 type Props = {
   postComment: PostComment;
   isLastComment: boolean;
+  currentUserId?: number;
   reactToPostComment: (postId: number, postCommentId: number, reaction: string, toggle: boolean) => void;
+  onDelete?: () => void;
   className?: string;
 };
 
@@ -18,8 +18,15 @@ const PostCommentDisplay = (props: Props) => {
   // const postBodyHtml = props.postData.post.body.replaceAll(regexBoldUsernames, '<b>$1</b>');
   const postCommentBodyHtml = props.postComment.body;
 
+  const [isActionsDropdownOpen, setIsActionsDropdownOpen] = useState(false);
+
   function likedByCurrentUser(): boolean {
     return props.postComment.current_user_reactions.length > 0;
+  }
+
+  function handleDeleteClicked() {
+    setIsActionsDropdownOpen(false);
+    if (props.onDelete) props.onDelete();
   }
 
   return (
@@ -28,7 +35,11 @@ const PostCommentDisplay = (props: Props) => {
         userId={props.postComment.user_id}
         userDisplayName={props.postComment.user_display_name || props.postComment.user_username}
         userProfilePictureUrl={props.postComment.user_profile_picture_url}
-        timestamp={props.postComment.created_at} />
+        currentUserId={props.currentUserId}
+        timestamp={props.postComment.created_at}
+        isActionsDropdownOpen={isActionsDropdownOpen}
+        onToggleActionsDropdown={() => setIsActionsDropdownOpen(!isActionsDropdownOpen)}
+        onDelete={handleDeleteClicked} />
 
       <div
         className='text-sm text-left mb-2'

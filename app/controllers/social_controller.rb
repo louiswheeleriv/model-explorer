@@ -122,6 +122,16 @@ class SocialController < ApplicationController
     render status: 200, json: { status: 200 }
   end
 
+  def delete_post_comment
+    raise_unauthorized_unless_logged_in!
+
+    comment = ::PostComment.find(params[:post_comment_id])
+    return render status: 403, json: { status: 403, error: 'You did not create this comment.' } unless comment.user_id == current_user_id
+
+    comment.destroy!
+    render status: 200, json: { status: 200 }
+  end
+
   def create_post_comment
     raise_unauthorized_unless_logged_in!
 
