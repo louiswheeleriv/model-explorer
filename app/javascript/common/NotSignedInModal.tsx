@@ -6,13 +6,10 @@ import Modal from "./Modal";
 
 type Props = {
   visible: boolean;
-  zIndex?: number;
   onClose: () => void;
 };
 
 const NotSignedInModal = (props: Props) => {
-  const zIndex = props.zIndex || 10;
-
   return (
     <Modal
       headerText='Not Signed In'
