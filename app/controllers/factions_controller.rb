@@ -1,6 +1,6 @@
 class FactionsController < ApplicationController
   def create
-    require_logged_in!
+    redirect_home_unless_logged_in!
 
     game_system_id = params[:game_system_id]
     name = params[:name]
@@ -20,7 +20,7 @@ class FactionsController < ApplicationController
   end
 
   def create_model
-    require_logged_in!
+    redirect_home_unless_logged_in!
     
     faction_id = params[:faction_id]
     model_name = params[:name]
@@ -40,7 +40,7 @@ class FactionsController < ApplicationController
   end
 
   def update_faction
-    require_logged_in!
+    redirect_home_unless_logged_in!
 
     faction_id = params[:faction_id]
     faction = ::Faction.find_by(id: faction_id)
@@ -53,7 +53,7 @@ class FactionsController < ApplicationController
   end
 
   def update_model
-    require_logged_in!
+    redirect_home_unless_logged_in!
 
     model_id = params[:model_id]
     model = ::Model.find_by(id: model_id)

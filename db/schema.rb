@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_09_115751) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_11_134750) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -70,11 +70,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_09_115751) do
 
   create_table "post_reactions", force: :cascade do |t|
     t.integer "user_id", null: false
-    t.integer "post_id", null: false
+    t.integer "post_id"
     t.string "reaction", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["post_id", "reaction"], name: "index_post_reactions_on_post_id_and_reaction"
+    t.integer "post_comment_id"
+    t.index ["post_comment_id", "reaction", "user_id"], name: "index_post_reactions_on_comment_id_reaction_id_user_id", unique: true
+    t.index ["post_id", "reaction", "user_id"], name: "index_post_reactions_on_post_id_reaction_id_user_id", unique: true
   end
 
   create_table "posts", force: :cascade do |t|
@@ -179,6 +181,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_09_115751) do
     t.text "bio"
     t.string "password_reset_code"
     t.datetime "password_reset_code_valid_until"
+    t.index ["display_name"], name: "index_users_on_display_name", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 

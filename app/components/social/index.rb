@@ -6,7 +6,8 @@ module Social
   
     def props
       raw_props.merge(
-        posts: ::Post.all.order(created_at: :desc)
+        current_user: current_user&.to_safe_attributes,
+        current_user_profile_picture_url: current_user&.profile_picture&.url
       )
     end
   end  

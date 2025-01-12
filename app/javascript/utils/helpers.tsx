@@ -1,8 +1,10 @@
 import { QuantityByStatus, UserModel } from "../types/models";
 import { v4 as uuidv4 } from 'uuid';
 
-export function apiCall({ endpoint, method, body}: {endpoint: string, method: string, body?: object}) {
-  return fetch(endpoint, {
+export function apiCall({ endpoint, method, urlParams, body }: { endpoint: string, method: string, urlParams?: object, body?: object }) {
+  let finalEndpoint = endpoint;
+  if (urlParams) finalEndpoint += '?' + new URLSearchParams(urlParams as Record<string, string>).toString();
+  return fetch(finalEndpoint, {
     method: String(method),
     headers: {
       'X-CSRF-Token': csrfToken(),
@@ -75,4 +77,28 @@ export function acceptableEmail(email: string) {
 
 export function generateUuid() {
   return uuidv4();
+}
+
+export function friendlyDateTimeString(dateTimeString: string): string {
+  const datePortion = friendlyDateString(dateTimeString);
+  const timePortion = friendlyTimeString(dateTimeString);
+  return datePortion + ' at ' + timePortion;
+}
+
+export function friendlyDateString(dateTimeString: string): string {
+  const date = new Date(dateTimeString);
+  const currentTime = new Date();
+  switch(date.getDate()) {
+    case currentTime.getDate():
+      return 'Today';
+    case currentTime.getDate() - 1:
+      return 'Yesterday';
+    default:
+      return date.toLocaleDateString([], { month: 'short', day: 'numeric' })
+  };
+}
+
+export function friendlyTimeString(dateTimeString: string): string {
+  const date = new Date(dateTimeString);
+  return date.toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' });
 }

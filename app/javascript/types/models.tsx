@@ -73,6 +73,7 @@ export type UserImageAssociation = {
   user_image_id: number;
   user_faction_id?: number;
   user_model_id?: number;
+  post_id?: number;
   sort_index: number;
 }
 
@@ -80,17 +81,22 @@ export type Post = {
   id: number;
   user_id: number;
   body: string;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
 }
 
 export type PostComment = {
   id: number;
   post_id: number;
   user_id: number;
+  user_username: string;
+  user_display_name?: string;
+  user_profile_picture_url?: string;
   body: string;
-  created_at: Date;
-  updated_at: Date;
+  post_comment_reactions: PostReaction[];
+  current_user_reactions: PostReaction[];
+  created_at: string;
+  updated_at: string;
 }
 
 export type PostReaction = {
@@ -98,4 +104,22 @@ export type PostReaction = {
   post_id: number;
   user_id: number;
   reaction: string;
+}
+
+export type UserModelPost = {
+  id: number;
+  user_id: number;
+  user_model_id: number;
+  post_id: number;
+}
+
+export type PostData = {
+  post: Post;
+  user: User;
+  profile_picture: UserImage;
+  post_comments: PostComment[];
+  post_reactions: PostReaction[];
+  current_user_reactions: PostReaction[];
+  user_models: UserModel[];
+  user_images: UserImage[];
 }

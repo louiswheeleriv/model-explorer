@@ -1,7 +1,7 @@
 class UserAssetsController < ApplicationController
 
   def uploadable_url
-    require_logged_in!
+    redirect_home_unless_logged_in!
 
     s3 = Aws::S3::Client.new(
       region: Rails.configuration.x.aws.region,

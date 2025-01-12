@@ -52,6 +52,14 @@ Rails.application.routes.draw do
   put 'models/:model_id' => 'factions#update_model'
 
   get 'social' => 'social#index'
+  get 'social/posts' => 'social#posts'
+  get 'social/posts/:post_id/post_comments' => 'social#post_comments'
+  post 'social/posts/:post_id/reactions' => 'social#toggle_post_reaction'
+  post 'social/posts/:post_id/post_comments/:post_comment_id/reactions' => 'social#toggle_post_comment_reaction'
+  post 'social/posts/:post_id/post_comments' => 'social#create_post_comment'
+  post 'social/posts' => 'social#create_post'
+  delete 'social/posts/:post_id' => 'social#delete_post'
+
   get 'users' => 'social#users'
   get 'users/:user_id' => 'social#show_user'
 

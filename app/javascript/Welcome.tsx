@@ -14,6 +14,10 @@ const Welcome = (props: Props) => {
     window.location.assign('/social');
   }
 
+  function goToUsers() {
+    window.location.assign('/users');
+  }
+
   function signUp() {
     window.location.assign('/sign-up');
   }
@@ -36,7 +40,10 @@ const Welcome = (props: Props) => {
       </p>
 
       <div className='text-center mb-5'>
-        <Button onClick={goToSocial} className='px-5'>View Collections</Button>
+        <Button onClick={goToSocial} className='px-5'>View Activity</Button>
+      </div>
+      <div className='text-center mb-5'>
+        <Button onClick={goToUsers} className='px-5'>View Collections</Button>
       </div>
       <div className='text-center mb-2'>
         <Button onClick={signUp} className='px-5'>Get Started for Free</Button>

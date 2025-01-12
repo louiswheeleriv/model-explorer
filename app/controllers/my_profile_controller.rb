@@ -1,11 +1,11 @@
 class MyProfileController < ApplicationController
   
   def index
-    require_logged_in!
+    redirect_home_unless_logged_in!
   end
 
   def update_username
-    require_logged_in!
+    redirect_home_unless_logged_in!
 
     user = ::User.find_by(id: current_user_id)
     return render status: 400, json: { status: 400, error: 'User not found' } unless user
@@ -20,7 +20,7 @@ class MyProfileController < ApplicationController
   end
 
   def update_password
-    require_logged_in!
+    redirect_home_unless_logged_in!
 
     user = ::User.find_by(id: current_user_id)
     return render status: 400, json: { status: 400, error: 'User not found' } unless user
@@ -38,7 +38,7 @@ class MyProfileController < ApplicationController
   end
 
   def update_display_name
-    require_logged_in!
+    redirect_home_unless_logged_in!
 
     user = ::User.find_by(id: current_user_id)
     return render status: 400, json: { status: 400, error: 'User not found' } unless user
@@ -53,7 +53,7 @@ class MyProfileController < ApplicationController
   end
 
   def update_email
-    require_logged_in!
+    redirect_home_unless_logged_in!
 
     user = ::User.find_by(id: current_user_id)
     return render status: 400, json: { status: 400, error: 'User not found' } unless user
@@ -68,7 +68,7 @@ class MyProfileController < ApplicationController
   end
 
   def update_bio
-    require_logged_in!
+    redirect_home_unless_logged_in!
 
     user = ::User.find_by(id: current_user_id)
     return render status: 400, json: { status: 400, error: 'User not found' } unless user
@@ -79,7 +79,7 @@ class MyProfileController < ApplicationController
   end
 
   def update_profile_picture
-    require_logged_in!
+    redirect_home_unless_logged_in!
 
     user = ::User.find_by(id: current_user_id)
     return render status: 400, json: { status: 400, error: 'User not found' } unless user

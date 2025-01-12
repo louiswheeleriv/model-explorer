@@ -1,6 +1,6 @@
 class GameSystemsController < ApplicationController
   def create
-    require_logged_in!
+    redirect_home_unless_logged_in!
     
     name = params[:name]
     gs = ::GameSystem.find_by(name: name)

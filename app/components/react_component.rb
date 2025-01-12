@@ -27,4 +27,10 @@ class ReactComponent < ViewComponent::Base
   def current_user_id
     session[:current_user_id]
   end
+
+  def current_user
+    return unless current_user_id
+
+    ::User.find(current_user_id)
+  end
 end

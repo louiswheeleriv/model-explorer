@@ -3,7 +3,7 @@
 class CollectionController < ApplicationController
 
   def index
-    require_logged_in!
+    redirect_home_unless_logged_in!
   end
 
   def show_faction
@@ -13,7 +13,7 @@ class CollectionController < ApplicationController
   end
 
   def add_faction
-    require_logged_in!
+    redirect_home_unless_logged_in!
     
     faction_id = params[:faction_id]
     faction = ::Faction.find_by(id: faction_id)
@@ -49,7 +49,7 @@ class CollectionController < ApplicationController
   end
 
   def update_user_faction
-    require_logged_in!
+    redirect_home_unless_logged_in!
     
     user_faction_id = params[:user_faction_id]
     user_faction = ::UserFaction.find_by(
@@ -65,7 +65,7 @@ class CollectionController < ApplicationController
   end
 
   def delete_user_faction
-    require_logged_in!
+    redirect_home_unless_logged_in!
     
     user_faction_id = params[:user_faction_id]
     user_faction = ::UserFaction.find_by(
@@ -79,7 +79,7 @@ class CollectionController < ApplicationController
   end
 
   def add_user_model
-    require_logged_in!
+    redirect_home_unless_logged_in!
 
     user_faction_id = params[:user_faction_id]
     model_id = params[:model_id]
@@ -109,7 +109,7 @@ class CollectionController < ApplicationController
   end
 
   def edit_user_model
-    require_logged_in!
+    redirect_home_unless_logged_in!
     
     user_model_id = params[:user_model_id]
     quantity_by_status = params[:quantity_by_status]
@@ -136,7 +136,7 @@ class CollectionController < ApplicationController
   end
 
   def delete_user_model
-    require_logged_in!
+    redirect_home_unless_logged_in!
 
     user_model_id = params[:user_model_id]
     user_model = ::UserModel.find_by(id: user_model_id)
@@ -148,7 +148,7 @@ class CollectionController < ApplicationController
   end
 
   def create_group
-    require_logged_in!
+    redirect_home_unless_logged_in!
 
     user_faction_id = params[:user_faction_id]
     new_group_name = params[:name]
@@ -170,7 +170,7 @@ class CollectionController < ApplicationController
   end
 
   def set_user_model_groups
-    require_logged_in!
+    redirect_home_unless_logged_in!
 
     proposed_groups = params[:user_model_groups]
     return render status: 400, json: { status: 400, error: "Param user_model_groups is required" } unless proposed_groups
@@ -205,7 +205,7 @@ class CollectionController < ApplicationController
   end
 
   def set_user_model_image_associations
-    require_logged_in!
+    redirect_home_unless_logged_in!
 
     user_model_id = params[:user_model_id]
     user_model = ::UserModel.find_by(id: user_model_id)
@@ -246,7 +246,7 @@ class CollectionController < ApplicationController
   end
 
   def set_user_faction_image_associations
-    require_logged_in!
+    redirect_home_unless_logged_in!
 
     user_faction = ::UserFaction.find_by(
       user_id: current_user_id,

@@ -17,5 +17,17 @@ class Post < ApplicationRecord
   has_many :post_reactions, dependent: :destroy
   has_many :post_comments, dependent: :destroy
   has_many :user_model_posts, dependent: :destroy
-  has_many :user_model_image_associations, dependent: :nullify
+  has_many :user_image_associations, dependent: :nullify
+
+  def user_models
+    UserModel
+      .joins('INNER JOIN user_model_posts ON user_model_posts.user_model_id = user_models.id')
+      .where('user_model_posts.post_id = ?', id)
+  end
+
+  def user_images
+    UserImage
+      .joins('INNER JOIN user_image_associations ON user_image_associations.user_image_id = user_images.id')
+      .where('user_image_associations.post_id = ?', id)
+  end
 end

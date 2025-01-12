@@ -17,7 +17,8 @@
 #
 # Indexes
 #
-#  index_users_on_username  (username) UNIQUE
+#  index_users_on_display_name  (display_name) UNIQUE
+#  index_users_on_username      (username) UNIQUE
 #
 class User < ApplicationRecord
   has_many :user_factions, dependent: :destroy
