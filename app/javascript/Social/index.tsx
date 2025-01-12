@@ -154,7 +154,7 @@ const Social = (props: Props) => {
       method: 'POST',
       endpoint: '/social/posts',
       body: {
-        body: draftPost.body,
+        body: draftPost.body.trim(),
         image_urls: draftPost.imageUrls
       }
     })

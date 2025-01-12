@@ -9,6 +9,7 @@ import { uploadImage } from "../utils/helpers";
 import PostHeader from "./PostHeader";
 import User from "./User";
 import { Carousel } from "flowbite-react";
+import FileUploadSpinner from "../common/FileUploadSpinner";
 
 type InputTarget = { target: { value: string }};
 
@@ -57,6 +58,10 @@ const DraftPostModal = (props: Props) => {
     setDraftPost({ ...draftPost, imageUrls: [] });
   }
 
+  function draftPostIsEmpty() {
+    return !draftPost.body.trim() && (draftPost.imageUrls || []).length === 0;
+  }
+
   return (
     <Modal
       headerText='New Post'
@@ -86,6 +91,13 @@ const DraftPostModal = (props: Props) => {
           </Carousel>
         }
 
+        {isUploadingFiles &&
+          <FileUploadSpinner
+            numItemsComplete={numFilesUploaded}
+            numItemsTotal={numFilesToUpload}
+            className='mb-2' />
+        }
+
         <div className='flex'>
           <div className='flex-1 text-left'>
             <input
@@ -98,6 +110,7 @@ const DraftPostModal = (props: Props) => {
             <Button
               onClick={() => document.getElementById('image-input')?.click()}
               colorSet='lightgray'
+              disabled={isUploadingFiles}
               className='mr-3'>
                 <FontAwesomeIcon
                   icon={byPrefixAndName.fas['camera']}
@@ -107,6 +120,7 @@ const DraftPostModal = (props: Props) => {
             <Button
               onClick={clearUploadedImages}
               colorSet='lightgray'
+              disabled={isUploadingFiles}
               className='mr-3'>
                 <FontAwesomeIcon
                   icon={byPrefixAndName.fas['camera-slash']}
@@ -116,7 +130,7 @@ const DraftPostModal = (props: Props) => {
           </div>
           <div className='flex-none text-right'>
             <Button
-              disabled={!draftPost.body}
+              disabled={isUploadingFiles || draftPostIsEmpty()}
               onClick={() => props.submitPost(draftPost)}
               className='px-5'>
                 <FontAwesomeIcon

@@ -6,6 +6,7 @@ import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import { apiCall, generateUuid, uploadImage } from "../../utils/helpers";
 import UserFactionGalleryDraggableList from "./UserFactionGalleryDraggableList";
 import { ProposedImage } from "./UserFactionGalleryDraggableItem";
+import FileUploadSpinner from "../../common/FileUploadSpinner";
 
 type Props = {
   faction: Faction;
@@ -122,10 +123,9 @@ const EditUserFactionGallery = (props: Props) => {
       </div>
 
       {isUploadingFiles &&
-        <div className='text-center'>
-          <FontAwesomeIcon icon={byPrefixAndName.fas['circle-notch']} className='my-3 fa-3x fa-spin' />
-          <div>Uploading {numFilesUploaded} / {numFilesToUpload}</div>
-        </div>
+        <FileUploadSpinner
+          numItemsComplete={numFilesUploaded}
+          numItemsTotal={numFilesToUpload} />
       }
 
       <div className='text-red-500 text-center'>{error}</div>
