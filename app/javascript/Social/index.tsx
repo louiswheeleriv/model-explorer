@@ -9,6 +9,7 @@ import Select from "../common/Select";
 import PostCommentsModal from "./PostCommentsModal";
 import DraftPostModal from "./DraftPostModal";
 import DeletionConfirmationModal from "../common/DeletionConfirmationModal";
+import NotSignedInModal from "../common/NotSignedInModal";
 
 type PostFilter = 'all' | 'following' | 'mine';
 type PostFeedState = {
@@ -49,6 +50,8 @@ const Social = (props: Props) => {
   const [draftPostModalVisible, setDraftPostModalVisible] = useState(false);
   const [draftPost, setDraftPost] = useState<DraftPost>(emptyDraftPost);
 
+  const [notSignedInModalVisible, setNotSignedInModalVisible] = useState(false);
+
   const postsPerPage = 10;
 
   async function getPosts(page: number, filter: string): Promise<PostData[]> {
@@ -69,6 +72,11 @@ const Social = (props: Props) => {
   }
 
   async function reactToPost(postId: number, reaction: string, toggle: boolean) {
+    if (!props.current_user) {
+      setNotSignedInModalVisible(true);
+      return;
+    }
+
     apiCall({
       method: 'POST',
       endpoint: '/social/posts/'+postId+'/reactions',
@@ -93,6 +101,12 @@ const Social = (props: Props) => {
   }
 
   async function reactToPostComment(postId: number, postCommentId: number, reaction: string, toggle: boolean) {
+    if (!props.current_user) {
+      setNotSignedInModalVisible(true);
+      setPostCommentsModalVisible(false);
+      return;
+    }
+    
     apiCall({
       method: 'POST',
       endpoint: '/social/posts/'+postId+'/post_comments/'+postCommentId+'/reactions',
@@ -212,9 +226,21 @@ const Social = (props: Props) => {
   }
 
   function viewComments(post: Post, postComments: PostComment[]) {
-    setCommentModalPost(post);
-    setCommentModalPostComments(postComments);
-    setPostCommentsModalVisible(true);
+    if (props.current_user || postComments.length > 0) {
+      setCommentModalPost(post);
+      setCommentModalPostComments(postComments);
+      setPostCommentsModalVisible(true);
+    } else {
+      setNotSignedInModalVisible(true);
+    }
+  }
+
+  function handleCreatePostClicked() {
+    if (props.current_user) {
+      setDraftPostModalVisible(true);
+    } else {
+      setNotSignedInModalVisible(true);
+    }
   }
 
   function handleDeletePostClicked(postId: number) {
@@ -281,16 +307,18 @@ const Social = (props: Props) => {
           </Select>
         </div>
         <div className='flex-1 text-right'>
-          {props.current_user &&
-            <Button onClick={() => setDraftPostModalVisible(true)}>
-              <FontAwesomeIcon
-                icon={byPrefixAndName.fas['pen-to-square']}
-                className='mr-1' />
-              Post
-            </Button>
-          }
+          <Button onClick={handleCreatePostClicked}>
+            <FontAwesomeIcon
+              icon={byPrefixAndName.fas['pen-to-square']}
+              className='mr-1' />
+            Post
+          </Button>
         </div>
       </div>
+
+      <NotSignedInModal
+        visible={notSignedInModalVisible}
+        onClose={() => setNotSignedInModalVisible(false)} />
 
       {props.current_user &&
         <DraftPostModal

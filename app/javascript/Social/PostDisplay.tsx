@@ -74,7 +74,7 @@ const PostDisplay = (props: Props) => {
           {props.postData.post_reactions.length > 0 && props.postData.post_reactions.length}
         </div>
         <div className='flex-1'></div>
-        {props.postData.post_comments.length === 0 && props.currentUserId &&
+        {props.postData.post_comments.length === 0 &&
           <div
             className='flex-none text-right cursor-pointer'
             onClick={props.viewComments}>
