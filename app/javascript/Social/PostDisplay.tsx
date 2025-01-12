@@ -17,7 +17,12 @@ type Props = {
 const PostDisplay = (props: Props) => {
   // const regexBoldUsernames = /(\@[a-zA-Z0-9]+)/g;
   // const postBodyHtml = props.postData.post.body.replaceAll(regexBoldUsernames, '<b>$1</b>');
-  const postBodyHtml = props.postData.post.body;
+  const postBodyHtml =
+    props
+      .postData
+      .post
+      .body
+      .replaceAll(/\n/g, '<br>');
 
   const [isActionsDropdownOpen, setIsActionsDropdownOpen] = useState(false);
 

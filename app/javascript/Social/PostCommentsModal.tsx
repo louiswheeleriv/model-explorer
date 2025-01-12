@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { byPrefixAndName } from "@awesome.me/kit-902717d512/icons";
 import Input from "../common/Input";
 import Button from "../common/Button";
+import TextArea from "../common/TextArea";
 
 type InputTarget = { target: { value: string }};
 
@@ -56,19 +57,22 @@ const PostCommentsModal = (props: Props) => {
       }
 
       {props.currentUserId &&
-        <div className='flex'>
-          <Input
+        <>
+          <TextArea
             placeholder='Add a comment'
             value={draftCommentBody}
             onChange={(e: InputTarget) => setDraftCommentBody(e.target.value)}
-            className='flex-1' />
-          <Button
-            disabled={!draftCommentBody}
-            onClick={handleSubmitCommentClicked}
-            className='flex-none ml-1 px-4'>
-              <FontAwesomeIcon icon={byPrefixAndName.fas['paper-plane']} />
-          </Button>
-        </div>
+            className='mb-2' />
+          <div className='flex'>
+            <Button
+              disabled={!draftCommentBody}
+              onClick={handleSubmitCommentClicked}
+              className='flex-none px-5 mx-auto'>
+                <FontAwesomeIcon icon={byPrefixAndName.fas['paper-plane']} className='mr-1' />
+                Send
+            </Button>
+          </div>
+        </>
       }
     </Modal>
   );
