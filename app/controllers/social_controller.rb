@@ -1,12 +1,11 @@
 class SocialController < ApplicationController
 
-  DEFAULT_POSTS_PAGE_SIZE = 2
+  DEFAULT_POSTS_PAGE_SIZE = 10
 
   def index
   end
   
   def users
-    
   end
 
   def show_user
@@ -61,6 +60,8 @@ class SocialController < ApplicationController
       post_reactions: ::PostReaction.where(post_id: params[:post_id]),
       current_user_reactions: ::PostReaction.where(post_id: params[:post_id], user_id: current_user_id)
     }
+  rescue UnauthorizedError
+    render status: 401, json: { status: 401, error: 'Unauthorized' }
   end
 
   def toggle_post_comment_reaction
@@ -81,6 +82,8 @@ class SocialController < ApplicationController
       post_comment_reactions: ::PostReaction.where(post_comment_id: params[:post_comment_id]),
       current_user_reactions: ::PostReaction.where(post_comment_id: params[:post_comment_id], user_id: current_user_id)
     }
+  rescue UnauthorizedError
+    render status: 401, json: { status: 401, error: 'Unauthorized' }
   end
 
   def create_post
@@ -110,6 +113,8 @@ class SocialController < ApplicationController
         post: post_data(post)
       }
     end
+  rescue UnauthorizedError
+    render status: 401, json: { status: 401, error: 'Unauthorized' }
   end
 
   def delete_post
@@ -120,6 +125,8 @@ class SocialController < ApplicationController
 
     post.destroy!
     render status: 200, json: { status: 200 }
+  rescue UnauthorizedError
+    render status: 401, json: { status: 401, error: 'Unauthorized' }
   end
 
   def delete_post_comment
@@ -130,6 +137,8 @@ class SocialController < ApplicationController
 
     comment.destroy!
     render status: 200, json: { status: 200 }
+  rescue UnauthorizedError
+    render status: 401, json: { status: 401, error: 'Unauthorized' }
   end
 
   def create_post_comment
@@ -144,6 +153,8 @@ class SocialController < ApplicationController
       status: 200,
       post_comments: load_post_comments(::Post.find(params[:post_id]))
     }
+  rescue UnauthorizedError
+    render status: 401, json: { status: 401, error: 'Unauthorized' }
   end
 
   private

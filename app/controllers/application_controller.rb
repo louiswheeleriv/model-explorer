@@ -1,4 +1,7 @@
 class ApplicationController < ActionController::Base
+
+  class UnauthorizedError < StandardError; end
+
   def current_user_id
     session[:current_user_id]
   end
@@ -16,8 +19,6 @@ class ApplicationController < ActionController::Base
   end
 
   def raise_unauthorized_unless_logged_in!
-    return if current_user_id
-
-    render status: 401, json: { status: 401, error: 'Unauthorized' }
+    raise UnauthorizedError unless current_user_id
   end
 end
