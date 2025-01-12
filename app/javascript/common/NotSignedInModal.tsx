@@ -28,28 +28,19 @@ const NotSignedInModal = (props: Props) => {
         </div>
       </div>
 
-      <div className='flex mb-5'>
-        <div className='flex-1 text-center'>
-          <Button
-            onClick={() => window.location.assign('/users/sign_up')}
-            className='max-w-[170px] mx-auto mr-5'>
-              <FontAwesomeIcon icon={byPrefixAndName.fas['user-plus']} className='mr-2' />
-              Sign Up
-          </Button>
-          <Button
-            onClick={() => window.location.assign('/users/sign_in')}
-            className='max-w-[170px] mx-auto mr-5'>
-              <FontAwesomeIcon icon={byPrefixAndName.fas['key']} className='mr-2' />
-              Sign In
-          </Button>
-          <Button
-            onClick={props.onClose}
-            colorSet='lightgray'
-            className='max-w-[170px] mx-auto'>
-              <FontAwesomeIcon icon={byPrefixAndName.fas['xmark']} className='mr-2' />
-              Dismiss
-          </Button>
-        </div>
+      <div className='text-center mb-5'>
+        <Button
+          onClick={() => window.location.assign('/users/sign_up')}
+          className='max-w-[170px] mr-5'>
+            <FontAwesomeIcon icon={byPrefixAndName.fas['user-plus']} className='mr-2' />
+            Sign Up
+        </Button>
+        <Button
+          onClick={() => window.location.assign('/users/sign_in')}
+          className='max-w-[170px]'>
+            <FontAwesomeIcon icon={byPrefixAndName.fas['key']} className='mr-2' />
+            Sign In
+        </Button>
       </div>
     </Modal>
   );
