@@ -21,7 +21,7 @@ class AuthController < ApplicationController
     username = params[:username]
     password = params[:password]
 
-    user = User.find_by(username: username)
+    user = User.find_by(username:)
     return render status: 403, json: { status: 403, error: 'Login credentials invalid' }.to_json unless user && user.password == password
 
     session[:current_user_id] = user.id
@@ -35,19 +35,22 @@ class AuthController < ApplicationController
     email = params[:email]
     password = params[:password]
 
-    user = User.find_by(username: username)
+    user = User.find_by(username:)
     return render status: 400, json: { status: 400, error: 'A user already exists with that username' }.to_json if user
 
+    user = User.find_by(email:)
+    return render status: 400, json: { status: 400, error: 'A user already exists with that email' }.to_json if user
+
     if display_name.present?
-      user = User.find_by(display_name: display_name)
+      user = User.find_by(display_name:)
       return render status: 400, json: { status: 400, error: 'A user already exists with that display name' }.to_json if user
     end
 
     user = User.create(
-      username: username,
+      username:,
       display_name: display_name.presence,
-      email: email,
-      password: password
+      email:,
+      password:
     )
     session[:current_user_id] = user.id
 
