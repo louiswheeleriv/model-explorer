@@ -26,9 +26,9 @@ const User = (props: Props) => {
 
       <div className='flex'>
         <div className='flex-1'>
-          <a href='/social'>
+          <a href='/users'>
             <FontAwesomeIcon icon={byPrefixAndName.fas['left']} className='mr-1' />
-            Social
+            Users
           </a>
         </div>
         <div className='flex-1 text-2xl text-center mb-5'>
