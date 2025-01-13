@@ -7,6 +7,7 @@ type Props = {
   isOpen?: boolean;
   onToggle?: () => void;
   colorSet?: ButtonColorSet;
+  position?: 'left' | 'right';
   className?: string;
   children: React.ReactNode;
 };
@@ -21,7 +22,7 @@ const DropdownButton = (props: Props) => {
           <FontAwesomeIcon icon={byPrefixAndName.fas['ellipsis']} />
       </Button>
       {props.isOpen &&
-        <div className='absolute z-10 bg-gray-100 shadow-md rounded'>
+        <div className={'absolute z-10 bg-gray-100 shadow-md rounded '+(props.position === 'left' ? 'right-0' : 'left-0')}>
           {props.children}
         </div>
       }

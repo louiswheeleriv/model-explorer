@@ -40,6 +40,7 @@ const PostHeader = (props: Props) => {
         <div className='flex-none'>
           <DropdownButton
             colorSet='transparentLightText'
+            position='left'
             isOpen={props.isActionsDropdownOpen}
             onToggle={props.onToggleActionsDropdown}>
               <DropdownButtonItem
