@@ -50,7 +50,7 @@ const PostReactions = (props: Props) => {
 
   return (
     <div
-      className={'px-1 rounded cursor-pointer '+(likedByCurrentUser() ? 'bg-slate-800 border border-[#909090]' : '')+' '+props.className}
+      className={'px-1 rounded cursor-pointer select-none '+(likedByCurrentUser() ? 'bg-slate-800 border border-[#909090]' : '')+' '+props.className}
       onMouseDown={handleReactMouseDown}
       onTouchStart={handleReactMouseDown}
       onMouseUp={handleReactTouchEnd}
