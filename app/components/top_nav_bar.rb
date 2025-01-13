@@ -4,8 +4,10 @@ class TopNavBar < ReactComponent
   end
 
   def props
+    user = current_user
     raw_props.merge(
-      current_user: current_user_id ? User.find_by(id: current_user_id)&.to_safe_attributes : nil
+      current_user: user&.to_safe_attributes,
+      current_user_profile_picture_url: user&.profile_picture&.url
     )
   end
 end
