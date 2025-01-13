@@ -48,31 +48,37 @@ const CollectionFaction = (props: Props) => {
 
   return (
     <div className='px-6 py-8 max-w-[600px] mx-auto'>
-      <div className='flex'>
-        <div className='flex-1'>
-          {props.is_current_user &&
-            <a href='/my-collection'>
-              <FontAwesomeIcon icon={byPrefixAndName.fas['left']} className='mr-1' />
-              My Collection
-            </a>
-          }
-          {!props.is_current_user &&
-            <a href={'/users/'+props.user_faction.user_id}>
-              <FontAwesomeIcon icon={byPrefixAndName.fas['left']} className='mr-1' />
-              {props.user.display_name || props.user.username}
-            </a>
-          }
-        </div>
-        <div className='flex-1'>
-          <h2 className='text-2xl text-center mb-5'>
-            {props.user_faction.name ?
-              props.user_faction.name+' ('+props.faction.name+')' :
-              props.faction.name
-            }
-          </h2>
-        </div>
-        <div className='flex-1'></div>
+      <div className='text-left mb-3'>
+        {props.is_current_user &&
+          <a href='/my-collection'>
+            <FontAwesomeIcon icon={byPrefixAndName.fas['left']} className='mr-1' />
+            My Collection
+          </a>
+        }
+        {!props.is_current_user &&
+          <a href={'/users/'+props.user_faction.user_id}>
+            <FontAwesomeIcon icon={byPrefixAndName.fas['left']} className='mr-1' />
+            {props.user.display_name || props.user.username}
+          </a>
+        }
       </div>
+      <h2 className='text-center mb-5'>
+        {props.user_faction.name &&
+          <div>
+            <div className='text-2xl mb-1'>
+              {props.user_faction.name}
+            </div>
+            <div className='text-xl text-gray-400 italic'>
+              {props.faction.name}
+            </div>
+          </div>
+        }
+        {!props.user_faction.name &&
+          <div className='text-2xl'>
+            {props.faction.name}
+          </div>
+        }
+      </h2>
 
       <TabsBar
         tabs={[

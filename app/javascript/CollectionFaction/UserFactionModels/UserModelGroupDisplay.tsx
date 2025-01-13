@@ -22,7 +22,7 @@ const UserModelGroupDisplay = (props: Props) => {
       className='mt-5'>
     
       {props.userModels.length === 0 &&
-        <div className='text-xl text-center my-5'>
+        <div className='text-xl text-center my-5 italic text-gray-500'>
           No Models
         </div>
       }
