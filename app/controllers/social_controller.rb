@@ -45,8 +45,9 @@ class SocialController < ApplicationController
   def toggle_post_reaction
     raise_unauthorized_unless_logged_in!
 
+    post = ::Post.find(params[:post_id])
     attrs = {
-      post_id: params[:post_id],
+      post_id: post.id,
       user_id: current_user_id,
       reaction: params[:reaction]
     }
@@ -57,8 +58,7 @@ class SocialController < ApplicationController
     end
     render status: 200, json: {
       status: 200,
-      post_reactions: ::PostReaction.where(post_id: params[:post_id]),
-      current_user_reactions: ::PostReaction.where(post_id: params[:post_id], user_id: current_user_id)
+      post_reactions: load_post_reactions(post)
     }
   rescue UnauthorizedError
     render status: 401, json: { status: 401, error: 'Unauthorized' }
@@ -67,8 +67,9 @@ class SocialController < ApplicationController
   def toggle_post_comment_reaction
     raise_unauthorized_unless_logged_in!
 
+    comment = ::PostComment.find(params[:post_comment_id])
     attrs = {
-      post_comment_id: params[:post_comment_id],
+      post_comment_id: comment.id,
       user_id: current_user_id,
       reaction: params[:reaction]
     }
@@ -79,8 +80,7 @@ class SocialController < ApplicationController
     end
     render status: 200, json: {
       status: 200,
-      post_comment_reactions: ::PostReaction.where(post_comment_id: params[:post_comment_id]),
-      current_user_reactions: ::PostReaction.where(post_comment_id: params[:post_comment_id], user_id: current_user_id)
+      post_comment_reactions: load_post_comment_reactions(comment)
     }
   rescue UnauthorizedError
     render status: 401, json: { status: 401, error: 'Unauthorized' }
@@ -165,8 +165,7 @@ class SocialController < ApplicationController
       user: post.user,
       profile_picture: post.user.profile_picture,
       post_comments: load_post_comments(post),
-      post_reactions: post.post_reactions,
-      current_user_reactions: post.post_reactions.where(user_id: current_user_id),
+      post_reactions: load_post_reactions(post),
       user_images: post.user_images,
       user_models: post.user_models
     }
@@ -186,10 +185,37 @@ class SocialController < ApplicationController
       .order(created_at: :asc)
       .map do |post_comment|
         post_comment.attributes.merge(
-          post_comment_reactions: post_comment.post_reactions,
-          current_user_reactions: post_comment.post_reactions.where(user_id: current_user_id)
+          post_comment_reactions: load_post_comment_reactions(post_comment)
         )
       end
+  end
+
+  def load_post_reactions(post)
+    post
+      .post_reactions
+      .joins(:user)
+      .joins('LEFT OUTER JOIN user_images ON user_images.id = users.profile_picture_id')
+      .select([
+        PostReaction.column_names,
+        'users.display_name as user_display_name',
+        'users.username as user_username',
+        'user_images.url as user_profile_picture_url'
+      ].flatten)
+      .order(created_at: :asc)
+  end
+
+  def load_post_comment_reactions(post_comment)
+    post_comment
+      .post_reactions
+      .joins(:user)
+      .joins('LEFT OUTER JOIN user_images ON user_images.id = users.profile_picture_id')
+      .select([
+        PostReaction.column_names,
+        'users.display_name as user_display_name',
+        'users.username as user_username',
+        'user_images.url as user_profile_picture_url'
+      ])
+      .order(created_at: :asc)
   end
 
 end

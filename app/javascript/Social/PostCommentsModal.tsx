@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { Post, PostComment } from "../types/models";
+import { Post, PostComment, PostReaction } from "../types/models";
 import Modal from "../common/Modal";
 import PostCommentDisplay from "./PostCommentDisplay";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { byPrefixAndName } from "@awesome.me/kit-902717d512/icons";
-import Input from "../common/Input";
 import Button from "../common/Button";
 import TextArea from "../common/TextArea";
 
@@ -16,6 +15,7 @@ type Props = {
   visible: boolean;
   currentUserId?: number;
   reactToPostComment: (postId: number, postCommentId: number, reaction: string, toggle: boolean) => void;
+  viewReactionSummary: (postReactions: PostReaction[]) => void;
   submitComment: (postId: number, body: string) => void;
   onDelete?: (postCommentId: number) => void;
   onClose: () => void;
@@ -45,7 +45,8 @@ const PostCommentsModal = (props: Props) => {
           key={postComment.id}
           postComment={postComment}
           currentUserId={props.currentUserId}
-          reactToPostComment={props.reactToPostComment}
+          onReact={(reaction, toggle) => props.reactToPostComment(props.post.id, postComment.id, reaction, toggle)}
+          viewReactionSummary={() => props.viewReactionSummary(postComment.post_comment_reactions)}
           isLastComment={index == (props.postComments.length - 1)}
           onDelete={() => handleDeleteComment(postComment.id)} />
       ))}

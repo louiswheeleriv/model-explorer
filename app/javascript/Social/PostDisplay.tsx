@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { PostData } from "../types/models";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { byPrefixAndName } from "@awesome.me/kit-902717d512/icons";
 import PostHeader from "./PostHeader";
 import { Carousel } from "flowbite-react";
+import PostReactions from "./PostReactions";
 
 type Props = {
   postData: PostData;
-  currentUserId: number;
-  reactToPost: (postId: number, reaction: string, toggle: boolean) => void;
+  currentUserId?: number;
+  onReact: (reaction: string, toggle: boolean) => void;
   onDelete?: () => void;
   viewComments: () => void;
+  viewReactionSummary: () => void;
   className?: string;
 };
 
@@ -25,10 +25,6 @@ const PostDisplay = (props: Props) => {
       .replaceAll(/\n/g, '<br>');
 
   const [isActionsDropdownOpen, setIsActionsDropdownOpen] = useState(false);
-
-  function likedByCurrentUser(): boolean {
-    return props.postData.current_user_reactions.length > 0;
-  }
 
   function handleDeleteClicked() {
     setIsActionsDropdownOpen(false);
@@ -65,14 +61,12 @@ const PostDisplay = (props: Props) => {
       }
 
       <div className='flex'>
-        <div className='flex-none text-left'>
-          <FontAwesomeIcon
-            icon={likedByCurrentUser() ? byPrefixAndName.fas['heart'] : byPrefixAndName.far['heart']}
-            size='lg'
-            className={'mr-1 cursor-pointer '+(likedByCurrentUser() ? 'text-red-500' : 'text-white')}
-            onClick={() => props.reactToPost(props.postData.post.id, 'like', !likedByCurrentUser())} />
-          {props.postData.post_reactions.length > 0 && props.postData.post_reactions.length}
-        </div>
+        <PostReactions
+          postReactions={props.postData.post_reactions}
+          currentUserId={props.currentUserId}
+          onReact={props.onReact}
+          onLongPress={props.viewReactionSummary}
+          className='flex-none' />
         <div className='flex-1'></div>
         {props.postData.post_comments.length === 0 &&
           <div

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Post, PostComment, PostData, User } from "../types/models";
+import { Post, PostComment, PostData, PostReaction, User } from "../types/models";
 import PostDisplay from "./PostDisplay";
 import { apiCall } from "../utils/helpers";
 import Button from "../common/Button";
@@ -10,6 +10,7 @@ import PostCommentsModal from "./PostCommentsModal";
 import DraftPostModal from "./DraftPostModal";
 import DeletionConfirmationModal from "../common/DeletionConfirmationModal";
 import NotSignedInModal from "../common/NotSignedInModal";
+import ReactionSummaryModal from "./ReactionSummaryModal";
 
 type PostFilter = 'all' | 'following' | 'mine';
 type PostFeedState = {
@@ -38,20 +39,23 @@ const Social = (props: Props) => {
     page: 1
   });
 
+  const [notSignedInModalVisible, setNotSignedInModalVisible] = useState(false);
+  const [draftPostModalVisible, setDraftPostModalVisible] = useState(false);
+  const [reactionSummaryModalVisible, setReactionSummaryModalVisible] = useState(false);
   const [postCommentsModalVisible, setPostCommentsModalVisible] = useState(false);
-
-  const [postIdToDelete, setPostIdToDelete] = useState<number | null>(null);
-  const [commentIdToDelete, setCommentIdToDelete] = useState<number | null>(null);
   const [postDeletionConfirmationModalVisible, setPostDeletionConfirmationModalVisible] = useState(false);
   const [commentDeletionConfirmationModalVisible, setCommentDeletionConfirmationModalVisible] = useState(false);
+  
+  const [draftPost, setDraftPost] = useState<DraftPost>(emptyDraftPost);
+
+  const [reactionSummaryModalReactions, setReactionSummaryModalReactions] = useState<PostReaction[]>([]);
 
   const [commentModalPost, setCommentModalPost] = useState<Post | null>(null);
   const [commentModalPostComments, setCommentModalPostComments] = useState<PostComment[]>([]);
-  const [draftPostModalVisible, setDraftPostModalVisible] = useState(false);
-  const [draftPost, setDraftPost] = useState<DraftPost>(emptyDraftPost);
 
-  const [notSignedInModalVisible, setNotSignedInModalVisible] = useState(false);
-
+  const [postIdToDelete, setPostIdToDelete] = useState<number | null>(null);
+  const [commentIdToDelete, setCommentIdToDelete] = useState<number | null>(null);
+  
   const postsPerPage = 10;
 
   async function getPosts(page: number, filter: string): Promise<PostData[]> {
@@ -93,8 +97,7 @@ const Social = (props: Props) => {
           if (postData.post.id !== postId) return postData;
           return {
             ...postData,
-            post_reactions: body.post_reactions,
-            current_user_reactions: body.current_user_reactions
+            post_reactions: body.post_reactions
           };
         }));
       });
@@ -127,8 +130,7 @@ const Social = (props: Props) => {
               if (postComment.id !== postCommentId) return postComment;
               return {
                 ...postComment,
-                post_comment_reactions: body.post_comment_reactions,
-                current_user_reactions: body.current_user_reactions
+                post_comment_reactions: body.post_comment_reactions
               };
             })
           };
@@ -139,8 +141,7 @@ const Social = (props: Props) => {
             if (postComment.id !== postCommentId) return postComment;
             return {
               ...postComment,
-              post_comment_reactions: body.post_comment_reactions,
-              current_user_reactions: body.current_user_reactions
+              post_comment_reactions: body.post_comment_reactions
             };
           })
         );
@@ -225,6 +226,11 @@ const Social = (props: Props) => {
       });
   }
 
+  function viewReactionSummary(postReactions: PostReaction[]) {
+    setReactionSummaryModalReactions(postReactions);
+    setReactionSummaryModalVisible(true);
+  }
+  
   function viewComments(post: Post, postComments: PostComment[]) {
     if (props.current_user || postComments.length > 0) {
       setCommentModalPost(post);
@@ -338,6 +344,7 @@ const Social = (props: Props) => {
           post={commentModalPost}
           postComments={commentModalPostComments}
           reactToPostComment={reactToPostComment}
+          viewReactionSummary={viewReactionSummary}
           submitComment={submitComment}
           onDelete={handleDeleteCommentClicked} />
       }
@@ -354,14 +361,20 @@ const Social = (props: Props) => {
         onClose={handleDeleteCommentCanceled}
         onConfirm={handleDeleteCommentConfirmed} />
 
+      <ReactionSummaryModal
+        postReactions={reactionSummaryModalReactions}
+        visible={reactionSummaryModalVisible}
+        onClose={() => setReactionSummaryModalVisible(false)} />
+
       {postDatas.map((postData) => (
         <PostDisplay
           key={postData.post.id}
           postData={postData}
           currentUserId={props.current_user?.id}
-          reactToPost={reactToPost}
+          onReact={(reaction, toggle) => reactToPost(postData.post.id, reaction, toggle)}
           onDelete={() => handleDeletePostClicked(postData.post.id)}
           viewComments={() => viewComments(postData.post, postData.post_comments)}
+          viewReactionSummary={() => viewReactionSummary(postData.post_reactions)}
           className='mb-5' />
       ))}
 

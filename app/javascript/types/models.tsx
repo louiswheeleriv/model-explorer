@@ -94,7 +94,6 @@ export type PostComment = {
   user_profile_picture_url?: string;
   body: string;
   post_comment_reactions: PostReaction[];
-  current_user_reactions: PostReaction[];
   created_at: string;
   updated_at: string;
 }
@@ -103,6 +102,9 @@ export type PostReaction = {
   id: number;
   post_id: number;
   user_id: number;
+  user_username: string;
+  user_display_name?: string;
+  user_profile_picture_url?: string;
   reaction: string;
 }
 
@@ -119,7 +121,6 @@ export type PostData = {
   profile_picture: UserImage;
   post_comments: PostComment[];
   post_reactions: PostReaction[];
-  current_user_reactions: PostReaction[];
   user_models: UserModel[];
   user_images: UserImage[];
 }

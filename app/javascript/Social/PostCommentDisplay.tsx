@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { PostComment } from "../types/models";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { byPrefixAndName } from "@awesome.me/kit-902717d512/icons";
+import { PostComment, PostReaction } from "../types/models";
 import PostHeader from "./PostHeader";
+import PostReactions from "./PostReactions";
 
 type Props = {
   postComment: PostComment;
   isLastComment: boolean;
   currentUserId?: number;
-  reactToPostComment: (postId: number, postCommentId: number, reaction: string, toggle: boolean) => void;
+  onReact: (reaction: string, toggle: boolean) => void;
+  viewReactionSummary: () => void;
   onDelete?: () => void;
   className?: string;
 };
@@ -25,7 +25,11 @@ const PostCommentDisplay = (props: Props) => {
   const [isActionsDropdownOpen, setIsActionsDropdownOpen] = useState(false);
 
   function likedByCurrentUser(): boolean {
-    return props.postComment.current_user_reactions.length > 0;
+    return currentUserReactions().length > 0;
+  }
+
+  function currentUserReactions(): PostReaction[] {
+    return props.postComment.post_comment_reactions.filter((reaction) => reaction.user_id === props.currentUserId);
   }
 
   function handleDeleteClicked() {
@@ -50,14 +54,12 @@ const PostCommentDisplay = (props: Props) => {
         dangerouslySetInnerHTML={{ __html: postCommentBodyHtml }} />
 
       <div className='flex'>
-        <div className='flex-none text-left'>
-          <FontAwesomeIcon
-            icon={likedByCurrentUser() ? byPrefixAndName.fas['heart'] : byPrefixAndName.far['heart']}
-            size='lg'
-            className={'mr-1 cursor-pointer '+(likedByCurrentUser() ? 'text-red-500' : 'text-white')}
-            onClick={() => props.reactToPostComment(props.postComment.post_id, props.postComment.id, 'like', !likedByCurrentUser())} />
-          {props.postComment.post_comment_reactions.length > 0 && props.postComment.post_comment_reactions.length}
-        </div>
+        <PostReactions
+          postReactions={props.postComment.post_comment_reactions}
+          currentUserId={props.currentUserId}
+          onReact={props.onReact}
+          onLongPress={props.viewReactionSummary}
+          className='flex-1' />
       </div>
     </div>
   );
