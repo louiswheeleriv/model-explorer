@@ -54,12 +54,13 @@ const PostCommentDisplay = (props: Props) => {
         dangerouslySetInnerHTML={{ __html: postCommentBodyHtml }} />
 
       <div className='flex'>
-        <PostReactions
-          postReactions={props.postComment.post_comment_reactions}
-          currentUserId={props.currentUserId}
-          onReact={props.onReact}
-          onLongPress={props.viewReactionSummary}
-          className='flex-1' />
+        <div className='flex-none'>
+          <PostReactions
+            postReactions={props.postComment.post_comment_reactions}
+            currentUserId={props.currentUserId}
+            onReact={props.onReact}
+            onLongPress={props.viewReactionSummary} />
+        </div>
       </div>
     </div>
   );

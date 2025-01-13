@@ -16,6 +16,8 @@ const PostReactions = (props: Props) => {
   const reactPressTimerRef = useRef<number>();
   const reactIsLongPress = useRef<boolean>();
 
+  const longPressMillis = 300;
+
   function likedByCurrentUser(): boolean {
     return props.postReactions.filter((reaction) => reaction.user_id === props.currentUserId).length > 0;
   }
@@ -25,7 +27,7 @@ const PostReactions = (props: Props) => {
     reactPressTimerRef.current = setTimeout(() => {
       reactIsLongPress.current = true;
       props.onLongPress();
-    }, 600);
+    }, longPressMillis);
   }
 
   function handleReactMouseDown() {
@@ -48,17 +50,19 @@ const PostReactions = (props: Props) => {
 
   return (
     <div
-      className={'text-left '+props.className}
+      className={'px-1 rounded cursor-pointer '+(likedByCurrentUser() ? 'bg-slate-800 border border-[#909090]' : '')+' '+props.className}
       onMouseDown={handleReactMouseDown}
       onTouchStart={handleReactMouseDown}
       onMouseUp={handleReactTouchEnd}
       onTouchEnd={handleReactMouseUp}
       onClick={handleReactMouseClick}>
         <FontAwesomeIcon
-          icon={likedByCurrentUser() ? byPrefixAndName.fas['heart'] : byPrefixAndName.far['heart']}
+          icon={byPrefixAndName.fas['heart']}
           size='lg'
-          className={'mr-1 cursor-pointer '+(likedByCurrentUser() ? 'text-red-500' : 'text-white')} />
-        {props.postReactions.length > 0 && props.postReactions.length}
+          className='text-red-500' />
+        {props.postReactions.length > 0 &&
+          <span className='ml-1'>{props.postReactions.length}</span>
+        }
     </div>
   );
 };
