@@ -52,6 +52,8 @@ export type User = {
   display_name: string;
   email: string;
   bio: string;
+  profile_picture_url?: string;
+  model_num_by_status?: QuantityByStatus;
 }
 
 export type UserFaction = {
@@ -114,6 +116,11 @@ export type UserModelPost = {
   user_id: number;
   user_model_id: number;
   post_id: number;
+}
+
+export type UserData = {
+  user: User;
+  model_num_by_status?: QuantityByStatus;
 }
 
 export type PostData = {

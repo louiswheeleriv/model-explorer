@@ -64,6 +64,7 @@ Rails.application.routes.draw do
 
   get 'users' => 'social#users'
   get 'users/:user_id' => 'social#show_user'
+  get '/api/users' => 'social#list_users'
 
   get 'models' => 'explore#index'
   get 'game-systems/:game_system_id' => 'explore#show_game_system'

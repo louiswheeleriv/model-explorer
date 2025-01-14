@@ -1,20 +1,18 @@
 import React from "react";
-import { QuantityByStatus, User, UserImage } from "../types/models";
+import { UserData } from "../types/models";
 import StatusColorBar from "../common/StatusColorBar";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { byPrefixAndName } from '@awesome.me/kit-902717d512/icons';
 import ProfilePicture from "../common/ProfilePicture";
 
 type Props = {
-  user: User;
-  profilePicture?: UserImage;
-  numByStatus?: QuantityByStatus;
+  userData: UserData;
   className?: string;
 };
 
 const UserListItem = (props: Props) => {
   function redirectToUserPage() {
-    window.location.assign('/users/'+props.user.id);
+    window.location.assign('/users/'+props.userData.user.id);
   }
 
   return (
@@ -23,17 +21,17 @@ const UserListItem = (props: Props) => {
         <div className='flex-none my-auto'>
           <ProfilePicture
             width='50px'
-            imageUrl={props.profilePicture?.url}
+            imageUrl={props.userData.user.profile_picture_url}
             className='mr-3' />
         </div>
-        <div className='flex-1 my-auto text-xl'>
-          {props.user.display_name || props.user.username}
+        <div className='flex-1 text-left my-auto text-xl'>
+          {props.userData.user.display_name || props.userData.user.username}
         </div>
-        <div className='flex-1 my-auto text-right'>
+        <div className='flex-none my-auto text-right'>
           <FontAwesomeIcon icon={byPrefixAndName.fas['chevron-right']} />
         </div>
       </div>
-      <StatusColorBar numByStatus={props.numByStatus} rounding='bottom' size='small' />
+      <StatusColorBar numByStatus={props.userData.model_num_by_status} rounding='bottom' size='small' />
     </div>
   );
 };

@@ -1,6 +1,7 @@
 class SocialController < ApplicationController
 
   DEFAULT_POSTS_PAGE_SIZE = 10
+  DEFAULT_USERS_PAGE_SIZE = 20
 
   def index
   end
@@ -9,6 +10,40 @@ class SocialController < ApplicationController
   end
 
   def show_user
+  end
+
+  def list_users
+    scope =
+      ::User
+        .joins('LEFT OUTER JOIN user_images ON user_images.id = users.profile_picture_id')
+        .select([
+          'LOWER(COALESCE(display_name, username)) as sort_key',
+          'user_images.url as profile_picture_url',
+          User.column_names
+        ].flatten)
+    if params[:filter] == 'following'
+      scope =
+        scope
+          .joins('INNER JOIN user_follows ON user_follows.followed_user_id = users.id')
+          .where('user_follows.following_user_id = ?', current_user_id)
+    elsif params[:filter] == 'followers'
+      scope =
+        scope
+          .joins('INNER JOIN user_follows ON user_follows.following_user_id = users.id')
+          .where('user_follows.followed_user_id = ?', current_user_id)
+    end
+    if params[:search].present?
+      scope = scope.where('LOWER(COALESCE(display_name, username)) LIKE ?', "%#{params[:search].downcase}%")
+    end
+    scope =
+      scope
+        .paginate(
+          page: params[:page] || 1,
+          per_page: params[:per_page] || DEFAULT_USERS_PAGE_SIZE
+        )
+        .order(sort_key: :asc)
+        .map(&method(:user_data))
+    render status: 200, json: { status: 200, users: scope }
   end
 
   def posts
@@ -180,6 +215,13 @@ class SocialController < ApplicationController
   end
 
   private
+
+  def user_data(user)
+    {
+      user: user,
+      model_num_by_status: user.model_num_by_status
+    }
+  end
 
   def post_data(post)
     {

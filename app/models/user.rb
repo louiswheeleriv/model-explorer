@@ -69,4 +69,22 @@ class User < ApplicationRecord
       .where('user_follows.followed_user_id = ?', id)
   end
 
+  def model_num_by_status
+    user_models
+      .pluck([
+        'sum(qty_unassembled)',
+        'sum(qty_assembled)',
+        'sum(qty_in_progress)',
+        'sum(qty_finished)'
+      ])
+      .tap do |unassembled, assembled, in_progress, finished|
+        {
+          unassembled: unassembled,
+          assembled: assembled,
+          in_progress: in_progress,
+          finished: finished
+        }
+      end
+  end
+
 end

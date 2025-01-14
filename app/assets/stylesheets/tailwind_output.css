@@ -1624,6 +1624,10 @@ input:checked + .toggle-bg {
   max-height: 100%;
 }
 
+.max-h-\[60vh\] {
+  max-height: 60vh;
+}
+
 .w-1\/2 {
   width: 50%;
 }
