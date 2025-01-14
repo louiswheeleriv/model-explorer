@@ -60,6 +60,7 @@ Rails.application.routes.draw do
   post 'social/posts' => 'social#create_post'
   delete 'social/posts/:post_id' => 'social#delete_post'
   delete 'social/post_comments/:post_comment_id' => 'social#delete_post_comment'
+  post 'social/follows' => 'social#toggle_follow'
 
   get 'users' => 'social#users'
   get 'users/:user_id' => 'social#show_user'

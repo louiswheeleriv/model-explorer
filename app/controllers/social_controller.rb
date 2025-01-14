@@ -157,6 +157,28 @@ class SocialController < ApplicationController
     render status: 401, json: { status: 401, error: 'Unauthorized' }
   end
 
+  def toggle_follow
+    raise_unauthorized_unless_logged_in!
+
+    if params[:follow].to_s == 'true'
+      ::UserFollow.find_or_create_by!(
+        following_user_id: current_user_id,
+        followed_user_id: params[:user_id]
+      )
+    elsif params[:follow].to_s == 'false'
+      ::UserFollow.find_by(
+        following_user_id: current_user_id,
+        followed_user_id: params[:user_id]
+      )&.destroy!
+    else
+      return render status: 400, json: { status: 400, error: 'Invalid follow parameter.' }
+    end
+    
+    render status: 200, json: { status: 200 }
+  rescue UnauthorizedError
+    render status: 401, json: { status: 401, error: 'Unauthorized' }
+  end
+
   private
 
   def post_data(post)
@@ -164,6 +186,7 @@ class SocialController < ApplicationController
       post: post,
       user: post.user,
       profile_picture: post.user.profile_picture,
+      is_followed_by_current_user: current_user_id && UserFollow.exists?(following_user_id: current_user_id, followed_user_id: post.user_id),
       post_comments: load_post_comments(post),
       post_reactions: load_post_reactions(post),
       user_images: post.user_images,
@@ -185,7 +208,8 @@ class SocialController < ApplicationController
       .order(created_at: :asc)
       .map do |post_comment|
         post_comment.attributes.merge(
-          post_comment_reactions: load_post_comment_reactions(post_comment)
+          post_comment_reactions: load_post_comment_reactions(post_comment),
+          is_followed_by_current_user: current_user_id && UserFollow.exists?(following_user_id: current_user_id, followed_user_id: post_comment.user_id)
         )
       end
   end

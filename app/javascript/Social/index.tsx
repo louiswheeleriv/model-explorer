@@ -241,6 +241,44 @@ const Social = (props: Props) => {
     }
   }
 
+  function toggleFollow(userId: number, toggle: boolean) {
+    if (!props.current_user) {
+      setNotSignedInModalVisible(true);
+      return;
+    }
+
+    apiCall({
+      method: 'POST',
+      endpoint: '/social/follows',
+      body: {
+        user_id: userId,
+        follow: toggle
+      }
+    })
+      .then((response) => response.json())
+      .then((body) => {
+        if (body.status >= 300) throw new Error(body.error);
+
+        setPostDatas(postDatas.map((postData) => {
+          if (postData.user.id !== userId) return postData;
+          return {
+            ...postData,
+            is_followed_by_current_user: toggle
+          };
+        }));
+
+        setCommentModalPostComments(
+          commentModalPostComments.map((postComment) => {
+            if (postComment.user_id !== userId) return postComment;
+            return {
+              ...postComment,
+              is_followed_by_current_user: toggle
+            };
+          })
+        );
+      });
+  }
+
   function handleCreatePostClicked() {
     if (props.current_user) {
       setDraftPostModalVisible(true);
@@ -346,6 +384,7 @@ const Social = (props: Props) => {
           reactToPostComment={reactToPostComment}
           viewReactionSummary={viewReactionSummary}
           submitComment={submitComment}
+          onToggleFollow={toggleFollow}
           onDelete={handleDeleteCommentClicked} />
       }
 
@@ -372,6 +411,7 @@ const Social = (props: Props) => {
           postData={postData}
           currentUserId={props.current_user?.id}
           onReact={(reaction, toggle) => reactToPost(postData.post.id, reaction, toggle)}
+          onToggleFollow={(toggle) => toggleFollow(postData.user.id, toggle)}
           onDelete={() => handleDeletePostClicked(postData.post.id)}
           viewComments={() => viewComments(postData.post, postData.post_comments)}
           viewReactionSummary={() => viewReactionSummary(postData.post_reactions)}

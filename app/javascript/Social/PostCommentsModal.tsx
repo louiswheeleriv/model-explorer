@@ -17,6 +17,7 @@ type Props = {
   reactToPostComment: (postId: number, postCommentId: number, reaction: string, toggle: boolean) => void;
   viewReactionSummary: (postReactions: PostReaction[]) => void;
   submitComment: (postId: number, body: string) => void;
+  onToggleFollow: (userId: number, toggle: boolean) => void;
   onDelete?: (postCommentId: number) => void;
   onClose: () => void;
   className?: string;
@@ -48,6 +49,7 @@ const PostCommentsModal = (props: Props) => {
           onReact={(reaction, toggle) => props.reactToPostComment(props.post.id, postComment.id, reaction, toggle)}
           viewReactionSummary={() => props.viewReactionSummary(postComment.post_comment_reactions)}
           isLastComment={index == (props.postComments.length - 1)}
+          onToggleFollow={(toggle) => props.onToggleFollow(postComment.user_id, toggle)}
           onDelete={() => handleDeleteComment(postComment.id)} />
       ))}
 

@@ -92,6 +92,7 @@ export type PostComment = {
   user_username: string;
   user_display_name?: string;
   user_profile_picture_url?: string;
+  is_followed_by_current_user: boolean;
   body: string;
   post_comment_reactions: PostReaction[];
   created_at: string;
@@ -119,6 +120,7 @@ export type PostData = {
   post: Post;
   user: User;
   profile_picture: UserImage;
+  is_followed_by_current_user: boolean;
   post_comments: PostComment[];
   post_reactions: PostReaction[];
   user_models: UserModel[];

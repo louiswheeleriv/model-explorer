@@ -8,6 +8,7 @@ type Props = {
   postData: PostData;
   currentUserId?: number;
   onReact: (reaction: string, toggle: boolean) => void;
+  onToggleFollow: (toggle: boolean) => void;
   onDelete?: () => void;
   viewComments: () => void;
   viewReactionSummary: () => void;
@@ -37,10 +38,12 @@ const PostDisplay = (props: Props) => {
         userId={props.postData.user.id}
         userDisplayName={props.postData.user.display_name || props.postData.user.username}
         currentUserId={props.currentUserId}
+        isFollowedByCurrentUser={props.postData.is_followed_by_current_user}
         userProfilePictureUrl={props.postData.profile_picture?.url}
         timestamp={props.postData.post.created_at}
         isActionsDropdownOpen={isActionsDropdownOpen}
         onToggleActionsDropdown={() => setIsActionsDropdownOpen(!isActionsDropdownOpen)}
+        onToggleFollow={props.onToggleFollow}
         onDelete={handleDeleteClicked} />
 
       <div

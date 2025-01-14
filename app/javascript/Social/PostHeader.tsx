@@ -10,8 +10,10 @@ type Props = {
   userId: number;
   userDisplayName: string;
   currentUserId?: number;
+  isFollowedByCurrentUser: boolean;
   userProfilePictureUrl?: string;
   timestamp?: string;
+  onToggleFollow?: (toggle: boolean) => void;
   onDelete?: () => void;
   isActionsDropdownOpen?: boolean;
   onToggleActionsDropdown?: () => void;
@@ -36,23 +38,36 @@ const PostHeader = (props: Props) => {
           <div className='text-xs text-gray-300'>{friendlyDateTimeString(props.timestamp)}</div>
         }
       </div>
-      {props.userId === props.currentUserId &&
+      {props.currentUserId &&
         <div className='flex-none'>
           <DropdownButton
             colorSet='transparentLightText'
             position='left'
             isOpen={props.isActionsDropdownOpen}
             onToggle={props.onToggleActionsDropdown}>
-              <DropdownButtonItem
-                isFirst={true}
-                isLast={true}
-                onClick={props.onDelete}
-                className='text-red-500 hover:text-red-700'>
-                  <FontAwesomeIcon
-                    icon={byPrefixAndName.fas['trash']}
-                    className='mr-2' />
-                  Delete
-              </DropdownButtonItem>
+              {props.userId !== props.currentUserId &&
+                <DropdownButtonItem
+                  isFirst={true}
+                  isLast={true}
+                  onClick={() => props.onToggleFollow && props.onToggleFollow(!props.isFollowedByCurrentUser)}>
+                    <FontAwesomeIcon
+                      icon={byPrefixAndName.fas[props.isFollowedByCurrentUser ? 'bell-slash' : 'bell']}
+                      className='mr-2' />
+                    {props.isFollowedByCurrentUser ? 'Unfollow' : 'Follow'}
+                </DropdownButtonItem>
+              }
+              {props.userId === props.currentUserId &&
+                <DropdownButtonItem
+                  isFirst={true}
+                  isLast={true}
+                  onClick={props.onDelete}
+                  className='text-red-500 hover:text-red-700'>
+                    <FontAwesomeIcon
+                      icon={byPrefixAndName.fas['trash']}
+                      className='mr-2' />
+                    Delete
+                </DropdownButtonItem>
+              }
           </DropdownButton>
         </div>
       }
