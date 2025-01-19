@@ -288,4 +288,62 @@ class CollectionController < ApplicationController
     }
   end
 
+  def game_systems
+    render status: 200, json: {
+      status: 200,
+      game_systems:
+        ::GameSystem
+          .joins(:factions)
+          .joins('JOIN user_factions ON user_factions.faction_id = factions.id')
+          .where('user_factions.user_id = ?', params[:user_id])
+          .distinct
+    }
+  end
+
+  def user_factions
+    where = { user_id: params[:user_id] }
+    where['factions.game_system_id'] = Array.wrap(params[:game_system_id]) if params.key?(:game_system_id)
+
+    render status: 200, json: {
+      status: 200,
+      user_factions:
+        ::UserFaction
+          .joins(:faction)
+          .select([
+            'factions.name as faction_name',
+            'COALESCE(NULLIF(user_factions.name, \'\'), factions.name) AS coalesced_name',
+            'user_factions.*'
+          ])
+          .where(where)
+          .order('coalesced_name ASC')
+          .map(&:attributes)
+    }
+  end
+
+  def user_models
+    where = { user_id: params[:user_id] }
+    where['user_models.user_faction_id'] = Array.wrap(params[:user_faction_id]) if params.key?(:user_faction_id)
+    where['user_models.id'] = params[:user_model_ids].split(',') if params.key?(:user_model_ids)
+    render status: 200, json: {
+      status: 200,
+      user_models:
+        ::UserModel
+          .joins(:model)
+          .select([
+            'models.name as model_name',
+            'COALESCE(NULLIF(user_models.name, \'\'), models.name) AS coalesced_name',
+            'user_models.*'
+          ])
+          .where(where)
+          .order('coalesced_name ASC')
+          .map(&method(:user_model_data))
+    }
+  end
+
+  def user_model_data(user_model)
+    user_model.attributes.merge(
+      num_images: user_model.user_image_associations.count
+    )
+  end
+
 end

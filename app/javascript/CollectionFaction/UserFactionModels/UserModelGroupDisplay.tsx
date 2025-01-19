@@ -38,11 +38,10 @@ const UserModelGroupDisplay = (props: Props) => {
         .map((userModel: UserModel) => (
           <UserModelProgressBar
             key={userModel.id}
-            faction={props.faction}
-            userFaction={props.userFaction}
-            model={props.factionModelById[userModel.model_id]}
             userModel={userModel}
-            userImageAssociations={props.userImageAssociationsByUserModelId[userModel.id] || []}
+            modelName={props.factionModelById[userModel.model_id].name}
+            numImages={props.userImageAssociationsByUserModelId[userModel.id]?.length}
+            isClickable={true}
             className={'mb-5'} />
         ))}
     </CollapsibleListSection>

@@ -141,7 +141,16 @@ class SocialController < ApplicationController
           post_id: post.id,
           sort_index: index
         )
-      end  
+      end
+
+      (params[:user_model_ids] || []).each_with_index do |user_model_id, index|
+        ::UserModelPost.create!(
+          user_id: current_user_id,
+          user_model_id: user_model_id,
+          post_id: post.id,
+          sort_index: index
+        )
+      end
 
       render status: 200, json: {
         status: 200,
@@ -232,7 +241,7 @@ class SocialController < ApplicationController
       post_comments: load_post_comments(post),
       post_reactions: load_post_reactions(post),
       user_images: post.user_images,
-      user_models: post.user_models
+      user_models: load_post_user_models(post)
     }
   end
 
@@ -282,6 +291,24 @@ class SocialController < ApplicationController
         'user_images.url as user_profile_picture_url'
       ])
       .order(created_at: :asc)
+  end
+
+  def load_post_user_models(post)
+    post
+      .user_model_posts
+      .joins(:user_model)
+      .joins('INNER JOIN models ON models.id = user_models.model_id')
+      .select([
+        'models.name as model_name',
+        'COALESCE(NULLIF(user_models.name, \'\'), models.name) AS coalesced_name',
+        'user_models.*'
+      ])
+      .order(sort_index: :asc)
+      .map do |user_model|
+        user_model.attributes.merge(
+          num_images: ::UserImageAssociation.where(user_model_id: user_model.id).count
+        )
+      end
   end
 
 end

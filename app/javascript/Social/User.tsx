@@ -60,7 +60,7 @@ const User = (props: Props) => {
           {props.user.id !== props.current_user_id &&
             <DropdownButton
               colorSet='transparentLightText'
-              position='left'
+              leftOrRight='left'
               isOpen={isActionsDropdownOpen}
               onToggle={() => setIsActionsDropdownOpen(!isActionsDropdownOpen)}>
                 <DropdownButtonItem

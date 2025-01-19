@@ -7,12 +7,17 @@ type Props = {
   isOpen?: boolean;
   onToggle?: () => void;
   colorSet?: ButtonColorSet;
-  position?: 'left' | 'right';
+  leftOrRight?: 'left' | 'right';
+  upOrDown?: 'up' | 'down';
   className?: string;
   children: React.ReactNode;
 };
 
 const DropdownButton = (props: Props) => {
+  let menuClasses = 'absolute z-10 bg-gray-100 shadow-md rounded';
+  menuClasses += props.leftOrRight === 'left' ? ' right-0' : ' left-0';
+  menuClasses += props.upOrDown === 'up' ? ' bottom-8' : '';
+
   return (
     <div className='relative inline-block'>
       <Button
@@ -22,7 +27,7 @@ const DropdownButton = (props: Props) => {
           <FontAwesomeIcon icon={byPrefixAndName.fas['ellipsis']} />
       </Button>
       {props.isOpen &&
-        <div className={'absolute z-10 bg-gray-100 shadow-md rounded '+(props.position === 'left' ? 'right-0' : 'left-0')}>
+        <div className={menuClasses}>
           {props.children}
         </div>
       }

@@ -3,6 +3,7 @@
 # Table name: user_model_posts
 #
 #  id            :bigint           not null, primary key
+#  sort_index    :integer          not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  post_id       :integer          not null

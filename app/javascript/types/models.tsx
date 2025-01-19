@@ -31,7 +31,9 @@ export type UserModel = {
   user_faction_id: number;
   user_model_group_id: number;
   name: string;
+  model_name?: string;
   notes: string;
+  num_images?: number;
   qty_unassembled: number;
   qty_assembled: number;
   qty_in_progress: number;
@@ -61,6 +63,7 @@ export type UserFaction = {
   user_id: number;
   faction_id: number;
   name: string;
+  faction_name?: string;
 }
 
 export type UserImage = {

@@ -20,10 +20,15 @@ type PostFeedState = {
 
 export type DraftPost = {
   body: string;
-  imageUrls?: string[];
+  imageUrls: string[];
+  userModelIds: number[];
 }
 
-const emptyDraftPost = { body: '' };
+const emptyDraftPost = {
+  body: '',
+  imageUrls: [],
+  userModelIds: []
+};
 
 type Props = {
   current_user: User;
@@ -178,7 +183,8 @@ const Social = (props: Props) => {
       endpoint: '/social/posts',
       body: {
         body: draftPost.body.trim(),
-        image_urls: draftPost.imageUrls
+        image_urls: draftPost.imageUrls,
+        user_model_ids: draftPost.userModelIds
       }
     })
       .then((response) => response.json())

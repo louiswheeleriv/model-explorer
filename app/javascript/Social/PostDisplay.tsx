@@ -3,6 +3,7 @@ import { PostData } from "../types/models";
 import PostHeader from "./PostHeader";
 import { Carousel } from "flowbite-react";
 import PostReactions from "./PostReactions";
+import UserModelProgressBar from "../CollectionFaction/UserFactionModels/UserModelProgressBar";
 
 type Props = {
   postData: PostData;
@@ -33,7 +34,7 @@ const PostDisplay = (props: Props) => {
   }
 
   return (
-    <div className={'p-3 bg-[#607499] rounded-md '+(props.className || '')}>
+    <div className={'p-3 bg-[#202020] rounded-md '+(props.className || '')}>
       <PostHeader
         userId={props.postData.user.id}
         userDisplayName={props.postData.user.display_name || props.postData.user.username}
@@ -62,6 +63,19 @@ const PostDisplay = (props: Props) => {
           ))}
         </Carousel>
       }
+
+      {props.postData.user_models.map((userModel) => {
+        if (!userModel.model_name) throw new Error('UserModel missing model_name');
+        return (
+          <UserModelProgressBar
+            key={userModel.id}
+            userModel={userModel}
+            modelName={userModel.model_name}
+            numImages={userModel.num_images}
+            isClickable={true}
+            className='mb-3' />
+        );
+      })}
 
       <div className='flex'>
         <PostReactions

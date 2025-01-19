@@ -43,6 +43,10 @@ Rails.application.routes.draw do
   get 'user-models/:user_model_id' => 'collection#show_user_model'
   post 'user-models/:user_model_id/images' => 'collection#set_user_model_image_associations'
 
+  get '/api/users/:user_id/game_systems' => 'collection#game_systems'
+  get '/api/users/:user_id/user_factions' => 'collection#user_factions'
+  get '/api/users/:user_id/user_models' => 'collection#user_models'
+
   get 'user-assets/upload' => 'user_assets#uploadable_url'
 
   post 'game-systems' => 'game_systems#create'
