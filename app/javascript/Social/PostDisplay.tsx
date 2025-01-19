@@ -48,7 +48,7 @@ const PostDisplay = (props: Props) => {
         onDelete={handleDeleteClicked} />
 
       <div
-        className='text-sm text-left mb-2'
+        className='text-lg text-left mb-2'
         dangerouslySetInnerHTML={{ __html: postBodyHtml }} />
 
       {props.postData.user_images.length > 0 &&
